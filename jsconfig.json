@@ -1,7 +1,12 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@/models/*": ["./models/*"],
+      "@/lib/*": ["./lib/*"]
     }
-  }
+  },
+  "include": ["**/*.js", "**/*.jsx", "app/login/page.js'"],
+  "exclude": ["node_modules"]
 }

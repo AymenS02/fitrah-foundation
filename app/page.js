@@ -162,7 +162,7 @@ export default function Home() {
                 onMouseEnter={() => setHoveredCard(teacher.id)}
                 onMouseLeave={() => setHoveredCard(null)}
               >
-                <div className="bg-secondary rounded-2xl shadow-2xl overflow-hidden transform group-hover:scale-105 transition-all duration-500 border-2 border-amber-200 group-hover:border-amber-300">
+                <div className="bg-secondary rounded-2xl shadow-2xl overflow-hidden transform group-hover:scale-105 transition-all duration-500 border-2 border-accent group-hover:border-secondary">
                   <div className="flex flex-col lg:flex-row">
                     {/* Image Section */}
                     <div className={`lg:w-1/3 relative overflow-hidden ${index % 2 === 0 ? 'lg:order-1' : 'lg:order-2'}`}>
