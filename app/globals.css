@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand Colors */
+  --color-primary: #1E2A66;   /* Dark blue: strong, trustworthy */
+  --color-secondary: #FFFADE; /* Light yellow: warm highlight */
+  --color-accent:  #8E8CB8;   /* Purple: accent & buttons */
+  --color-background: #F9F8FF; /* Soft grayish background */
+
+  /* UI Assignments */
+  --bg: var(--color-background);        /* Page background */
+  --fg: var(--color-primary);           /* Primary text color */
+
+  --menu-bg: var(--color-primary);      /* Menu background (dark blue) */
+  --menu-fg: var(--color-secondary);    /* Menu text (light yellow for contrast) */
+  --menu-fg-secondary: var(--color-background); /* Secondary muted text */
+
+  --button-bg: var(--color-accent);     /* Buttons default (purple) */
+  --button-fg: white;                   /* Button text (on purple) */
+  --button-hover-bg: #7a77a5;           /* Darker purple hover */
+
+  --link-fg: var(--color-primary);      /* Links default (blue) */
+  --link-hover-fg: var(--color-accent); /* Links hover (purple) */
+
+  --card-bg: white;                     /* Card / section background */
+  --card-border: rgba(30, 42, 102, 0.1); /* Soft border using primary */
+
+  --hamburger-icon-border: rgba(255, 255, 255, 0.3); /* Subtle white on blue */
+}
+
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-orienta); /* Orienta for all body text */
+}
+
+/* Headings automatically use Palanquin Dark */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-palanquin-dark);
+}
