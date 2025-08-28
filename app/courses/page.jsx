@@ -42,7 +42,7 @@ export default function CoursesPage() {
             <div>
               <h2 className="text-xl font-semibold text-primary mb-2">{course.title}</h2>
               <p className="text-gray-600 mb-3">{course.description}</p>
-              <p className="flex text-lg font-bold text-secondary bg-accent p-2 mb-4">{course.price}</p>
+              <p className="w-[100px] flex items-center bg-accent shadow-lg shadow-accent/10 border-2 border-secondary rounded-2xl text-lg text-center font-bold text-secondary p-2 mb-4">{course.price}</p>
               <div className="flex flex-wrap gap-2 mb-4">
                 {course.tags.map((tag) => (
                   <span
