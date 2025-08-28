@@ -15,7 +15,7 @@ const Header = () => {
   const isLoggedIn = !!user;
 
   return (
-    <header className="bg-background px-6 py-4">
+    <header className="bg-background px-6 py-4 shadow-2xl">
       <div className="max-w-[90%] mx-auto flex items-center justify-between">
 
         {/* Logo */}
