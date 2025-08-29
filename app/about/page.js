@@ -1,4 +1,3 @@
-// app/about/page.jsx
 "use client";
 
 import React from "react";
@@ -89,8 +88,6 @@ export default function AboutPage() {
       </section>
 
       
-
-      {/* ===== What We Focus On (moved up for fast scanning) ===== */}
       {/* ======= Values / What we do ======= */}
 <section className="bg-muted/40">
   <div className="container mx-auto max-w-5xl px-4 py-12 md:py-16">
@@ -165,6 +162,7 @@ export default function AboutPage() {
 </div>
 
 
+{/* WHO, WHAT, HOW */}
       <section className="bg-background">
   <div className="container mx-auto max-w-5xl px-4 py-8">
     <div className="rounded-2xl border bg-card/60 shadow-sm p-6 md:p-8">
@@ -275,7 +273,7 @@ export default function AboutPage() {
           </p>
 
           <p className="font-semibold">
-            <strong>The call to action:</strong> We invite people to awaken the Fitrah
+             We invite people to awaken the Fitrah
             within, in order to understand and live by the laws of Allah.
           </p>
         </div>
