@@ -34,7 +34,10 @@ export async function POST(request, context) {
 export async function GET(request, context) {
   try {
     await connectDB();
-    const { id } = await context.params;
+
+    // await the params object
+    const params = await context.params;
+    const id = params.id;
 
     const modules = await Module.find({ course: id }).sort({ order: 1 });
     return NextResponse.json({ success: true, data: modules });

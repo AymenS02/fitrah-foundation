@@ -126,22 +126,50 @@ export default function CourseModules() {
     setShowForm(false);
   };
 
-  const handleSubmit = async (e) => {
+ const handleSubmit = async (e) => {
   e.preventDefault();
   try {
     let url, method, payload;
 
-    if (editingModule) {
-      // 🔹 Update existing module
-      url = `/api/modules/${editingModule._id}`;
-      method = "PUT";
-      payload = formData;
-    } else {
-      // 🔹 Create new module under course
-      url = `/api/courses/${courseId}/modules`;
-      method = "POST";
-      payload = { ...formData, course: courseId }; // include courseId
+    // Build the payload correctly based on type
+    const basePayload = {
+      courseId, // use courseId, not course
+      title: formData.title,
+      description: formData.description,
+      order: Number(formData.order) || 0,
+      type: formData.type
+    };
+
+    // Only include the content that matches the type
+    switch (formData.type) {
+      case 'text':
+        basePayload.text = { body: formData.text.body };
+        break;
+      case 'pdf':
+        basePayload.pdf = { fileUrl: formData.pdf.fileUrl };
+        break;
+      case 'assignment':
+        basePayload.assignment = {
+          instructions: formData.assignment.instructions,
+          dueDate: formData.assignment.dueDate || null,
+          maxScore: Number(formData.assignment.maxScore) || 100
+        };
+        break;
+      case 'quiz':
+        basePayload.quiz = formData.quiz;
+        break;
+      default:
+        break;
     }
+
+    payload = editingModule ? { ...basePayload, _id: editingModule._id } : basePayload;
+    url = editingModule
+      ? `/api/modules/${editingModule._id}`
+      : `/api/courses/${courseId}/modules`;
+    method = editingModule ? 'PUT' : 'POST';
+
+    // ✅ Log the final payload
+    console.log("Sending payload to server:", payload);
 
     const response = await fetch(url, {
       method,
@@ -153,11 +181,13 @@ export default function CourseModules() {
       resetForm();
       fetchCourseAndModules();
     } else {
+      console.log("Response not ok");
+      console.log(response);
       const error = await response.json();
-      console.error("Error saving module 1:", error);
+      console.error("Error saving module:", error);
     }
   } catch (error) {
-    console.error("Error saving module 2:", error);
+    console.error("Error saving module:", error);
   }
 };
 
@@ -205,7 +235,7 @@ export default function CourseModules() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <button
-            onClick={() => router.push(`/dashboard/courses/${courseId}`)}
+            onClick={() => router.push(`/admin/courses/${courseId}`)}
             className="text-blue-600 hover:text-blue-800 mb-2"
           >
             ← Back to Course
@@ -436,59 +466,17 @@ export default function CourseModules() {
             No modules created yet. Click "Add Module" to get started.
           </div>
         ) : (
-          modules.map((module) => (
-            <div key={module._id} className="bg-white shadow-md rounded-xl p-5 border">
-              <div className="flex justify-between items-start">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="text-sm text-gray-500">#{module.order}</span>
-                    <h3 className="text-lg font-semibold">{module.title}</h3>
-                    <span className="px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded">
-                      {module.type}
-                    </span>
-                  </div>
-                  <p className="text-gray-600 text-sm mb-2">{module.description}</p>
-                  
-                  {/* Module content preview */}
-                  {module.type === 'text' && (
-                    <p className="text-sm text-gray-500 line-clamp-2">
-                      {module.text?.body}
-                    </p>
-                  )}
-                  {module.type === 'pdf' && (
-                    <p className="text-sm text-blue-600">
-                      PDF: {module.pdf?.fileUrl}
-                    </p>
-                  )}
-                  {module.type === 'assignment' && (
-                    <p className="text-sm text-gray-500">
-                      Due: {module.assignment?.dueDate ? new Date(module.assignment.dueDate).toLocaleDateString() : 'No due date'}
-                    </p>
-                  )}
-                  {module.type === 'quiz' && (
-                    <p className="text-sm text-gray-500">
-                      {module.quiz?.questions?.length || 0} questions
-                    </p>
-                  )}
-                </div>
-
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => handleEdit(module)}
-                    className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(module._id)}
-                    className="bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700"
-                  >
-                    Delete
-                  </button>
-                </div>
+        <div className="mb-6">
+          <h3 className="font-semibold mb-2">Modules ({course.modules?.length || 0})</h3>
+          <div className="space-y-2">
+            {course.modules?.map((module) => (
+              <div key={module._id} className="border p-3 rounded">
+                <h4 className="font-medium">{module.title}</h4>
+                <p className="text-sm text-gray-600">{module.type}</p>
               </div>
-            </div>
-          ))
+            ))}
+          </div>
+        </div>
         )}
       </div>
     </div>

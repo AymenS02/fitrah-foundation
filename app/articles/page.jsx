@@ -1,120 +1,265 @@
 'use client';
 
-import { useState } from 'react';
-import Link from 'next/link';
+import React, { useEffect, useRef, useState } from 'react';
+import { gsap } from "gsap";
+import { FileText, Eye, Search, Filter, Tag, User, Calendar } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
-const articles = [
-  {
-    id: 'importance-of-charity',
-    title: 'The Importance of Charity in Daily Life',
-    description: 'How small acts of kindness create lasting impact in communities.',
-    date: 'August 25, 2025',
-    author: 'Fitrah Foundation',
-    tags: ['Charity', 'Community', 'Faith'],
-  },
-  {
-    id: 'spiritual-growth',
-    title: 'Spiritual Growth Through Knowledge',
-    description: 'Understanding how learning deepens faith and practice.',
-    date: 'August 20, 2025',
-    author: 'Fitrah Foundation',
-    tags: ['Spirituality', 'Knowledge', 'Faith'],
-  },
-  {
-    id: 'community-support',
-    title: 'Building Strong Communities',
-    description: 'The role of collaboration and support in building unity.',
-    date: 'August 10, 2025',
-    author: 'Fitrah Foundation',
-    tags: ['Community', 'Unity', 'Support'],
-  },
-];
+const ArticlesPage = () => {
+  const [articles, setArticles] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const headerRef = useRef(null);
+  const articlesGridRef = useRef(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedTag, setSelectedTag] = useState('all');
+  const [availableTags, setAvailableTags] = useState([]);
+  const router = useRouter();
 
-export default function ArticlesPage() {
-  const [search, setSearch] = useState('');
-  const [selectedTag, setSelectedTag] = useState(null);
+  useEffect(() => {
+    // Check if refs are available before animating
+    if (headerRef.current && articlesGridRef.current) {
+      const tl = gsap.timeline({ delay: 0.3 });
+      gsap.set([headerRef.current, articlesGridRef.current], { opacity: 0, y: 50 });
 
-  // Collect unique tags
-  const allTags = [...new Set(articles.flatMap(article => article.tags))];
+      tl.to(headerRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power3.out"
+      }).to(articlesGridRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power3.out"
+      }, "-=0.4");
 
-  // Filtered articles
-  const filteredArticles = articles.filter((article) => {
+      return () => tl.kill();
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchArticles();
+  }, []);
+
+  const fetchArticles = async () => {
+    try {
+      setIsLoading(true);
+      const response = await fetch('/api/articles');
+      const data = await response.json();
+
+      if (response.ok) {
+        setArticles(data.articles);
+        // Extract unique tags from all articles
+        const allTags = data.articles.flatMap(article => article.tags || []);
+        const uniqueTags = [...new Set(allTags)];
+        setAvailableTags(['all', ...uniqueTags]);
+      } else {
+        console.error('Failed to fetch articles:', data.error);
+      }
+    } catch (error) {
+      console.error('Error fetching articles:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const filteredArticles = articles.filter(article => {
     const matchesSearch =
-      article.title.toLowerCase().includes(search.toLowerCase()) ||
-      article.description.toLowerCase().includes(search.toLowerCase()) ||
-      article.tags.some(tag => tag.toLowerCase().includes(search.toLowerCase()));
-
-    const matchesTag = selectedTag ? article.tags.includes(selectedTag) : true;
-
+      article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      article.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      article.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (article.tags && article.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase())));
+    const matchesTag = selectedTag === 'all' || (article.tags && article.tags.includes(selectedTag));
     return matchesSearch && matchesTag;
   });
 
-  return (
-    <main className="max-w-5xl mx-auto px-6 py-12">
-      <h1 className="text-4xl font-bold text-primary mb-6">Articles</h1>
+  const handleViewArticle = (article) => {
+    router.push(`/articles/${article._id}`);
+  };
 
-      {/* Search */}
-      <input
-        type="text"
-        placeholder="Search articles..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        className="w-full p-3 mb-6 border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary"
-      />
+  const truncateContent = (content, maxLength = 150) => {
+    return content.length > maxLength ? content.substring(0, maxLength) + '...' : content;
+  };
 
-      {/* Tag Filters */}
-      <div className="flex flex-wrap gap-2 mb-8">
-        <button
-          onClick={() => setSelectedTag(null)}
-          className={`px-3 py-1 rounded-full text-sm border transition ${
-            !selectedTag ? 'bg-primary text-white' : 'bg-gray-100 text-gray-700 hover:bg-primary hover:text-white'
-          }`}
-        >
-          All
-        </button>
-        {allTags.map((tag) => (
-          <button
-            key={tag}
-            onClick={() => setSelectedTag(tag)}
-            className={`px-3 py-1 rounded-full text-sm border transition ${
-              selectedTag === tag ? 'bg-primary text-white' : 'bg-gray-100 text-gray-700 hover:bg-primary hover:text-white'
-            }`}
-          >
-            {tag}
-          </button>
-        ))}
-      </div>
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  };
 
-      {/* Articles List */}
-      {filteredArticles.length > 0 ? (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {filteredArticles.map((article) => (
-            <Link
-              key={article.id}
-              href={`/articles/${article.id}`}
-              className="block bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow p-6"
-            >
-              <h2 className="text-xl font-semibold text-primary mb-2">{article.title}</h2>
-              <p className="text-gray-600 mb-3">{article.description}</p>
-              <p className="text-sm text-gray-400 mb-3">
-                {article.date} • {article.author}
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {article.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="px-2 py-1 text-xs bg-gray-100 text-gray-600 rounded-full"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </Link>
-          ))}
+  if (isLoading) {
+    return (
+      <>
+        <div className="flex items-center justify-center min-h-screen bg-light">
+          <div className="text-gray-600">Loading articles...</div>
         </div>
-      ) : (
-        <p className="text-gray-500">No articles found.</p>
-      )}
-    </main>
+      </>
+    );
+  }
+
+  return (
+    <>
+      <div className="min-h-screen bg-light py-[200px]">
+        <div className="container mx-auto px-6 max-w-7xl">
+
+          {/* Header Section */}
+          <div ref={headerRef} className="text-center mb-12">
+            <div className="flex items-center justify-center gap-3 mb-6">
+              <div className="hidden md:block bg-blue-100 p-3 rounded-full">
+                <FileText className="w-8 h-8 text-primary" />
+              </div>
+              <h1 className="text-4xl lg:text-5xl font-bold text-gray-800">
+                Islamic <span className="text-primary">Articles</span>
+              </h1>
+            </div>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Explore insightful articles on Islamic topics, scholarly works, and contemporary discussions to enrich your knowledge
+            </p>
+            <div className="w-24 h-1 bg-primary mx-auto mt-6 rounded-full"></div>
+          </div>
+
+          {/* Search and Filter Section */}
+          <div className="bg-white rounded-2xl shadow-lg p-6 mb-8">
+            <div className="flex flex-col md:flex-row gap-4 md:items-center">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                <input
+                  type="text"
+                  placeholder="Search articles, authors, or topics..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-accent focus:border-transparent outline-none"
+                />
+              </div>
+              <div className="flex items-center gap-2">
+                <Filter className="w-5 h-5 text-gray-400" />
+                <select
+                  value={selectedTag}
+                  onChange={(e) => setSelectedTag(e.target.value)}
+                  className="px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-accent focus:border-transparent outline-none bg-white"
+                >
+                  {availableTags.map(tag => (
+                    <option key={tag} value={tag}>
+                      {tag === 'all' ? 'All Tags' : tag}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            <div className="mt-4 text-sm text-gray-600">
+              Showing {filteredArticles.length} of {articles.length} articles
+            </div>
+          </div>
+
+          {/* Articles Grid */}
+          <div ref={articlesGridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredArticles.map((article) => (
+              <div key={article._id} className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 overflow-hidden group">
+                
+                {/* Article Image or Gradient Header */}
+                <div className="relative h-48 overflow-hidden">
+                  {article.imageUrl ? (
+                    <img
+                      src={article.imageUrl}
+                      alt={article.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      onError={(e) => {
+                        // Fallback to gradient header if image fails
+                        e.target.parentElement.innerHTML = `
+                          <div class="bg-gradient-to-br from-blue-500 to-indigo-600 h-full flex items-center justify-center">
+                            <svg class="w-16 h-16 text-white opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                          </div>
+                        `;
+                      }}
+                    />
+                  ) : (
+                    <div className="bg-gradient-to-br from-blue-600 to-indigo-600 h-full flex items-center justify-center">
+                      <FileText className="w-16 h-16 text-white opacity-80" />
+                    </div>
+                  )}
+                  
+                  {/* Tags overlay */}
+                  {article.tags && article.tags.length > 0 && (
+                    <div className="absolute top-4 right-4">
+                      <span className="bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-medium text-accent">
+                        {article.tags[0]}
+                      </span>
+                    </div>
+                  )}
+                  
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                </div>
+
+                <div className="p-6">
+                  <h3 className="text-xl font-bold text-gray-800 mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors">
+                    {article.title}
+                  </h3>
+                  
+                  <div className="flex items-center gap-2 text-gray-600 mb-2">
+                    <User className="w-4 h-4" />
+                    <span className="text-sm">{article.author}</span>
+                  </div>
+                  
+                  <div className="flex items-center gap-2 text-gray-500 mb-4">
+                    <Calendar className="w-4 h-4" />
+                    <span className="text-sm">{formatDate(article.date)}</span>
+                  </div>
+                  
+                  <p className="text-gray-600 text-sm mb-4 line-clamp-3">
+                    {truncateContent(article.content)}
+                  </p>
+                  
+                  {/* Tags */}
+                  {article.tags && article.tags.length > 1 && (
+                    <div className="flex flex-wrap gap-1 mb-4">
+                      {article.tags.slice(0, 3).map((tag, index) => (
+                        <span
+                          key={index}
+                          className="inline-flex items-center px-2 py-1 text-xs font-medium bg-light text-primary rounded-full"
+                        >
+                          <Tag className="w-3 h-3 mr-1" />
+                          {tag}
+                        </span>
+                      ))}
+                      {article.tags.length > 3 && (
+                        <span className="text-xs text-gray-500">
+                          +{article.tags.length - 3} more
+                        </span>
+                      )}
+                    </div>
+                  )}
+                  
+                  <button
+                    onClick={() => handleViewArticle(article)}
+                    className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold py-3 px-4 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 group-hover:shadow-lg"
+                  >
+                    <Eye className="w-5 h-5" />
+                    <span>Read Article</span>
+                  </button>
+                </div>
+                
+                {/* Hover effect overlay */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-10 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out pointer-events-none"></div>
+              </div>
+            ))}
+          </div>
+
+          {/* No Results */}
+          {filteredArticles.length === 0 && (
+            <div className="text-center py-16">
+              <FileText className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-gray-600 mb-2">No articles found</h3>
+              <p className="text-gray-500">Try adjusting your search terms or filters</p>
+            </div>
+          )}
+        </div>
+      </div>
+    </>
   );
-}
+};
+
+export default ArticlesPage;

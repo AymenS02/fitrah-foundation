@@ -10,6 +10,7 @@ export default function AdminLayout({ children }) {
     { name: 'Dashboard', href: '/admin' },
     { name: 'Courses', href: '/admin/courses' },
     { name: 'Students', href: '/admin/students' },
+    { name: 'Articles', href: '/admin/articles' },
   ];
 
   return (
