@@ -1,5 +1,6 @@
 import "./globals.css";
 import { Palanquin_Dark, Orienta } from "next/font/google";
+import { SessionProvider } from 'next-auth/react';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
