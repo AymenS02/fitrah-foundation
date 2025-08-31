@@ -35,10 +35,6 @@ const Footer = () => {
                 <span>info@fitrahfoundation.org</span>
               </div>
               <div className="flex items-center space-x-2">
-                <Phone className="w-4 h-4 text-accent" />
-                <span>+1 (234) 567-8900</span>
-              </div>
-              <div className="flex items-center space-x-2">
                 <MapPin className="w-4 h-4 text-accent" />
                 <span>Toronto, ON</span>
               </div>

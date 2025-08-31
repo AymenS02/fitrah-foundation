@@ -2,7 +2,6 @@
 
 import React from "react";
 import Image from "next/image";
-import Link from "next/link";
 import {
   motion,
   useScroll,
@@ -31,7 +30,7 @@ export default function AboutPage() {
   return (
     <main className="bg-background text-foreground">
       {/* ===== Hero with animated background (centered, fast reveal) ===== */}
-      <section className="relative isolate overflow-visible bg-background mt-[20vh]">
+      <section className="relative isolate overflow-visible bg-background">
         {/* Animated background layer */}
         <div className="pointer-events-none absolute inset-0 flex items-start justify-center">
           {/* Sun (behind clouds) */}
@@ -72,70 +71,70 @@ export default function AboutPage() {
 
           {/* Primary actions (convert fast) */}
           <div className="mt-6 flex items-center justify-center gap-3">
-            <Link
+            <a
               href="/courses"
               className="rounded-xl bg-primary px-5 py-2 text-sm font-semibold text-white shadow hover:opacity-90"
             >
               Browse Courses
-            </Link>
-            <Link
+            </a>
+            <a
               href="/articles"
               className="rounded-xl border border-primary/30 px-5 py-2 text-sm font-semibold text-primary hover:bg-primary/5"
             >
               Read Articles
-            </Link>
+            </a>
           </div>
         </div>
       </section>
 
       
       {/* ======= Values / What we do ======= */}
-      <section className="bg-muted/40">
-        <div className="container mx-auto max-w-5xl px-4 py-12 md:py-16">
-          <h2 className="text-2xl font-bold tracking-tight text-foreground md:text-3xl">
-            What We Focus On
-          </h2>
-          <div className="mt-8 grid gap-6 sm:grid-cols-2 md:grid-cols-3">
-            {[
-              {
-                title: "Traditional Scholarship",
-                body:
-                  "Learning rooted in Qur'an and Sunnah, guided by scholars linked to authentic chains.",
-              },
-              {
-                title: "Clarity & Relevance",
-                body:
-                  "Explaining timeless principles with language and examples that make sense today.",
-              },
-              {
-                title: "Character & Practice",
-                body:
-                  "Knowledge that transforms hearts and habits, not information for its own sake.",
-              },
-            ].map((card, index) => (
-              <motion.div
-                key={card.title}
-                className="rounded-2xl border bg-card p-6 shadow-sm cursor-default transition-none"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-              >
-                <h3 className="text-lg font-semibold text-primary">
-                  {card.title}
-                </h3>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  {card.body}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+<section className="bg-muted/40">
+  <div className="container mx-auto max-w-5xl px-4 py-12 md:py-16">
+    <h2 className="text-2xl font-bold tracking-tight text-foreground md:text-3xl">
+      What We Focus On
+    </h2>
+    <div className="mt-8 grid gap-6 sm:grid-cols-2 md:grid-cols-3">
+      {[
+        {
+          title: "Traditional Scholarship",
+          body:
+            "Learning rooted in Qur'an and Sunnah, guided by scholars linked to authentic chains.",
+        },
+        {
+          title: "Clarity & Relevance",
+          body:
+            "Explaining timeless principles with language and examples that make sense today.",
+        },
+        {
+          title: "Character & Practice",
+          body:
+            "Knowledge that transforms hearts and habits, not information for its own sake.",
+        },
+      ].map((card, index) => (
+        <motion.div
+          key={card.title}
+          className="rounded-2xl border bg-card p-6 shadow-sm cursor-default transition-none"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: index * 0.1 }}
+          viewport={{ once: true }}
+        >
+          <h3 className="text-lg font-semibold text-primary">
+            {card.title}
+          </h3>
+          <p className="mt-2 text-sm text-muted-foreground">
+            {card.body}
+          </p>
+        </motion.div>
+      ))}
+    </div>
+  </div>
+</section>
 
 
       {/* Cloud / wave top edge */}
-<div className="relative h-14 overflow-visible">
+<div className="relative h-14 overflow-hidden">
   <svg
     className="absolute inset-0 h-full w-full text-muted/40"
     viewBox="0 0 1440 100"
@@ -149,7 +148,7 @@ export default function AboutPage() {
 </div>
 
 {/* Inverse bottom edge */}
-<div className="relative h-14 overflow-visible rotate-180">
+<div className="relative h-14 overflow-hidden rotate-180">
   <svg
     className="absolute inset-0 h-full w-full text-muted/40"
     viewBox="0 0 1440 100"

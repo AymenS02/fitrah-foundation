@@ -48,3 +48,62 @@ export async function GET(request, context) {
     );
   }
 }
+
+export async function PUT(request, context) {
+  try {
+    await connectDB();
+
+    // ✅ await context.params first
+    const params = await context.params;
+    const id = params.id; // course ID
+
+    const body = await request.json();
+
+    if (!body._id) {
+      return NextResponse.json({ success: false, error: "_id is required" }, { status: 400 });
+    }
+
+    // update the module by _id
+    const updatedModule = await Module.findByIdAndUpdate(body._id, body, { new: true });
+
+    if (!updatedModule) {
+      return NextResponse.json({ success: false, error: "Module not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({ success: true, data: updatedModule });
+  } catch (error) {
+    return NextResponse.json({ success: false, error: error.message }, { status: 400 });
+  }
+}
+
+// DELETE a single module
+export async function DELETE(request, context) {
+  try {
+    await connectDB();
+    const params = await context.params;
+    const id = params.id; // module ID
+
+    const body = await request.json();
+
+    if (!body._id) {
+      return NextResponse.json({ success: false, error: "_id is required" }, { status: 400 });
+    }
+
+    // Delete the module
+    const deletedModule = await Module.findByIdAndDelete(id);
+
+    if (!deletedModule) {
+      return NextResponse.json(
+        { success: false, error: "Module not found" },
+        { status: 404 }
+      );
+    }
+
+    // Remove module from the course
+    await Course.findByIdAndUpdate(courseId, { $pull: { modules: moduleId } });
+
+    return NextResponse.json({ success: true, data: deletedModule });
+  } catch (error) {
+    return NextResponse.json({ success: false, error: error.message }, { status: 400 });
+  }
+}

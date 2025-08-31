@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 
 export default function CourseModules() {
-  const [modules, setModules] = useState([]);
   const [course, setCourse] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
@@ -19,50 +18,43 @@ export default function CourseModules() {
     description: '',
     type: 'text',
     order: '',
-    // Content fields
     quiz: { questions: [{ question: '', options: [''], correctAnswer: '' }] },
     assignment: { instructions: '', dueDate: '', maxScore: 100 },
     pdf: { fileUrl: '' },
     text: { body: '' }
   });
 
-  useEffect(() => {
-    fetchCourseAndModules();
-  }, [courseId]);
-
-  const fetchCourseAndModules = async () => {
+  // ✅ Fetch course (with modules inside)
+  const fetchCourse = async () => {
     try {
       setLoading(true);
-      const [courseRes, modulesRes] = await Promise.all([
-        fetch(`/api/courses/${courseId}`),
-        fetch(`/api/courses/${courseId}/modules`)
-      ]);
+      const res = await fetch(`/api/courses/${courseId}`);
+      const data = await res.json();
 
-      const courseData = await courseRes.json();
-      const modulesData = await modulesRes.json();
-
-      if (courseData.success) setCourse(courseData.data);
-      if (modulesData.success) setModules(modulesData.data);
+      if (data.success) {
+        setCourse(data.data);
+      } else {
+        console.error("Error fetching course:", data.error);
+      }
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error("Error fetching course:", error);
     } finally {
       setLoading(false);
     }
   };
 
+  useEffect(() => {
+    if (courseId) fetchCourse();
+  }, [courseId]);
+
+  // ✅ Handlers
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value
-    }));
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleContentChange = (field, value) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: value
-    }));
+    setFormData(prev => ({ ...prev, [field]: value }));
   };
 
   const handleQuizQuestionChange = (index, field, value) => {
@@ -74,10 +66,9 @@ export default function CourseModules() {
 
   const handleQuizOptionChange = (qIndex, oIndex, value) => {
     const updatedQuestions = formData.quiz.questions.map((q, i) =>
-      i === qIndex ? {
-        ...q,
-        options: q.options.map((opt, j) => j === oIndex ? value : opt)
-      } : q
+      i === qIndex
+        ? { ...q, options: q.options.map((opt, j) => (j === oIndex ? value : opt)) }
+        : q
     );
     handleContentChange('quiz', { ...formData.quiz, questions: updatedQuestions });
   };
@@ -103,10 +94,7 @@ export default function CourseModules() {
 
   const removeQuizOption = (qIndex, oIndex) => {
     const updatedQuestions = formData.quiz.questions.map((q, i) =>
-      i === qIndex ? {
-        ...q,
-        options: q.options.filter((_, j) => j !== oIndex)
-      } : q
+      i === qIndex ? { ...q, options: q.options.filter((_, j) => j !== oIndex) } : q
     );
     handleContentChange('quiz', { ...formData.quiz, questions: updatedQuestions });
   };
@@ -126,21 +114,18 @@ export default function CourseModules() {
     setShowForm(false);
   };
 
- const handleSubmit = async (e) => {
+  // ✅ Save module (create or update)
+  const handleSubmit = async (e) => {
   e.preventDefault();
   try {
-    let url, method, payload;
-
-    // Build the payload correctly based on type
     const basePayload = {
-      courseId, // use courseId, not course
+      courseId,
       title: formData.title,
       description: formData.description,
       order: Number(formData.order) || 0,
-      type: formData.type
+      type: formData.type,
     };
 
-    // Only include the content that matches the type
     switch (formData.type) {
       case 'text':
         basePayload.text = { body: formData.text.body };
@@ -158,18 +143,15 @@ export default function CourseModules() {
       case 'quiz':
         basePayload.quiz = formData.quiz;
         break;
-      default:
-        break;
     }
 
-    payload = editingModule ? { ...basePayload, _id: editingModule._id } : basePayload;
-    url = editingModule
-      ? `/api/modules/${editingModule._id}`
-      : `/api/courses/${courseId}/modules`;
-    method = editingModule ? 'PUT' : 'POST';
+    const payload = editingModule
+      ? { ...basePayload, _id: editingModule._id }
+      : basePayload;
 
-    // ✅ Log the final payload
-    console.log("Sending payload to server:", payload);
+    // ✅ Use the correct API endpoint for both create & update
+    const url = `/api/courses/${courseId}/modules`;
+    const method = editingModule ? 'PUT' : 'POST';
 
     const response = await fetch(url, {
       method,
@@ -179,10 +161,8 @@ export default function CourseModules() {
 
     if (response.ok) {
       resetForm();
-      fetchCourseAndModules();
+      fetchCourse(); // reload course + modules
     } else {
-      console.log("Response not ok");
-      console.log(response);
       const error = await response.json();
       console.error("Error saving module:", error);
     }
@@ -191,6 +171,8 @@ export default function CourseModules() {
   }
 };
 
+
+  // ✅ Edit module
   const handleEdit = (module) => {
     setEditingModule(module);
     setFormData({
@@ -207,27 +189,28 @@ export default function CourseModules() {
   };
 
   const handleDelete = async (moduleId) => {
-    if (!confirm('Are you sure you want to delete this module?')) return;
-
+    if (!confirm("Are you sure you want to delete this module?")) return;
     try {
-      const response = await fetch(`/api/modules/${moduleId}`, {
-        method: 'DELETE'
-      });
+      const response = await fetch(
+        `/api/courses/${courseId}/modules`,
+        { method: "DELETE" }
+      );
 
       if (response.ok) {
-        fetchCourseAndModules();
+        fetchCourse(); // refresh modules
       } else {
         const error = await response.json();
-        console.error('Error deleting module:', error);
+        console.error("Error deleting module:", error);
       }
     } catch (error) {
-      console.error('Error deleting module:', error);
+      console.error("Error deleting module:", error);
     }
   };
 
-  if (loading) {
-    return <div className="text-center mt-10">Loading modules...</div>;
-  }
+  if (loading) return <div className="text-center mt-10">Loading modules...</div>;
+  if (!course) return <div className="text-center mt-10">Course not found</div>;
+
+  const modules = course.modules || [];
 
   return (
     <div className="max-w-6xl mx-auto p-6">
@@ -240,16 +223,14 @@ export default function CourseModules() {
           >
             ← Back to Course
           </button>
-          <h1 className="text-3xl font-bold">
-            {course?.title} - Modules
-          </h1>
+          <h1 className="text-3xl font-bold">{course.title} - Modules</h1>
           <p className="text-gray-600">Manage course modules and content</p>
         </div>
         <button
           onClick={() => setShowForm(!showForm)}
           className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
         >
-          {showForm ? 'Cancel' : 'Add Module'}
+          {showForm ? "Cancel" : "Add Module"}
         </button>
       </div>
 
@@ -257,7 +238,7 @@ export default function CourseModules() {
       {showForm && (
         <form onSubmit={handleSubmit} className="bg-white shadow-md rounded-xl p-6 mb-6 border">
           <h2 className="text-xl font-semibold mb-4">
-            {editingModule ? 'Edit Module' : 'Create New Module'}
+            {editingModule ? "Edit Module" : "Create New Module"}
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
@@ -298,41 +279,34 @@ export default function CourseModules() {
             className="border p-2 rounded w-full mb-4"
           />
 
-          {/* Content based on type */}
+          {/* Content fields */}
           {formData.type === 'text' && (
-            <div>
-              <h3 className="font-semibold mb-2">Text Content</h3>
-              <textarea
-                value={formData.text.body}
-                onChange={(e) => handleContentChange('text', { body: e.target.value })}
-                placeholder="Enter text content..."
-                className="border p-2 rounded w-full h-32"
-                required
-              />
-            </div>
+            <textarea
+              value={formData.text.body}
+              onChange={(e) => handleContentChange('text', { body: e.target.value })}
+              placeholder="Enter text content..."
+              className="border p-2 rounded w-full h-32"
+              required
+            />
           )}
 
           {formData.type === 'pdf' && (
-            <div>
-              <h3 className="font-semibold mb-2">PDF Content</h3>
-              <input
-                value={formData.pdf.fileUrl}
-                onChange={(e) => handleContentChange('pdf', { fileUrl: e.target.value })}
-                placeholder="PDF File URL"
-                className="border p-2 rounded w-full"
-                required
-              />
-            </div>
+            <input
+              value={formData.pdf.fileUrl}
+              onChange={(e) => handleContentChange('pdf', { fileUrl: e.target.value })}
+              placeholder="PDF File URL"
+              className="border p-2 rounded w-full"
+              required
+            />
           )}
 
           {formData.type === 'assignment' && (
             <div>
-              <h3 className="font-semibold mb-2">Assignment Details</h3>
               <textarea
                 value={formData.assignment.instructions}
-                onChange={(e) => handleContentChange('assignment', { 
-                  ...formData.assignment, 
-                  instructions: e.target.value 
+                onChange={(e) => handleContentChange('assignment', {
+                  ...formData.assignment,
+                  instructions: e.target.value
                 })}
                 placeholder="Assignment instructions..."
                 className="border p-2 rounded w-full h-24 mb-2"
@@ -342,18 +316,18 @@ export default function CourseModules() {
                 <input
                   type="date"
                   value={formData.assignment.dueDate}
-                  onChange={(e) => handleContentChange('assignment', { 
-                    ...formData.assignment, 
-                    dueDate: e.target.value 
+                  onChange={(e) => handleContentChange('assignment', {
+                    ...formData.assignment,
+                    dueDate: e.target.value
                   })}
                   className="border p-2 rounded"
                 />
                 <input
                   type="number"
                   value={formData.assignment.maxScore}
-                  onChange={(e) => handleContentChange('assignment', { 
-                    ...formData.assignment, 
-                    maxScore: parseInt(e.target.value) 
+                  onChange={(e) => handleContentChange('assignment', {
+                    ...formData.assignment,
+                    maxScore: parseInt(e.target.value)
                   })}
                   placeholder="Max Score"
                   className="border p-2 rounded"
@@ -364,20 +338,8 @@ export default function CourseModules() {
 
           {formData.type === 'quiz' && (
             <div>
-              <h3 className="font-semibold mb-2">Quiz Questions</h3>
               {formData.quiz.questions.map((question, qIndex) => (
                 <div key={qIndex} className="border p-4 rounded mb-4">
-                  <div className="flex justify-between items-center mb-2">
-                    <h4 className="font-medium">Question {qIndex + 1}</h4>
-                    <button
-                      type="button"
-                      onClick={() => removeQuizQuestion(qIndex)}
-                      className="text-red-600 hover:text-red-800"
-                    >
-                      Remove
-                    </button>
-                  </div>
-                  
                   <input
                     value={question.question}
                     onChange={(e) => handleQuizQuestionChange(qIndex, 'question', e.target.value)}
@@ -385,52 +347,52 @@ export default function CourseModules() {
                     className="border p-2 rounded w-full mb-2"
                     required
                   />
-
-                  <div className="mb-2">
-                    <label className="block font-medium mb-1">Options:</label>
-                    {question.options.map((option, oIndex) => (
-                      <div key={oIndex} className="flex items-center mb-1">
-                        <input
-                          value={option}
-                          onChange={(e) => handleQuizOptionChange(qIndex, oIndex, e.target.value)}
-                          placeholder={`Option ${oIndex + 1}`}
-                          className="border p-2 rounded flex-1 mr-2"
-                          required
-                        />
-                        <button
-                          type="button"
-                          onClick={() => removeQuizOption(qIndex, oIndex)}
-                          className="text-red-600 hover:text-red-800"
-                        >
-                          ×
-                        </button>
-                      </div>
-                    ))}
-                    <button
-                      type="button"
-                      onClick={() => addQuizOption(qIndex)}
-                      className="text-blue-600 hover:text-blue-800 text-sm"
-                    >
-                      + Add Option
-                    </button>
-                  </div>
+                  {question.options.map((option, oIndex) => (
+                    <div key={oIndex} className="flex items-center mb-1">
+                      <input
+                        value={option}
+                        onChange={(e) => handleQuizOptionChange(qIndex, oIndex, e.target.value)}
+                        placeholder={`Option ${oIndex + 1}`}
+                        className="border p-2 rounded flex-1 mr-2"
+                        required
+                      />
+                      <button
+                        type="button"
+                        onClick={() => removeQuizOption(qIndex, oIndex)}
+                        className="text-red-600 hover:text-red-800"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ))}
+                  <button
+                    type="button"
+                    onClick={() => addQuizOption(qIndex)}
+                    className="text-blue-600 hover:text-blue-800 text-sm"
+                  >
+                    + Add Option
+                  </button>
 
                   <select
                     value={question.correctAnswer}
                     onChange={(e) => handleQuizQuestionChange(qIndex, 'correctAnswer', e.target.value)}
-                    className="border p-2 rounded w-full"
+                    className="border p-2 rounded w-full mt-2"
                     required
                   >
                     <option value="">Select correct answer</option>
                     {question.options.map((option, oIndex) => (
-                      <option key={oIndex} value={option}>
-                        {option || `Option ${oIndex + 1}`}
-                      </option>
+                      <option key={oIndex} value={option}>{option || `Option ${oIndex + 1}`}</option>
                     ))}
                   </select>
+                  <button
+                    type="button"
+                    onClick={() => removeQuizQuestion(qIndex)}
+                    className="text-red-600 hover:text-red-800 mt-2"
+                  >
+                    Remove Question
+                  </button>
                 </div>
               ))}
-              
               <button
                 type="button"
                 onClick={addQuizQuestion}
@@ -446,7 +408,7 @@ export default function CourseModules() {
               type="submit"
               className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
             >
-              {editingModule ? 'Update Module' : 'Create Module'}
+              {editingModule ? "Update Module" : "Create Module"}
             </button>
             <button
               type="button"
@@ -466,17 +428,33 @@ export default function CourseModules() {
             No modules created yet. Click "Add Module" to get started.
           </div>
         ) : (
-        <div className="mb-6">
-          <h3 className="font-semibold mb-2">Modules ({course.modules?.length || 0})</h3>
-          <div className="space-y-2">
-            {course.modules?.map((module) => (
-              <div key={module._id} className="border p-3 rounded">
-                <h4 className="font-medium">{module.title}</h4>
-                <p className="text-sm text-gray-600">{module.type}</p>
-              </div>
-            ))}
+          <div className="mb-6">
+            <h3 className="font-semibold mb-2">Modules ({modules.length})</h3>
+            <div className="space-y-2">
+              {modules.map((module) => (
+                <div key={module._id} className="border p-3 rounded flex justify-between">
+                  <div>
+                    <h4 className="font-medium">{module.title}</h4>
+                    <p className="text-sm text-gray-600">{module.type}</p>
+                  </div>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => handleEdit(module)}
+                      className="text-blue-600 hover:text-blue-800"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(module._id)}
+                      className="text-red-600 hover:text-red-800"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
         )}
       </div>
     </div>

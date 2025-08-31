@@ -18,6 +18,7 @@ export default function CourseDashboard() {
         const data = await res.json();
         if (data.success) {
           setCourse(data.data);
+          console.log('Fetched course data:', data.data);
         } else {
           console.error('Error fetching course:', data.error);
         }
