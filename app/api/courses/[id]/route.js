@@ -36,10 +36,18 @@ export async function PUT(request, context) {
     const { id } = await context.params; // ✅ await params
     const body = await request.json();
 
-    const course = await Course.findByIdAndUpdate(id, body, {
-      new: true,
-      runValidators: true
-    }).populate('modules');
+    const course = await Course.findById(courseId)
+      .populate({
+        path: "modules",
+        options: { sort: { order: 1 } }   // ✅ sorted modules
+      })
+      .populate({
+        path: "enrollments",
+        populate: {
+          path: "user",                   // ✅ also populate the student info
+          select: "name email"            // only pull what you need
+        }
+      });
 
     if (!course) {
       return NextResponse.json(

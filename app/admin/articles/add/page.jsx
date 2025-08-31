@@ -57,7 +57,7 @@ export default function AddArticle() {
       if (response.ok) {
         setSuccess('Article added successfully! Redirecting...');
         setTimeout(() => {
-          router.push('/pages/dashboard/articles');
+          router.push('/admin/articles');
         }, 2000);
       } else {
         setError(result.error || 'Failed to add article');
@@ -72,25 +72,25 @@ export default function AddArticle() {
 
   const handleCancel = () => {
     if (confirm('Are you sure you want to cancel? All changes will be lost.')) {
-      router.push('/pages/dashboard/articles');
+      router.push('/admin/articles');
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">      
+    <div className="min-h-screen bg-background">      
       <div className="pt-[200px] max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Page Header */}
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center">
             <button
-              onClick={() => router.push('/pages/dashboard/articles')}
+              onClick={() => router.push('/admin/articles')}
               className="mr-4 p-2 text-gray-600 hover:text-gray-900 transition duration-200"
             >
               <ArrowLeft className="w-6 h-6" />
             </button>
             <div>
               <h1 className="text-3xl font-bold text-gray-900 flex items-center">
-                <FileText className="w-8 h-8 mr-3 text-blue-600" />
+                <FileText className="w-8 h-8 mr-3 text-primary" />
                 Add New Article
               </h1>
               <p className="text-gray-600">Create a new article for your collection</p>
@@ -234,7 +234,7 @@ export default function AddArticle() {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-200 font-medium disabled:bg-blue-400 disabled:cursor-not-allowed flex items-center"
+                  className="px-6 py-2 bg-primary text-white rounded-md hover:bg-secondary hover:text-primary border-primary border transition duration-200 font-medium disabled:bg-blue-400 disabled:cursor-not-allowed flex items-center"
                 >
                   <Save className="w-4 h-4 mr-2" />
                   {isLoading ? 'Adding Article...' : 'Add Article'}

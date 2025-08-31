@@ -307,7 +307,7 @@ export default function AboutPage() {
               Browse Courses
             </motion.a>
             <motion.a
-              href="/contact"
+              href="/register"
               className="rounded-xl bg-white px-4 py-2 text-sm font-semibold text-primary"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}

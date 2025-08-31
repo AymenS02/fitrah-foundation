@@ -19,10 +19,10 @@ const Footer = () => {
           <div>
             <h4 className="text-lg font-semibold text-secondary mb-2">Quick Links</h4>
             <div className="space-y-1">
-              <a href="#" className="block text-sm text-accent hover:text-amber-300 transition-colors">Courses</a>
-              <a href="#" className="block text-sm text-accent hover:text-amber-300 transition-colors">Instructors</a>
-              <a href="#" className="block text-sm text-accent hover:text-amber-300 transition-colors">About</a>
-              <a href="#" className="block text-sm text-accent hover:text-amber-300 transition-colors">Contact</a>
+              <a href="/courses" className="block text-sm text-accent hover:text-amber-300 transition-colors">Courses</a>
+              <a href="/" className="block text-sm text-accent hover:text-amber-300 transition-colors">Instructors</a>
+              <a href="/about" className="block text-sm text-accent hover:text-amber-300 transition-colors">About</a>
+              <a href="/contact" className="block text-sm text-accent hover:text-amber-300 transition-colors">Contact</a>
             </div>
           </div>
 

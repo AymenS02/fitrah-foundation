@@ -16,6 +16,7 @@ export default function CourseDashboard() {
       try {
         const res = await fetch(`/api/courses/${courseId}`);
         const data = await res.json();
+        console.log('API response:', data);
         if (data.success) {
           setCourse(data.data);
           console.log('Fetched course data:', data.data);

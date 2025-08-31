@@ -1,8 +1,8 @@
 import "./globals.css";
 import { Palanquin_Dark, Orienta } from "next/font/google";
-import { SessionProvider } from 'next-auth/react';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { AuthProvider } from "../components/authContext"; // ✅ make sure path is correct
 
 // Fonts
 const palanquinDark = Palanquin_Dark({
@@ -28,9 +28,12 @@ export default function RootLayout({ children }) {
       className={`${palanquinDark.variable} ${orienta.variable}`}
     >
       <body className="font-orienta">
-        <Header />
-        <main>{children}</main>
-        <Footer />
+        {/* ✅ Wrap the app in AuthProvider */}
+        <AuthProvider>
+          <Header />
+          <main>{children}</main>
+          <Footer />
+        </AuthProvider>
       </body>
     </html>
   );

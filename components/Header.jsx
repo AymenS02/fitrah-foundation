@@ -1,18 +1,12 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useAuth } from "../components/authContext";
 
 const Header = () => {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) setUser(JSON.parse(storedUser));
-  }, []);
-
-  const isLoggedIn = !!user;
+  const { user } = useAuth();
 
   return (
     <header className="bg-background px-6 py-4 shadow-2xl">
@@ -42,24 +36,25 @@ const Header = () => {
           <Link href="/articles" className="text-primary hover:scale-105 transition-transform font-medium">
             Articles
           </Link>
-          <Link href="/courses" className="text-primary hover:scale-105 transition-transform font-medium">
-            Courses
-          </Link>
+          {!user ? (
+            <Link href="/courses" className="text-primary hover:scale-105 transition-transform font-medium">
+              Courses
+            </Link>
+          ) : null}
+
           <Link href="/contact" className="text-primary hover:scale-105 transition-transform font-medium">
             Contact Us
           </Link>
 
-          {isLoggedIn ? (
+          {user ? (
             <>
-              {/* Courses button */}
+              {/* Account button */}
               <Link
                 href="/courses"
                 className="bg-accent text-secondary px-4 py-2 rounded-4xl font-medium border-2 border-secondary hover:scale-105 transition-transform cursor-pointer"
               >
                 Courses
               </Link>
-
-              {/* Account button */}
               <Link
                 href="/account"
                 className="bg-accent text-secondary px-4 py-2 rounded-4xl font-medium border-2 border-secondary hover:scale-105 transition-transform cursor-pointer"
