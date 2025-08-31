@@ -9,7 +9,7 @@ const Header = () => {
   const { user } = useAuth();
 
   return (
-    <header className="bg-background px-6 py-4 shadow-2xl">
+    <header className="max-md:hidden bg-background px-6 py-4 shadow-2xl">
       <div className="max-w-[90%] mx-auto flex items-center justify-between">
 
         {/* Logo */}
