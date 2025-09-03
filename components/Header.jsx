@@ -4,6 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useAuth } from "../components/authContext";
+import DarkModeToggle from '@/darkMode';
 
 const Header = () => {
   const { user } = useAuth();
@@ -80,6 +81,7 @@ const Header = () => {
               Sign Up
             </Link>
           )}
+          <DarkModeToggle />
         </nav>
       </div>
     </header>

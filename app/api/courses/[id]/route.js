@@ -6,7 +6,7 @@ import CourseModule from '../../../../lib/models/moduleSchema';
 export async function GET(request, context) {
   try {
     await connectDB();
-    const { id } = await context.params; // ✅ await params
+    const { id } = await context.params;
 
     const course = await Course.findById(id)
       .populate({
@@ -21,11 +21,14 @@ export async function GET(request, context) {
       );
     }
 
-    return NextResponse.json({ success: true, data: course });
+    // Return the course data directly (not wrapped in success/data)
+    // This matches what your frontend expects
+    return NextResponse.json(course);
   } catch (error) {
+    console.error('Error fetching course:', error);
     return NextResponse.json(
       { success: false, error: error.message },
-      { status: 400 }
+      { status: 500 }
     );
   }
 }
@@ -33,34 +36,40 @@ export async function GET(request, context) {
 export async function PUT(request, context) {
   try {
     await connectDB();
-    const { id } = await context.params; // ✅ await params
+    const { id } = await context.params;
     const body = await request.json();
 
-    const course = await Course.findById(courseId)
-      .populate({
-        path: "modules",
-        options: { sort: { order: 1 } }   // ✅ sorted modules
-      })
-      .populate({
-        path: "enrollments",
-        populate: {
-          path: "user",                   // ✅ also populate the student info
-          select: "name email"            // only pull what you need
-        }
-      });
+    // Fix: Use 'id' instead of undefined 'courseId'
+    const updatedCourse = await Course.findByIdAndUpdate(
+      id,
+      body,
+      { new: true, runValidators: true }
+    )
+    .populate({
+      path: "modules",
+      options: { sort: { order: 1 } }
+    })
+    .populate({
+      path: "enrollments",
+      populate: {
+        path: "user",
+        select: "name email firstName lastName"
+      }
+    });
 
-    if (!course) {
+    if (!updatedCourse) {
       return NextResponse.json(
         { success: false, error: 'Course not found' },
         { status: 404 }
       );
     }
 
-    return NextResponse.json({ success: true, data: course });
+    return NextResponse.json({ success: true, data: updatedCourse });
   } catch (error) {
+    console.error('Error updating course:', error);
     return NextResponse.json(
       { success: false, error: error.message },
-      { status: 400 }
+      { status: 500 }
     );
   }
 }
@@ -68,7 +77,7 @@ export async function PUT(request, context) {
 export async function DELETE(request, context) {
   try {
     await connectDB();
-    const { id } = await context.params; // ✅ await params
+    const { id } = await context.params;
 
     const course = await Course.findById(id);
     if (!course) {
@@ -78,17 +87,21 @@ export async function DELETE(request, context) {
       );
     }
 
-    // This will trigger the pre-remove middleware to delete associated modules
-    await course.deleteOne();
+    // Delete associated modules first (if not handled by middleware)
+    await CourseModule.deleteMany({ courseId: id });
+
+    // Delete the course
+    await Course.findByIdAndDelete(id);
 
     return NextResponse.json({ 
       success: true, 
       message: 'Course and associated modules deleted successfully' 
     });
   } catch (error) {
+    console.error('Error deleting course:', error);
     return NextResponse.json(
       { success: false, error: error.message },
-      { status: 400 }
+      { status: 500 }
     );
   }
 }

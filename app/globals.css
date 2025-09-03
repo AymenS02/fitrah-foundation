@@ -1,41 +1,130 @@
 @import "tailwindcss";
 
 @theme {
-  /* Brand Colors */
-  --color-primary: #1E2A66;   /* Dark blue: strong, trustworthy */
-  --color-secondary: #FFFADE; /* Light yellow: warm highlight */
-  --color-accent:  #8E8CB8;   /* Purple: accent & buttons */
-  --color-background: #F9F8FF; /* Soft grayish background */
+  /* Brand Colors (Light mode defaults) */
+  --color-primary: #1E2A66;       /* Dark blue */
+  --color-primary-hover: #15204d; /* Slightly darker */
+  --color-secondary: #FFFADE;     /* Light yellow */
+  --color-secondary-hover: #f5efc9;
+  --color-accent: #8E8CB8;        /* Purple */
+  --color-accent-hover: #7a77a5;
+  --color-background: #F9F8FF;    /* Soft gray */
+  --color-background-hover: #eceaf5;
 
   /* UI Assignments */
-  --bg: var(--color-background);        /* Page background */
-  --fg: var(--color-primary);           /* Primary text color */
+  --bg: var(--color-background);
+  --bg-hover: var(--color-background-hover);
 
-  --menu-bg: var(--color-primary);      /* Menu background (dark blue) */
-  --menu-fg: var(--color-secondary);    /* Menu text (light yellow for contrast) */
-  --menu-fg-secondary: var(--color-background); /* Secondary muted text */
+  --fg: var(--color-primary);
+  --fg-hover: var(--color-primary-hover);
 
-  --button-bg: var(--color-accent);     /* Buttons default (purple) */
-  --button-fg: white;                   /* Button text (on purple) */
-  --button-hover-bg: #7a77a5;           /* Darker purple hover */
+  --menu-bg: var(--color-primary);
+  --menu-bg-hover: var(--color-primary-hover);
+  --menu-fg: var(--color-secondary);
+  --menu-fg-hover: var(--color-secondary-hover);
+  --menu-fg-secondary: var(--color-background);
 
-  --link-fg: var(--color-primary);      /* Links default (blue) */
-  --link-hover-fg: var(--color-accent); /* Links hover (purple) */
+  --button-bg: var(--color-accent);
+  --button-bg-hover: var(--color-accent-hover);
+  --button-fg: white;
 
-  --card-bg: white;                     /* Card / section background */
-  --card-border: rgba(30, 42, 102, 0.1); /* Soft border using primary */
+  --link-fg: var(--color-primary);
+  --link-hover-fg: var(--color-accent);
 
-  --hamburger-icon-border: rgba(255, 255, 255, 0.3); /* Subtle white on blue */
+  --card-bg: white;
+  --card-bg-hover: var(--color-background-hover);
+  --card-border: rgba(30, 42, 102, 0.1);
+
+  --hamburger-icon-border: rgba(255, 255, 255, 0.3);
+  --hamburger-icon-border-hover: rgba(255, 255, 255, 0.5);
 }
 
+/* Dark mode overrides */
+.dark {
+  --color-primary: #E0E5FF;
+  --color-primary-hover: #c9d1ff;
+  --color-secondary: #333333;
+  --color-secondary-hover: #4d4d4d;
+  --color-accent: #B3A4E0;
+  --color-accent-hover: #9c8ecf;
+  --color-background: #0E0F1A;
+  --color-background-hover: #1a1c2e;
 
+  --bg: var(--color-background);
+  --bg-hover: var(--color-background-hover);
+
+  --fg: var(--color-primary);
+  --fg-hover: var(--color-primary-hover);
+
+  --menu-bg: var(--color-background);
+  --menu-bg-hover: var(--color-background-hover);
+  --menu-fg: var(--color-primary);
+  --menu-fg-hover: var(--color-primary-hover);
+  --menu-fg-secondary: #888;
+
+  --button-bg: var(--color-accent);
+  --button-bg-hover: var(--color-accent-hover);
+  --button-fg: #fff;
+
+  --link-fg: var(--color-accent);
+  --link-hover-fg: var(--color-primary);
+
+  --card-bg: #1A1C2E;
+  --card-bg-hover: #25283d;
+  --card-border: rgba(255, 255, 255, 0.1);
+
+  --hamburger-icon-border: rgba(255, 255, 255, 0.3);
+  --hamburger-icon-border-hover: rgba(255, 255, 255, 0.5);
+}
+
+/* Base body and headings */
 body {
   background: var(--bg);
   color: var(--fg);
-  font-family: var(--font-orienta); /* Orienta for all body text */
+  font-family: var(--font-orienta);
 }
 
-/* Headings automatically use Palanquin Dark */
+/* Headings */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-palanquin-dark);
+}
+
+/* Buttons */
+button {
+  background: var(--button-bg);
+  color: var(--button-fg);
+  transition: background 0.2s ease;
+}
+button:hover {
+  background: var(--button-bg-hover);
+}
+
+/* Cards */
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  transition: background 0.2s ease;
+}
+.card:hover {
+  background: var(--card-bg-hover);
+}
+
+/* Menu items */
+.menu-item {
+  background: var(--menu-bg);
+  color: var(--menu-fg);
+  transition: all 0.2s ease;
+}
+.menu-item:hover {
+  background: var(--menu-bg-hover);
+  color: var(--menu-fg-hover);
+}
+
+/* Hamburger icon */
+.hamburger {
+  border-color: var(--hamburger-icon-border);
+  transition: border-color 0.2s ease;
+}
+.hamburger:hover {
+  border-color: var(--hamburger-icon-border-hover);
 }
