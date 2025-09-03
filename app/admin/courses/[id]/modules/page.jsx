@@ -30,8 +30,11 @@ export default function CourseModules() {
     try {
       setLoading(true);
       const res = await fetch(`/api/courses/${courseId}`);
+
       if (!res.ok) throw new Error("Failed to fetch course");
+
       const data = await res.json();
+      
       setCourse(data); // API returns course object directly
     } catch (error) {
       console.error("Error fetching course:", error);
@@ -60,6 +63,49 @@ export default function CourseModules() {
     setShowForm(false);
   };
 
+  const handleQuizQuestionChange = (index, field, value) => {
+    const updatedQuestions = formData.quiz.questions.map((q, i) =>
+      i === index ? { ...q, [field]: value } : q
+    );
+    handleContentChange('quiz', { ...formData.quiz, questions: updatedQuestions });
+  };
+
+  const handleQuizOptionChange = (qIndex, oIndex, value) => {
+    const updatedQuestions = formData.quiz.questions.map((q, i) =>
+      i === qIndex
+        ? { ...q, options: q.options.map((opt, j) => (j === oIndex ? value : opt)) }
+        : q
+    );
+    handleContentChange('quiz', { ...formData.quiz, questions: updatedQuestions });
+  };
+
+  const addQuizQuestion = () => {
+    handleContentChange('quiz', {
+      ...formData.quiz,
+      questions: [...formData.quiz.questions, { question: '', options: [''], correctAnswer: '' }]
+    });
+  };
+
+  const removeQuizQuestion = (index) => {
+    const updatedQuestions = formData.quiz.questions.filter((_, i) => i !== index);
+    handleContentChange('quiz', { ...formData.quiz, questions: updatedQuestions });
+  };
+
+  const addQuizOption = (qIndex) => {
+    const updatedQuestions = formData.quiz.questions.map((q, i) =>
+      i === qIndex ? { ...q, options: [...q.options, ''] } : q
+    );
+    handleContentChange('quiz', { ...formData.quiz, questions: updatedQuestions });
+  };
+
+  const removeQuizOption = (qIndex, oIndex) => {
+    const updatedQuestions = formData.quiz.questions.map((q, i) =>
+      i === qIndex ? { ...q, options: q.options.filter((_, j) => j !== oIndex) } : q
+    );
+    handleContentChange('quiz', { ...formData.quiz, questions: updatedQuestions });
+  };
+  
+  
   // Submit module (create or update)
   const handleSubmit = async (e) => {
     e.preventDefault();
