@@ -34,9 +34,10 @@ export default function CoursesPage() {
         setCourses(coursesData);
 
         // Fetch user enrollments if logged in
-        if (user?._id) {
-          const enrollmentsRes = await fetch(`/api/enrollments?studentId=${user._id}`);
+        if (user?.id) {
+          const enrollmentsRes = await fetch(`/api/enrollments?studentId=${user.id}`);
           const enrollmentsData = await enrollmentsRes.json();
+          console.log("Fetched enrollments:", enrollmentsData); // <- Add this
           if (enrollmentsRes.ok) {
             setEnrollments(enrollmentsData);
           }
@@ -48,17 +49,18 @@ export default function CoursesPage() {
       }
     };
     fetchData();
+
   }, [user]);
 
   const CATEGORIES = ["All", ...Array.from(new Set(courses.map(c => c.category).filter(Boolean)))];
   const LEVELS = ["All", ...Array.from(new Set(courses.map(c => c.difficultyLevel).filter(Boolean)))];
 
   const { enrolledCourses, availableCourses } = useMemo(() => {
-    const enrolledCourseIds = new Set(enrollments.map(e => e.courseId));
-    
+    const enrolledCourseIds = new Set(enrollments.map(e => e.course._id));
+
     const enrolled = courses.filter(c => enrolledCourseIds.has(c._id));
     const available = courses.filter(c => !enrolledCourseIds.has(c._id));
-    
+      
     return { enrolledCourses: enrolled, availableCourses: available };
   }, [courses, enrollments]);
 

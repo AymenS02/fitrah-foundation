@@ -1,4 +1,3 @@
-// app/dashboard/courses/[id]/page.js
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -7,41 +6,35 @@ import { useParams, useRouter } from 'next/navigation';
 export default function CourseDashboard() {
   const [course, setCourse] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const params = useParams();
   const router = useRouter();
   const courseId = params.id;
 
   useEffect(() => {
+    if (!courseId) return;
+
     const fetchCourse = async () => {
       try {
         const res = await fetch(`/api/courses/${courseId}`);
+        if (!res.ok) throw new Error("Failed to fetch course");
         const data = await res.json();
-        console.log('API response:', data);
-        if (data.success) {
-          setCourse(data.data);
-          console.log('Fetched course data:', data.data);
-        } else {
-          console.error('Error fetching course:', data.error);
-        }
-      } catch (error) {
-        console.error('Error fetching course:', error);
+        console.log('Fetched course:', data);
+        setCourse(data); // Use data directly if API returns the course object
+      } catch (err) {
+        console.error(err);
+        setError(err.message || "An error occurred");
       } finally {
         setLoading(false);
       }
     };
 
-    if (courseId) {
-      fetchCourse();
-    }
+    fetchCourse();
   }, [courseId]);
 
-  if (loading) {
-    return <div className="text-center mt-10">Loading course...</div>;
-  }
-
-  if (!course) {
-    return <div className="text-center mt-10">Course not found</div>;
-  }
+  if (loading) return <div className="text-center mt-10">Loading course...</div>;
+  if (error) return <div className="text-center mt-10 text-red-500">{error}</div>;
+  if (!course) return <div className="text-center mt-10">Course not found</div>;
 
   return (
     <div className="max-w-4xl mx-auto p-6">
@@ -62,17 +55,18 @@ export default function CourseDashboard() {
             <p>Instructor: {course.instructor}</p>
             <p>Code: {course.code}</p>
             <p>Level: {course.difficultyLevel}</p>
-            <p>Price: ${course.price}</p>
+            <p>Price: {course.price || "Free"}</p>
           </div>
           <div>
             <h3 className="font-semibold">Schedule</h3>
-            <p>Duration: {course.durationWeeks} weeks</p>
-            <p>Start: {new Date(course.startDate).toLocaleDateString()}</p>
-            <p>End: {new Date(course.endDate).toLocaleDateString()}</p>
-            <p>Max Students: {course.maxStudents}</p>
+            <p>Duration: {course.durationWeeks || "N/A"} weeks</p>
+            <p>Start: {course.startDate ? new Date(course.startDate).toLocaleDateString() : "N/A"}</p>
+            <p>End: {course.endDate ? new Date(course.endDate).toLocaleDateString() : "N/A"}</p>
+            <p>Max Students: {course.maxStudents || "Unlimited"}</p>
           </div>
         </div>
 
+        {/* Modules */}
         <div className="mb-6">
           <h3 className="font-semibold mb-2">Modules ({course.modules?.length || 0})</h3>
           <div className="space-y-2">
