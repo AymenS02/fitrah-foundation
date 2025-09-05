@@ -183,20 +183,26 @@ export default function CourseModules() {
   // Delete module
   const handleDelete = async (moduleId) => {
     if (!confirm("Are you sure you want to delete this module?")) return;
+
     try {
-      const response = await fetch(`/api/courses/${courseId}/modules/${moduleId}`, {
+      const res = await fetch(`/api/courses/${courseId}/modules`, {
         method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ _id: moduleId }),
       });
-      if (response.ok) {
-        fetchCourse();
-      } else {
-        const err = await response.json();
-        console.error("Error deleting module:", err);
-      }
+
+      if (!res.ok) throw new Error("Failed to delete module");
+
+      const data = await res.json();
+      console.log("Deleted:", data);
+
+      // Refresh course like fetchCourse
+      fetchCourse();
     } catch (error) {
       console.error("Error deleting module:", error);
     }
   };
+
 
   if (loading) return <div className="text-center mt-10">Loading modules...</div>;
   if (!course) return <div className="text-center mt-10">Course not found</div>;
@@ -210,7 +216,7 @@ export default function CourseModules() {
         <div>
           <button
             onClick={() => router.push(`/admin/courses/${courseId}`)}
-            className="text-blue-600 hover:text-blue-800 mb-2"
+            className="text-blue-600 hover:text-blue-800 mb-2 p-2 rounded-lg"
           >
             ← Back to Course
           </button>

@@ -80,17 +80,20 @@ export async function PUT(request, context) {
 export async function DELETE(request, context) {
   try {
     await connectDB();
+
     const params = await context.params;
-    const id = params.id; // module ID
+    const { id: courseId } = params;
+    const { _id: moduleId } = await request.json();
 
-    const body = await request.json();
-
-    if (!body._id) {
-      return NextResponse.json({ success: false, error: "_id is required" }, { status: 400 });
+    if (!moduleId) {
+      return NextResponse.json(
+        { success: false, error: "_id is required" },
+        { status: 400 }
+      );
     }
 
     // Delete the module
-    const deletedModule = await Module.findByIdAndDelete(id);
+    const deletedModule = await Module.findByIdAndDelete(moduleId);
 
     if (!deletedModule) {
       return NextResponse.json(
@@ -104,6 +107,10 @@ export async function DELETE(request, context) {
 
     return NextResponse.json({ success: true, data: deletedModule });
   } catch (error) {
-    return NextResponse.json({ success: false, error: error.message }, { status: 400 });
+    return NextResponse.json(
+      { success: false, error: error.message },
+      { status: 400 }
+    );
   }
 }
+

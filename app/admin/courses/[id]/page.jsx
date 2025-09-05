@@ -39,8 +39,8 @@ export default function CourseDashboard() {
   return (
     <div className="max-w-4xl mx-auto p-6">
       <button
-        onClick={() => router.back()}
-        className="mb-4 text-blue-600 hover:text-blue-800"
+        onClick={() => router.push(`/admin/courses`)}
+        className="mb-4 text-blue-600 hover:text-blue-800 p-2 rounded-lg"
       >
         ← Back to Courses
       </button>
