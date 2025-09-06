@@ -32,6 +32,32 @@ export default function CourseDashboard() {
     fetchCourse();
   }, [courseId]);
 
+  const handleDeleteCourse = async (id) => {
+    if (!confirm("Are you sure you want to delete this course? This action cannot be undone.")) {
+      return;
+    }
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch(`/api/courses/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (!res.ok) {
+        throw new Error('Failed to delete course');
+      }
+
+      // Redirect or update UI after successful deletion
+      router.push(`/admin/courses`);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   if (loading) return <div className="text-center mt-10">Loading course...</div>;
   if (error) return <div className="text-center mt-10 text-red-500">{error}</div>;
   if (!course) return <div className="text-center mt-10">Course not found</div>;
@@ -45,7 +71,7 @@ export default function CourseDashboard() {
         ← Back to Courses
       </button>
 
-      <div className="bg-white shadow-md rounded-xl p-6">
+      <div className="bg-secondary shadow-md rounded-xl p-6">
         <h1 className="text-3xl font-bold mb-4">{course.title}</h1>
         <p className="text-gray-600 mb-4">{course.description}</p>
         
@@ -87,10 +113,22 @@ export default function CourseDashboard() {
             Manage Modules
           </button>
           <button
-            onClick={() => router.push(`/dashboard/courses/${courseId}/edit`)}
+            onClick={() => router.push(`/admin/courses/${courseId}/edit`)}
             className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700"
           >
             Edit Course
+          </button>
+          <button
+            onClick={() => router.push(`/admin/courses/${courseId}/enrollments`)}
+            className="bg-green-600 text-white px-3 py-1.5 rounded text-sm hover:bg-green-700 transition duration-300"
+          >
+            Manage Students
+          </button>
+          <button
+            onClick={() => handleDeleteCourse(course._id)}
+            className="text-white px-3 py-1.5 rounded text-sm"
+          >
+            Delete Course
           </button>
         </div>
       </div>

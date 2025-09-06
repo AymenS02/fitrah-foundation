@@ -1,3 +1,5 @@
+// app\admin\students\page.jsx
+
 'use client';
 
 import { useState, useEffect } from 'react';

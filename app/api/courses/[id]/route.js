@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { connectDB } from '../../../../lib/config/db';
 import Course from "../../../../lib/models/courseSchema";
 import CourseModule from '../../../../lib/models/moduleSchema';
+import Enrollment from "../../../../lib/models/enrollmentSchema";
+import User from '../../../../lib/models/userSchema';
 
 export async function GET(request, context) {
   try {
@@ -10,8 +12,15 @@ export async function GET(request, context) {
 
     const course = await Course.findById(id)
       .populate({
-        path: 'modules',
+        path: "modules",
         options: { sort: { order: 1 } }
+      })
+      .populate({
+        path: "enrollments",
+        populate: {
+          path: "user",
+          select: "firstName lastName email" // only grab what you need
+        }
       });
 
     if (!course) {
