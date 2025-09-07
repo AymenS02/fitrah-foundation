@@ -111,11 +111,11 @@ export default function CourseDetailPage() {
     <main className="bg-background text-foreground">
       {/* Top Header */}
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-primary/5" />
+        <div className="absolute inset-0" />
         <div className="container mx-auto max-w-5xl px-4 py-10 md:py-16">
           <Link
             href="/courses"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-background hover:underline bg-accent p-2 rounded-lg"
           >
             <ChevronLeft className="h-4 w-4" />
             Back to Courses

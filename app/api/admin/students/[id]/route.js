@@ -13,9 +13,9 @@ export async function GET(req, context) {
       return NextResponse.json({ message: 'Access denied. Admin only.' }, { status: 403 });
     }
 
-    // Await params from context
-    const { params } = context;
-    const studentId = await params.id;
+    // ✅ Await params
+    const { id } = await context.params;
+    const studentId = id;
 
     const student = await User.findById(studentId)
       .select('-password')
@@ -47,8 +47,9 @@ export async function PUT(req, context) {
       return NextResponse.json({ message: 'Access denied. Admin only.' }, { status: 403 });
     }
 
-    const { params } = context;
-    const studentId = await params.id;
+    // ✅ Await params
+    const { id } = await context.params;
+    const studentId = id;
 
     const updates = await req.json();
 

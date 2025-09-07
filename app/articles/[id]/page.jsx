@@ -111,7 +111,7 @@ const ArticleDetailPage = ({ params }) => {
         <div className="mb-8">
           <button
             onClick={() => router.back()}
-            className="flex items-center gap-2 text-primary hover:text-primary-dark font-medium transition-colors duration-300"
+            className="flex items-center gap-2 p-2 rounded-lg text-primary hover:text-primary-dark font-medium transition-colors duration-300"
           >
             <ArrowLeft className="w-5 h-5" />
             <span>Back to Articles</span>

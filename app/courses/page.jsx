@@ -102,24 +102,25 @@ export default function CoursesPage() {
       {/* Tab Navigation */}
       {user && (
         <section className="container mx-auto max-w-6xl px-4 mb-6">
-          <div className="flex space-x-1 rounded-xl bg-muted p-1">
+          <div className="flex space-x-1 rounded-xl bg-muted p-1 gap-2">
             <button
               onClick={() => setActiveTab("available")}
-              className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
+              className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200 ${
                 activeTab === "available"
-                  ? "bg-white text-primary shadow-sm"
-                  : "text-muted-foreground hover:text-primary"
+                  ? "border-2 border-accent text-primary shadow-md scale-105"
+                  : "border-2 border-transparent hover:border-accent/50"
               }`}
             >
               <Plus className="h-4 w-4" />
               Available Courses ({availableCourses.length})
             </button>
+
             <button
               onClick={() => setActiveTab("enrolled")}
-              className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
+              className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200 ${
                 activeTab === "enrolled"
-                  ? "bg-white text-primary shadow-sm"
-                  : "text-muted-foreground hover:text-primary"
+                  ? "border-2 border-accent text-primary shadow-md scale-105"
+                  : "border-2 border-transparent hover:border-accent/50"
               }`}
             >
               <BookOpen className="h-4 w-4" />

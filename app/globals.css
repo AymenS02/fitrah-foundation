@@ -4,8 +4,8 @@
   /* Brand Colors (Light mode defaults) */
   --color-primary: #1E2A66;       /* Dark blue */
   --color-primary-hover: #15204d; /* Slightly darker */
-  --color-secondary: #FFFADE;     /* Light yellow */
-  --color-secondary-hover: #f5efc9;
+  --color-secondary: #BEDAC0;     /* Light green */
+  --color-secondary-hover: #A1C3A3; /* Slightly darker */
   --color-accent: #8E8CB8;        /* Purple */
   --color-accent-hover: #7a77a5;
   --color-background: #F9F8FF;    /* Soft gray */
@@ -87,16 +87,6 @@ body {
 /* Headings */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-palanquin-dark);
-}
-
-/* Buttons */
-button {
-  background: var(--button-bg);
-  color: var(--button-fg);
-  transition: background 0.2s ease;
-}
-button:hover {
-  background: var(--button-bg-hover);
 }
 
 /* Cards */

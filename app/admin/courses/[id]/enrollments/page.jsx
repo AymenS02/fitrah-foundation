@@ -133,7 +133,7 @@ export default function CourseStudents() {
                         View Standings
                       </button>
                       <button
-                        onClick={() => router.push(`/admin/enrollments/${enrollment.user._id}`)}
+                        onClick={() => router.push(`/admin/students/${enrollment.user._id}`)}
                         className="text-green-600 hover:text-green-800 px-3 py-1 rounded text-sm"
                       >
                         Edit Student

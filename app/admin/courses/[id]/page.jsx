@@ -113,20 +113,14 @@ export default function CourseDashboard() {
             Manage Modules
           </button>
           <button
-            onClick={() => router.push(`/admin/courses/${courseId}/edit`)}
-            className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700"
-          >
-            Edit Course
-          </button>
-          <button
             onClick={() => router.push(`/admin/courses/${courseId}/enrollments`)}
-            className="bg-green-600 text-white px-3 py-1.5 rounded text-sm hover:bg-green-700 transition duration-300"
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
           >
             Manage Students
           </button>
           <button
             onClick={() => handleDeleteCourse(course._id)}
-            className="text-white px-3 py-1.5 rounded text-sm"
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
           >
             Delete Course
           </button>

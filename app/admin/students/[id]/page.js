@@ -102,7 +102,7 @@ export default function EditStudentPage() {
               Edit Student: {student.firstName} {student.lastName}
             </h1>
             <button
-              onClick={() => router.push('/admin/students')}
+              onClick={() => router.back()}
               className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600"
             >
               Back to Students
@@ -168,7 +168,7 @@ export default function EditStudentPage() {
             <div className="mt-6 flex justify-end space-x-3">
               <button
                 type="button"
-                onClick={() => router.push('/admin/students')}
+                onClick={() => router.back()}
                 className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600"
               >
                 Cancel

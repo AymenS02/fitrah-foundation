@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import Image from "next/image";
 import { ChevronLeft, ChevronRight, Quote } from 'lucide-react';
+import Link from 'next/link';
 
 export default function Home() {
 
@@ -124,7 +125,7 @@ export default function Home() {
 
 
       {/*The Teachers Section*/}
-      <div className="bg-primary min-h-screen py-20 relative overflow-hidden">
+      <div className="bg-background min-h-screen py-20 relative overflow-hidden">
         {/* Decorative Background Elements */}
         <div className="absolute top-0 left-0 w-full h-full opacity-5">
           <div className="absolute top-20 left-10 w-32 h-32 border-2 border-secondary rounded-full"></div>
@@ -133,20 +134,20 @@ export default function Home() {
           <div className="absolute bottom-20 right-1/3 w-20 h-20 border-2 border-secondary rotate-12"></div>
         </div>
 
-        <div className="w-[80%] xl:w-[1400px] mx-auto text-secondary relative z-10">
+        <div className="w-[80%] xl:w-[1400px] mx-auto text-accent relative z-10">
           {/* Header Section */}
           <div className="text-center mb-16">
             <div className="inline-block mb-4">
               <div className="w-16 h-1 bg-secondary mx-auto mb-4"></div>
             </div>
             <h1 className="text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-              <span className="bg-secondary bg-clip-text text-transparent">
+              <span className="bg-accent bg-clip-text text-transparent">
                 LEARN FROM OUR
               </span>
               <br />
-              <span className="text-secondary">EXPERIENCED INSTRUCTORS</span>
+              <span className="text-accent">EXPERIENCED INSTRUCTORS</span>
             </h1>
-            <p className="text-xl text-secondary max-w-2xl mx-auto leading-relaxed">
+            <p className="text-xl text-accent max-w-2xl mx-auto leading-relaxed">
               Study with distinguished scholars who combine traditional Islamic education with modern pedagogical excellence
             </p>
           </div>
@@ -208,7 +209,7 @@ export default function Home() {
                           {teacher.specializations.map((spec, specIndex) => (
                             <span
                               key={specIndex}
-                              className="px-3 py-1 bg-gradient-to-r from-emerald-100 to-emerald-200 text-primary text-sm font-medium rounded-full border border-emerald-300"
+                              className="px-3 py-1 bg-gradient-to-r from-secondary to-secondary-hover text-primary text-sm font-medium rounded-full border border-accent"
                             >
                               {spec}
                             </span>
@@ -293,9 +294,9 @@ export default function Home() {
         <p className="text-primary mb-8 max-w-2xl mx-auto">
           Join thousands of students worldwide who have transformed their understanding of Islam through our comprehensive programs
         </p>
-        <button className="px-8 py-4 bg-accent text-secondary font-bold text-lg rounded-4xl transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105 border-2 border-secondary">
+        <Link href="/courses" className="px-8 py-4 bg-accent text-secondary font-bold text-lg rounded-4xl transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105 border-2 border-secondary">
           Enroll Today
-        </button>
+        </Link>
       </div>
     </div>
   );
