@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '../components/authContext';
 import { X, Menu } from 'lucide-react';
+import DarkModeToggle from '@/darkMode';
 
 const Sidebar = () => {
   const { user } = useAuth();
@@ -11,19 +12,16 @@ const Sidebar = () => {
 
   const toggleSidebar = () => setIsOpen(!isOpen);
 
-  const navLinks = [
-    { href: '/', label: 'Home' },
-    { href: '/about', label: 'About Us' },
-    { href: '/articles', label: 'Articles' },
-    { href: '/contact', label: 'Contact Us' },
-  ];
-
   return (
     <>
       {/* Hamburger button */}
       <button
         onClick={toggleSidebar}
-        className="fixed top-4 right-4 z-50 p-2 bg-primary text-white rounded-full md:hidden"
+        className="md:hidden fixed top-4 right-4 z-50 p-2 rounded-full"
+        style={{ 
+          backgroundColor: 'var(--color-primary)',
+          color: 'white'
+        }}
       >
         {isOpen ? <X size={24} /> : <Menu size={24} />}
       </button>
@@ -38,66 +36,165 @@ const Sidebar = () => {
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 right-0 h-full w-64 bg-background shadow-2xl z-50 transform transition-transform duration-300 ${
+        className={`md:hidden fixed top-0 right-0 h-full w-80 z-50 transform transition-transform duration-300 ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
+        style={{ 
+          backgroundColor: 'var(--color-background)',
+          boxShadow: '0 4px 25px var(--color-shadow)'
+        }}
       >
-        <div className="flex items-center justify-between px-6 py-4 border-b">
-          <h2 className="text-2xl font-bold text-primary">Menu</h2>
-          <button onClick={toggleSidebar}>
+        <div className="flex items-center justify-between px-6 py-4 border-b" style={{ borderColor: 'var(--color-border)' }}>
+          <h2 className="text-2xl font-bold" style={{ color: 'var(--color-primary)' }}>Menu</h2>
+          <button onClick={toggleSidebar} style={{ color: 'var(--color-foreground)' }}>
             <X size={24} />
           </button>
         </div>
 
-        <nav className="flex flex-col mt-6 space-y-4 px-6">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              onClick={() => setIsOpen(false)}
-              className="text-primary font-medium hover:scale-105 transition-transform"
-            >
-              {link.label}
-            </Link>
-          ))}
-
+        <nav className="flex flex-col mt-6 space-y-6 px-6">
+          {/* Navigation Links */}
+          <Link
+            href="/"
+            onClick={() => setIsOpen(false)}
+            className="hover:scale-105 transition-transform font-medium"
+            style={{ color: 'var(--color-foreground)' }}
+          >
+            Home
+          </Link>
+          <Link
+            href="/about"
+            onClick={() => setIsOpen(false)}
+            className="hover:scale-105 transition-transform font-medium"
+            style={{ color: 'var(--color-foreground)' }}
+          >
+            About Us
+          </Link>
+          <Link
+            href="/articles"
+            onClick={() => setIsOpen(false)}
+            className="hover:scale-105 transition-transform font-medium"
+            style={{ color: 'var(--color-foreground)' }}
+          >
+            Articles
+          </Link>
+          
+          {/* Courses link for non-authenticated users */}
           {!user && (
             <Link
-              href="/register"
+              href="/courses"
               onClick={() => setIsOpen(false)}
-              className="mt-4 bg-accent text-secondary px-4 py-2 rounded-4xl font-medium border-2 border-secondary hover:scale-105 transition-transform text-center"
+              className="hover:scale-105 transition-transform font-medium"
+              style={{ color: 'var(--color-foreground)' }}
             >
-              Sign Up
+              Courses
             </Link>
           )}
 
-          {user && (
+          <Link
+            href="/contact"
+            onClick={() => setIsOpen(false)}
+            className="hover:scale-105 transition-transform font-medium"
+            style={{ color: 'var(--color-foreground)' }}
+          >
+            Contact Us
+          </Link>
+
+          {/* Authentication-dependent buttons */}
+          {user ? (
             <>
+              {/* Courses button */}
               <Link
                 href="/courses"
                 onClick={() => setIsOpen(false)}
-                className="bg-accent text-secondary px-4 py-2 rounded-4xl font-medium border-2 border-secondary hover:scale-105 transition-transform text-center"
+                className="px-4 py-2 rounded-full font-medium border-2 hover:scale-105 transition-all duration-300 cursor-pointer text-center"
+                style={{ 
+                  backgroundColor: 'var(--color-primary)',
+                  color: 'white',
+                  borderColor: 'var(--color-primary)'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.backgroundColor = 'var(--color-primary-hover)';
+                  e.target.style.borderColor = 'var(--color-primary-hover)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.backgroundColor = 'var(--color-primary)';
+                  e.target.style.borderColor = 'var(--color-primary)';
+                }}
               >
                 Courses
               </Link>
+              
+              {/* Account button */}
               <Link
                 href="/account"
                 onClick={() => setIsOpen(false)}
-                className="bg-accent text-secondary px-4 py-2 rounded-4xl font-medium border-2 border-secondary hover:scale-105 transition-transform text-center"
+                className="px-4 py-2 rounded-full font-medium border-2 hover:scale-105 transition-all duration-300 cursor-pointer text-center"
+                style={{ 
+                  backgroundColor: 'var(--color-accent)',
+                  color: 'white',
+                  borderColor: 'var(--color-accent)'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.backgroundColor = 'var(--color-accent-hover)';
+                  e.target.style.borderColor = 'var(--color-accent-hover)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.backgroundColor = 'var(--color-accent)';
+                  e.target.style.borderColor = 'var(--color-accent)';
+                }}
               >
                 Account
               </Link>
+
+              {/* Admin button if role is ADMIN */}
               {user.role === 'ADMIN' && (
                 <Link
                   href="/admin"
                   onClick={() => setIsOpen(false)}
-                  className="bg-secondary text-primary px-4 py-2 rounded-4xl font-medium border-2 border-primary hover:bg-secondary-dark hover:scale-105 transition-transform text-center"
+                  className="px-4 py-2 rounded-full font-medium border-2 hover:scale-105 transition-all duration-300 cursor-pointer text-center"
+                  style={{ 
+                    backgroundColor: 'var(--color-secondary)',
+                    color: 'var(--color-foreground)',
+                    borderColor: 'var(--color-border)'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.backgroundColor = 'var(--color-secondary-hover)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.backgroundColor = 'var(--color-secondary)';
+                  }}
                 >
                   Admin
                 </Link>
               )}
             </>
+          ) : (
+            <Link
+              href="/register"
+              onClick={() => setIsOpen(false)}
+              className="px-4 py-2 rounded-full font-medium border-2 hover:scale-105 transition-all duration-300 cursor-pointer text-center"
+              style={{ 
+                backgroundColor: 'var(--color-primary)',
+                color: 'white',
+                borderColor: 'var(--color-primary)'
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.backgroundColor = 'var(--color-primary-hover)';
+                e.target.style.borderColor = 'var(--color-primary-hover)';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.backgroundColor = 'var(--color-primary)';
+                e.target.style.borderColor = 'var(--color-primary)';
+              }}
+            >
+              Sign Up
+            </Link>
           )}
+
+          {/* Dark Mode Toggle */}
+          <div className="mt-4">
+            <DarkModeToggle />
+          </div>
         </nav>
       </aside>
     </>
