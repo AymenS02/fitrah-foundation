@@ -22,7 +22,7 @@ export default function AdminPage() {
         Welcome to the Admin Dashboard {user.firstName} {user.lastName}!
       </h1>
       <p className="text-primary">
-        Use the sidebar to navigate to different management pages for courses, students, and instructors.
+        Use the sidebar to navigate to different management pages for courses, students, and articles.
       </p>
     </div>
   );

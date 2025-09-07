@@ -1,120 +1,136 @@
 @import "tailwindcss";
 
 @theme {
-  /* Brand Colors (Light mode defaults) */
-  --color-primary: #1E2A66;       /* Dark blue */
-  --color-primary-hover: #15204d; /* Slightly darker */
-  --color-secondary: #BEDAC0;     /* Light green */
-  --color-secondary-hover: #A1C3A3; /* Slightly darker */
-  --color-accent: #8E8CB8;        /* Purple */
-  --color-accent-hover: #7a77a5;
-  --color-background: #F9F8FF;    /* Soft gray */
-  --color-background-hover: #eceaf5;
-
-  /* UI Assignments */
-  --bg: var(--color-background);
-  --bg-hover: var(--color-background-hover);
-
-  --fg: var(--color-primary);
-  --fg-hover: var(--color-primary-hover);
-
-  --menu-bg: var(--color-primary);
-  --menu-bg-hover: var(--color-primary-hover);
-  --menu-fg: var(--color-secondary);
-  --menu-fg-hover: var(--color-secondary-hover);
-  --menu-fg-secondary: var(--color-background);
-
-  --button-bg: var(--color-accent);
-  --button-bg-hover: var(--color-accent-hover);
-  --button-fg: white;
-
-  --link-fg: var(--color-primary);
-  --link-hover-fg: var(--color-accent);
-
-  --card-bg: white;
-  --card-bg-hover: var(--color-background-hover);
-  --card-border: rgba(30, 42, 102, 0.1);
-
-  --hamburger-icon-border: rgba(255, 255, 255, 0.3);
-  --hamburger-icon-border-hover: rgba(255, 255, 255, 0.5);
+  /* === LIGHT MODE THEME === */
+  /* Based on primary: hsl(230, 55%, 26%) */
+  
+  /* Core Brand Colors */
+  --color-primary: hsl(230, 55%, 26%);           /* Main brand blue */
+  --color-secondary: hsl(230, 35%, 92%);         /* Light blue-gray complement */
+  --color-accent: hsl(200, 65%, 45%);            /* Harmonious blue accent */
+  
+  /* Backgrounds & Surfaces */
+  --color-background: hsl(230, 25%, 98%);        /* Subtle blue-tinted white */
+  --color-foreground: hsl(230, 55%, 15%);        /* Deep blue-black text */
+  --color-card: hsl(230, 20%, 99%);              /* Card surfaces */
+  --color-popover: hsl(230, 20%, 99%);           /* Dropdown/modal backgrounds */
+  
+  /* Status Colors - Harmonized with primary */
+  --color-success: hsl(145, 60%, 42%);           /* Forest green */
+  --color-warning: hsl(35, 85%, 55%);            /* Warm amber */
+  --color-error: hsl(355, 70%, 55%);             /* Coral red */
+  --color-info: hsl(210, 75%, 50%);              /* Bright info blue */
+  
+  /* Neutral Scale - Blue-tinted grays */
+  --color-muted: hsl(230, 20%, 96%);             /* Very light blue-gray */
+  --color-muted-foreground: hsl(230, 15%, 55%);  /* Medium blue-gray text */
+  --color-border: hsl(230, 20%, 88%);            /* Subtle blue-gray borders */
+  --color-input: hsl(230, 25%, 94%);             /* Input field backgrounds */
+  
+  /* Interactive States */
+  --color-primary-hover: hsl(230, 55%, 35%);     /* Lighter primary hover */
+  --color-primary-active: hsl(230, 55%, 22%);    /* Darker primary active */
+  --color-secondary-hover: hsl(230, 35%, 84%);   /* Secondary hover */
+  --color-secondary-active: hsl(230, 35%, 84%);  /* Secondary active */
+  --color-accent-hover: hsl(200, 65%, 53%);      /* Accent hover */
+  --color-accent-active: hsl(200, 65%, 40%);     /* Accent active */
+  
+  /* Focus & Selection */
+  --color-ring: hsl(230, 55%, 26%);              /* Focus ring (same as primary) */
+  --color-selection: hsl(230, 55%, 85%);         /* Text selection background */
+  
+  /* Destructive Actions */
+  --color-destructive: hsl(355, 70%, 55%);       /* Same as error */
+  --color-destructive-foreground: hsl(0, 0%, 98%); /* White text on destructive */
+  
+  /* Additional Utility Colors */
+  --color-overlay: hsl(230, 15%, 15%, 0.80);     /* Modal overlays */
+  --color-shadow: hsl(230, 25%, 25%, 0.15);      /* Drop shadows */
+  --color-disabled: hsl(230, 15%, 75%);          /* Disabled state */
+  --color-disabled-foreground: hsl(230, 15%, 50%); /* Disabled text */
 }
 
-/* Dark mode overrides */
+/* === DARK MODE OVERRIDES === */
 .dark {
-  --color-primary: #E0E5FF;
-  --color-primary-hover: #c9d1ff;
-  --color-secondary: #333333;
-  --color-secondary-hover: #4d4d4d;
-  --color-accent: #B3A4E0;
-  --color-accent-hover: #9c8ecf;
-  --color-background: #0E0F1A;
-  --color-background-hover: #1a1c2e;
-
-  --bg: var(--color-background);
-  --bg-hover: var(--color-background-hover);
-
-  --fg: var(--color-primary);
-  --fg-hover: var(--color-primary-hover);
-
-  --menu-bg: var(--color-background);
-  --menu-bg-hover: var(--color-background-hover);
-  --menu-fg: var(--color-primary);
-  --menu-fg-hover: var(--color-primary-hover);
-  --menu-fg-secondary: #888;
-
-  --button-bg: var(--color-accent);
-  --button-bg-hover: var(--color-accent-hover);
-  --button-fg: #fff;
-
-  --link-fg: var(--color-accent);
-  --link-hover-fg: var(--color-primary);
-
-  --card-bg: #1A1C2E;
-  --card-bg-hover: #25283d;
-  --card-border: rgba(255, 255, 255, 0.1);
-
-  --hamburger-icon-border: rgba(255, 255, 255, 0.3);
-  --hamburger-icon-border-hover: rgba(255, 255, 255, 0.5);
+  /* Core Brand Colors - Brightened for dark backgrounds */
+  --color-primary: hsl(230, 55%, 65%);           /* Brighter primary */
+  --color-secondary: hsl(230, 25%, 20%);         /* Dark blue-gray */
+  --color-accent: hsl(200, 65%, 60%);            /* Brighter accent */
+  
+  /* Backgrounds & Surfaces - Dark blue theme */
+  --color-background: hsl(230, 20%, 9%);         /* Deep blue-black */
+  --color-foreground: hsl(230, 15%, 92%);        /* Light blue-white text */
+  --color-card: hsl(230, 18%, 12%);              /* Elevated dark surfaces */
+  --color-popover: hsl(230, 18%, 12%);           /* Modal/dropdown dark bg */
+  
+  /* Status Colors - Adjusted for dark mode */
+  --color-success: hsl(145, 60%, 50%);           /* Brighter success green */
+  --color-warning: hsl(35, 85%, 65%);            /* Brighter warning amber */
+  --color-error: hsl(355, 70%, 65%);             /* Brighter error red */
+  --color-info: hsl(210, 75%, 60%);              /* Brighter info blue */
+  
+  /* Neutral Scale - Dark blue-tinted grays */
+  --color-muted: hsl(230, 18%, 15%);             /* Dark surface variant */
+  --color-muted-foreground: hsl(230, 15%, 65%);  /* Medium gray text */
+  --color-border: hsl(230, 20%, 22%);            /* Dark borders */
+  --color-input: hsl(230, 20%, 18%);             /* Dark input backgrounds */
+  
+  /* Interactive States - Dark mode adjustments */
+  --color-primary-hover: hsl(230, 55%, 70%);     /* Brighter primary hover */
+  --color-primary-active: hsl(230, 55%, 60%);    /* Darker primary active */
+  --color-secondary-hover: hsl(230, 25%, 25%);   /* Secondary hover */
+  --color-secondary-active: hsl(230, 25%, 30%);  /* Secondary active */
+  --color-accent-hover: hsl(200, 65%, 65%);      /* Accent hover */
+  --color-accent-active: hsl(200, 65%, 55%);     /* Accent active */
+  
+  /* Focus & Selection - Dark mode */
+  --color-ring: hsl(230, 55%, 65%);              /* Brighter focus ring */
+  --color-selection: hsl(230, 55%, 25%);         /* Dark selection background */
+  
+  /* Destructive Actions - Dark mode */
+  --color-destructive: hsl(355, 70%, 65%);       /* Brighter destructive */
+  --color-destructive-foreground: hsl(230, 15%, 92%); /* Light text */
+  
+  /* Additional Utility Colors - Dark mode */
+  --color-overlay: hsl(230, 20%, 5%, 0.85);      /* Darker modal overlays */
+  --color-shadow: hsl(230, 30%, 5%, 0.50);       /* Stronger dark shadows */
+  --color-disabled: hsl(230, 15%, 35%);          /* Dark disabled state */
+  --color-disabled-foreground: hsl(230, 15%, 50%); /* Dark disabled text */
 }
 
-/* Base body and headings */
+/* === TYPOGRAPHY === */
 body {
-  background: var(--bg);
-  color: var(--fg);
   font-family: var(--font-orienta);
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Headings */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-palanquin-dark);
+  color: var(--color-foreground);
 }
 
-/* Cards */
-.card {
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  transition: background 0.2s ease;
-}
-.card:hover {
-  background: var(--card-bg-hover);
+/* Selection Styling */
+::selection {
+  background-color: var(--color-selection);
+  color: var(--color-foreground);
 }
 
-/* Menu items */
-.menu-item {
-  background: var(--menu-bg);
-  color: var(--menu-fg);
-  transition: all 0.2s ease;
-}
-.menu-item:hover {
-  background: var(--menu-bg-hover);
-  color: var(--menu-fg-hover);
+/* Scrollbar Theming (Webkit) */
+::-webkit-scrollbar {
+  width: 8px;
 }
 
-/* Hamburger icon */
-.hamburger {
-  border-color: var(--hamburger-icon-border);
-  transition: border-color 0.2s ease;
+::-webkit-scrollbar-track {
+  background: var(--color-muted);
 }
-.hamburger:hover {
-  border-color: var(--hamburger-icon-border-hover);
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-muted-foreground);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-foreground);
 }
