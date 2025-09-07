@@ -84,22 +84,24 @@ export default function AddArticle() {
           <div className="flex items-center">
             <button
               onClick={() => router.push('/admin/articles')}
-              className="mr-4 p-2 text-gray-600 hover:text-gray-900 transition duration-200"
+              className="mr-4 p-2 text-muted-foreground hover:text-foreground transition"
             >
               <ArrowLeft className="w-6 h-6" />
             </button>
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 flex items-center">
+              <h1 className="text-3xl font-bold text-foreground flex items-center">
                 <FileText className="w-8 h-8 mr-3 text-primary" />
                 Add New Article
               </h1>
-              <p className="text-gray-600">Create a new article for your collection</p>
+              <p className="text-muted-foreground">
+                Create a new article for your collection
+              </p>
             </div>
           </div>
         </div>
 
         {/* Form */}
-        <div className="bg-white rounded-lg shadow-md overflow-hidden">
+        <div className="bg-card border border-border rounded-lg shadow-sm">
           <div className="px-8 py-6">
             {error && (
               <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-md">
@@ -117,7 +119,7 @@ export default function AddArticle() {
               {/* Basic Information */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="title" className="block text-sm font-medium text-foreground mb-2">
                     Article Title *
                   </label>
                   <input
@@ -128,13 +130,16 @@ export default function AddArticle() {
                     disabled={isLoading}
                     value={formData.title}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100"
                     placeholder="Enter article title"
+                    className="w-full px-3 py-2 border border-border rounded-md shadow-sm 
+                              bg-background text-foreground placeholder:text-muted-foreground 
+                              focus:ring-2 focus:ring-primary focus:border-primary 
+                              disabled:bg-muted disabled:cursor-not-allowed"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="author" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="author" className="block text-sm font-medium text-foreground mb-2">
                     Author *
                   </label>
                   <input
@@ -145,15 +150,18 @@ export default function AddArticle() {
                     disabled={isLoading}
                     value={formData.author}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100"
                     placeholder="Enter author name"
+                    className="w-full px-3 py-2 border border-border rounded-md shadow-sm 
+                              bg-background text-foreground placeholder:text-muted-foreground 
+                              focus:ring-2 focus:ring-primary focus:border-primary 
+                              disabled:bg-muted disabled:cursor-not-allowed"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label htmlFor="date" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="date" className="block text-sm font-medium text-foreground mb-2">
                     Publication Date
                   </label>
                   <input
@@ -163,13 +171,18 @@ export default function AddArticle() {
                     disabled={isLoading}
                     value={formData.date}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100"
+                    className="w-full px-3 py-2 border border-border rounded-md shadow-sm 
+                              bg-background text-foreground 
+                              focus:ring-2 focus:ring-primary focus:border-primary 
+                              disabled:bg-muted disabled:cursor-not-allowed"
                   />
-                  <p className="text-xs text-gray-500 mt-1">Leave empty to use current date</p>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Leave empty to use current date
+                  </p>
                 </div>
 
                 <div>
-                  <label htmlFor="imageUrl" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="imageUrl" className="block text-sm font-medium text-foreground mb-2">
                     Image URL (Optional)
                   </label>
                   <input
@@ -179,14 +192,17 @@ export default function AddArticle() {
                     disabled={isLoading}
                     value={formData.imageUrl}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100"
                     placeholder="e.g., https://example.com/image.jpg"
+                    className="w-full px-3 py-2 border border-border rounded-md shadow-sm 
+                              bg-background text-foreground placeholder:text-muted-foreground 
+                              focus:ring-2 focus:ring-primary focus:border-primary 
+                              disabled:bg-muted disabled:cursor-not-allowed"
                   />
                 </div>
               </div>
 
               <div>
-                <label htmlFor="tags" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="tags" className="block text-sm font-medium text-foreground mb-2">
                   Tags
                 </label>
                 <input
@@ -196,14 +212,19 @@ export default function AddArticle() {
                   disabled={isLoading}
                   value={formData.tags}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100"
                   placeholder="Enter tags separated by commas (e.g., Islamic, Education, Fiqh)"
+                  className="w-full px-3 py-2 border border-border rounded-md shadow-sm 
+                            bg-background text-foreground placeholder:text-muted-foreground 
+                            focus:ring-2 focus:ring-primary focus:border-primary 
+                            disabled:bg-muted disabled:cursor-not-allowed"
                 />
-                <p className="text-xs text-gray-500 mt-1">Separate multiple tags with commas</p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Separate multiple tags with commas
+                </p>
               </div>
 
               <div>
-                <label htmlFor="content" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="content" className="block text-sm font-medium text-foreground mb-2">
                   Article Content *
                 </label>
                 <textarea
@@ -214,18 +235,23 @@ export default function AddArticle() {
                   disabled={isLoading}
                   value={formData.content}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100"
                   placeholder="Enter the full article content here..."
+                  className="w-full px-3 py-2 border border-border rounded-md shadow-sm 
+                            bg-background text-foreground placeholder:text-muted-foreground 
+                            focus:ring-2 focus:ring-primary focus:border-primary 
+                            disabled:bg-muted disabled:cursor-not-allowed"
                 />
               </div>
 
               {/* Form Actions */}
-              <div className="border-t pt-6 flex justify-end space-x-4">
+              <div className="border-t border-border pt-6 flex justify-end space-x-4">
                 <button
                   type="button"
                   onClick={handleCancel}
                   disabled={isLoading}
-                  className="px-6 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition duration-200 font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
+                  className="px-6 py-2 border border-border text-foreground rounded-md 
+                            hover:bg-muted transition font-medium 
+                            disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
                 >
                   <X className="w-4 h-4 mr-2" />
                   Cancel
@@ -234,7 +260,10 @@ export default function AddArticle() {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="px-6 py-2 bg-primary text-white rounded-md hover:bg-secondary hover:text-primary border-primary border transition duration-200 font-medium disabled:bg-blue-400 disabled:cursor-not-allowed flex items-center"
+                  className="px-6 py-2 bg-primary text-white rounded-md 
+                            hover:bg-primary/90 transition font-medium 
+                            border border-primary shadow-sm 
+                            disabled:bg-primary/50 disabled:cursor-not-allowed flex items-center"
                 >
                   <Save className="w-4 h-4 mr-2" />
                   {isLoading ? 'Adding Article...' : 'Add Article'}
@@ -246,4 +275,5 @@ export default function AddArticle() {
       </div>
     </div>
   );
+
 }

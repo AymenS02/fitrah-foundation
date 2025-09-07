@@ -87,28 +87,31 @@ export default function CoursesPage() {
   if (error) return <div className="text-center py-20 text-red-600">{error}</div>;
 
   return (
-    <main className="bg-background text-foreground min-h-screen">
+    <main className="bg-light min-h-screen text-foreground">
       {/* Hero */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0" />
-        <div className="container mx-auto max-w-6xl px-4 py-6 mt-10">
-          <h1 className="text-4xl md:text-5xl font-extrabold text-primary tracking-tight">Courses</h1>
-          <p className="mt-4 max-w-3xl text-lg text-muted-foreground">
-            Authentic Islamic learning—rooted in tradition, explained for today. Browse, filter, and find the right starting point.
+      <section className="relative overflow-hidden bg-gradient-to-r from-primary/10 to-accent/10">
+        <div className="container mx-auto max-w-6xl px-4 py-20">
+          <h1 className="text-4xl md:text-5xl font-extrabold text-primary tracking-tight">
+            Courses
+          </h1>
+          <p className="mt-4 max-w-3xl text-lg text-gray-600 leading-relaxed">
+            Authentic Islamic learning—rooted in tradition, explained for today. 
+            Browse, filter, and find the right starting point.
           </p>
+          <div className="mt-6 w-24 h-1 bg-primary rounded-full"></div>
         </div>
       </section>
 
       {/* Tab Navigation */}
       {user && (
-        <section className="container mx-auto max-w-6xl px-4 mb-6">
-          <div className="flex space-x-1 rounded-xl bg-muted p-1 gap-2">
+        <section className="container mx-auto max-w-6xl px-4 -mt-10 mb-6 relative z-10">
+          <div className="flex space-x-2 rounded-2xl bg-background shadow-md p-2">
             <button
               onClick={() => setActiveTab("available")}
-              className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200 ${
+              className={`flex items-center gap-2 px-5 py-2 text-sm font-medium rounded-xl transition-all ${
                 activeTab === "available"
-                  ? "border-2 border-accent text-primary shadow-md scale-105"
-                  : "border-2 border-transparent hover:border-accent/50"
+                  ? "bg-gradient-to-r from-primary to-accent text-white shadow-md"
+                  : "text-gray-600 hover:text-primary"
               }`}
             >
               <Plus className="h-4 w-4" />
@@ -117,10 +120,10 @@ export default function CoursesPage() {
 
             <button
               onClick={() => setActiveTab("enrolled")}
-              className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200 ${
+              className={`flex items-center gap-2 px-5 py-2 text-sm font-medium rounded-xl transition-all ${
                 activeTab === "enrolled"
-                  ? "border-2 border-accent text-primary shadow-md scale-105"
-                  : "border-2 border-transparent hover:border-accent/50"
+                  ? "bg-gradient-to-r from-primary to-accent text-white shadow-md"
+                  : "text-gray-600 hover:text-primary"
               }`}
             >
               <BookOpen className="h-4 w-4" />
@@ -132,29 +135,33 @@ export default function CoursesPage() {
 
       {/* Filters */}
       <section className="container mx-auto max-w-6xl px-4">
-        <div className="rounded-2xl border bg-card p-4 md:p-5 shadow-sm">
-          <div className="grid gap-4 md:grid-cols-5">
+        <div className="rounded-2xl border bg-background p-6 shadow-sm">
+          <div className="grid gap-6 md:grid-cols-5">
             {/* Search */}
             <div className="md:col-span-2">
-              <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-primary/70">Search</label>
+              <label className="mb-1 block text-xs font-semibold text-gray-600 uppercase tracking-wide">
+                Search
+              </label>
               <div className="relative">
-                <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
                 <input
                   value={q}
                   onChange={(e) => setQ(e.target.value)}
                   placeholder="Course, topic, or instructor…"
-                  className="w-full rounded-xl border pl-9 pr-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
+                  className="w-full rounded-xl border border-gray-200 pl-9 pr-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
                 />
               </div>
             </div>
 
             {/* Category */}
             <div>
-              <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-primary/70">Category</label>
+              <label className="mb-1 block text-xs font-semibold text-gray-600 uppercase tracking-wide">
+                Category
+              </label>
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="w-full rounded-xl border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
+                className="w-full rounded-xl border border-gray-200 px-3 py-2 text-sm focus:ring-2 focus:ring-primary/30"
               >
                 {CATEGORIES.map((c) => (
                   <option key={c} value={c}>{c}</option>
@@ -164,27 +171,31 @@ export default function CoursesPage() {
 
             {/* Level */}
             <div>
-              <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-primary/70">Level</label>
+              <label className="mb-1 block text-xs font-semibold text-gray-600 uppercase tracking-wide">
+                Level
+              </label>
               <select
                 value={level}
                 onChange={(e) => setLevel(e.target.value)}
-                className="w-full rounded-xl border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
+                className="w-full rounded-xl border border-gray-200 px-3 py-2 text-sm focus:ring-2 focus:ring-primary/30"
               >
                 {LEVELS.map((l) => (
-                  <option key={l} value={l}>{l === "All" ? "All" : DIFFICULTY_LABEL[l] ?? l}</option>
+                  <option key={l} value={l}>{DIFFICULTY_LABEL[l] ?? l}</option>
                 ))}
               </select>
             </div>
 
             {/* Sort */}
             <div>
-              <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-primary/70">Sort by</label>
+              <label className="mb-1 block text-xs font-semibold text-gray-600 uppercase tracking-wide">
+                Sort by
+              </label>
               <div className="relative">
-                <SlidersHorizontal className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                <SlidersHorizontal className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
                 <select
                   value={sort}
                   onChange={(e) => setSort(e.target.value)}
-                  className="w-full rounded-xl border pl-9 pr-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
+                  className="w-full rounded-xl border border-gray-200 pl-9 pr-3 py-2 text-sm focus:ring-2 focus:ring-primary/30"
                 >
                   <option value="title">Title (A–Z)</option>
                   <option value="price">Price (Low → High)</option>
@@ -196,16 +207,16 @@ export default function CoursesPage() {
       </section>
 
       {/* Grid */}
-      <section className="container mx-auto max-w-6xl px-4 py-10 md:py-14">
+      <section className="container mx-auto max-w-6xl px-4 py-12">
         {filtered.length === 0 ? (
-          <div className="rounded-2xl border bg-card p-8 text-center text-muted-foreground">
+          <div className="rounded-2xl bg-background p-10 text-center text-gray-500 shadow">
             {activeTab === "enrolled" 
               ? "You haven't enrolled in any courses yet. Switch to 'Available Courses' to browse and enroll."
               : "No courses match your filters. Try clearing your search or changing category/level."
             }
           </div>
         ) : (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {filtered.map((c) => (
               <CourseCard 
                 key={c._id ?? c.title} 
@@ -213,7 +224,6 @@ export default function CoursesPage() {
                 user={user} 
                 isEnrolled={activeTab === "enrolled"}
                 onEnrollmentChange={() => {
-                  // Refresh enrollments after enrollment change
                   if (user?._id) {
                     fetch(`/api/enrollments?studentId=${user._id}`)
                       .then(res => res.json())
@@ -228,6 +238,7 @@ export default function CoursesPage() {
       </section>
     </main>
   );
+
 }
 
 // ---------- Helpers ----------
@@ -269,7 +280,8 @@ function CourseCard({ course, user, isEnrolled, onEnrollmentChange }) {
   };
 
   return (
-    <article className="group overflow-hidden rounded-2xl border bg-card shadow-sm transition hover:shadow-md">
+    <article className="group overflow-hidden rounded-2xl border bg-background shadow-sm transition-all hover:shadow-lg hover:-translate-y-1">
+      {/* Thumbnail */}
       <div className="relative h-40 w-full bg-muted">
         {thumbnailUrl && (
           <Image
@@ -280,23 +292,29 @@ function CourseCard({ course, user, isEnrolled, onEnrollmentChange }) {
             sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
           />
         )}
+
+        {/* Free Badge */}
         {price === 0 && (
-          <span className="absolute left-3 top-3 rounded-full bg-primary px-2 py-0.5 text-[10px] font-semibold text-white">
+          <span className="absolute left-3 top-3 rounded-full bg-gradient-to-r from-primary to-accent px-2 py-0.5 text-[10px] font-semibold text-white shadow-sm">
             Free
           </span>
         )}
+
+        {/* Enrolled Badge */}
         {isEnrolled && (
-          <span className="absolute right-3 top-3 rounded-full bg-green-500 px-2 py-0.5 text-[10px] font-semibold text-white">
+          <span className="absolute right-3 top-3 rounded-full bg-gradient-to-r from-green-500 to-emerald-400 px-2 py-0.5 text-[10px] font-semibold text-white shadow-sm">
             Enrolled
           </span>
         )}
       </div>
 
-      <div className="p-4">
-        <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+      {/* Card Body */}
+      <div className="p-5">
+        {/* Meta */}
+        <div className="flex flex-wrap items-center gap-3 text-xs text-gray-500">
           {category && (
             <span className="inline-flex items-center gap-1">
-              <Layers className="h-3.5 w-3.5" />
+              <Layers className="h-3.5 w-3.5 text-primary/80" />
               {category}
             </span>
           )}
@@ -304,7 +322,7 @@ function CourseCard({ course, user, isEnrolled, onEnrollmentChange }) {
             <>
               <span>•</span>
               <span className="inline-flex items-center gap-1">
-                <Tag className="h-3.5 w-3.5" />
+                <Tag className="h-3.5 w-3.5 text-primary/80" />
                 {levelLabel}
               </span>
             </>
@@ -313,43 +331,53 @@ function CourseCard({ course, user, isEnrolled, onEnrollmentChange }) {
             <>
               <span>•</span>
               <span className="inline-flex items-center gap-1">
-                <Clock className="h-3.5 w-3.5" />
+                <Clock className="h-3.5 w-3.5 text-primary/80" />
                 {durationLabel(durationWeeks)}
               </span>
             </>
           )}
         </div>
 
-        <h3 className="mt-2 text-lg font-semibold text-primary group-hover:underline">{title}</h3>
+        {/* Title */}
+        <h3 className="mt-3 text-lg font-bold text-primary group-hover:underline decoration-primary/40">
+          {title}
+        </h3>
 
+        {/* Instructor */}
         {instructor && (
-          <div className="mt-1 flex items-center gap-2 text-xs text-muted-foreground">
-            <User className="h-3.5 w-3.5" />
+          <div className="mt-1 flex items-center gap-2 text-xs text-gray-500">
+            <User className="h-3.5 w-3.5 text-primary/70" />
             <span>{instructor}</span>
           </div>
         )}
 
+        {/* Description */}
         {description && (
-          <p className="mt-2 line-clamp-3 text-sm text-muted-foreground">{description}</p>
+          <p className="mt-2 line-clamp-3 text-sm text-gray-600">
+            {description}
+          </p>
         )}
 
-        <div className="mt-4 flex items-center justify-between">
-          <div className="text-sm font-semibold text-primary">{formatPrice(price ?? 0)}</div>
+        {/* Footer */}
+        <div className="mt-5 flex items-center justify-between">
+          <div className="text-sm font-bold text-primary">
+            {formatPrice(price ?? 0)}
+          </div>
           <div className="flex gap-2">
             {!isEnrolled && (
               <button
                 onClick={onEnroll}
-                className="rounded-xl bg-primary px-3 py-1 text-xs font-semibold text-white shadow-sm transition hover:bg-primary/90"
+                className="rounded-xl bg-gradient-to-r from-primary to-accent px-3 py-1 text-xs font-semibold text-white shadow-sm transition hover:opacity-90"
               >
                 Enroll
               </button>
             )}
             <a
               href={`/courses/${_id}`}
-              className={`rounded-xl border px-3 py-1 text-xs font-semibold transition ${
-                isEnrolled 
-                  ? "bg-primary text-white hover:bg-primary/90" 
-                  : "text-primary hover:bg-primary/5"
+              className={`rounded-xl px-3 py-1 text-xs font-semibold transition ${
+                isEnrolled
+                  ? "bg-gradient-to-r from-primary to-accent text-white shadow-sm hover:opacity-90"
+                  : "border border-primary text-primary hover:bg-primary/5"
               }`}
             >
               {isEnrolled ? "Continue" : "View details"}

@@ -80,7 +80,7 @@ export default function EditStudentPage() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-border"></div>
       </div>
     );
   }
@@ -88,79 +88,73 @@ export default function EditStudentPage() {
   if (!student) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <p className="text-red-600">Student not found</p>
+        <p className="text-error">Student not found</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-background">
       <div className="max-w-2xl mx-auto py-6 sm:px-6 lg:px-8">
         <div className="px-4 py-6 sm:px-0">
           <div className="flex justify-between items-center mb-6">
-            <h1 className="text-3xl font-bold text-gray-900">
-              Edit Student: {student.firstName} {student.lastName}
+            <h1 className="p-6 text-3xl font-bold text-foreground">
+              Editing Student: {student.firstName} {student.lastName}
             </h1>
-            <button
-              onClick={() => router.back()}
-              className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600"
-            >
-              Back to Students
-            </button>
           </div>
 
           {error && (
-            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+            <div className="bg-muted border border-border text-error px-4 py-3 rounded mb-4">
               {error}
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="bg-white shadow rounded-lg p-6">
+          <form onSubmit={handleSubmit} className="bg-background shadow rounded-lg p-6">
             <div className="grid grid-cols-1 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700">First Name</label>
+                <label className="block text-sm font-medium text-foreground">First Name</label>
                 <input
                   type="text"
                   name="firstName"
                   value={student.firstName || ''}
                   onChange={handleChange}
-                  className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                  className="mt-1 block w-full border border-border rounded-md px-3 py-2 focus:outline-none focus:ring-ring focus:border-border"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700">Last Name</label>
+                <label className="block text-sm font-medium text-foreground">Last Name</label>
                 <input
                   type="text"
                   name="lastName"
                   value={student.lastName || ''}
                   onChange={handleChange}
-                  className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                  className="mt-1 block w-full border border-border rounded-md px-3 py-2 focus:outline-none focus:ring-ring focus:border-border"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700">Email</label>
+                <label className="block text-sm font-medium text-foreground">Email</label>
                 <input
                   type="email"
                   name="email"
                   value={student.email || ''}
                   onChange={handleChange}
-                  className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                  className="mt-1 block w-full border border-border rounded-md px-3 py-2 focus:outline-none focus:ring-ring focus:border-border"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700">Notes</label>
+                <label className="block text-sm font-medium text-foreground">Notes</label>
                 <textarea
                   name="notes"
                   value={student.notes || ''}
                   onChange={handleChange}
                   rows={3}
-                  className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                  className="mt-1 block w-full border border-border rounded-md px-3 py-2 focus:outline-none focus:ring-ring focus:border-border"
                 />
               </div>
             </div>
@@ -169,14 +163,14 @@ export default function EditStudentPage() {
               <button
                 type="button"
                 onClick={() => router.back()}
-                className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600"
+                className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary-hover transition"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={saving}
-                className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 disabled:opacity-50"
+                className="bg-accent text-white px-4 py-2 rounded-md hover:bg-accent-hover transition disabled:opacity-50"
               >
                 {saving ? 'Saving...' : 'Save Changes'}
               </button>

@@ -110,18 +110,19 @@ export default function CourseDetailPage() {
   return (
     <main className="bg-background text-foreground">
       {/* Top Header */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0" />
+      <section className="relative overflow-hidden bg-gradient-to-b from-primary/5 to-transparent">
         <div className="container mx-auto max-w-5xl px-4 py-10 md:py-16">
+          {/* Back */}
           <Link
             href="/courses"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-background hover:underline bg-accent p-2 rounded-lg"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline"
           >
             <ChevronLeft className="h-4 w-4" />
             Back to Courses
           </Link>
 
-          <div className="mt-4 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+          {/* Title + Actions */}
+          <div className="mt-6 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
             <div className="space-y-2">
               <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-primary">
                 {course.title}
@@ -132,10 +133,10 @@ export default function CourseDetailPage() {
                 </p>
               )}
             </div>
-            
+
             <div className="flex gap-3">
               {isEnrolled ? (
-                <div className="inline-flex items-center gap-2 rounded-xl bg-green-500 px-4 py-2 text-sm font-semibold text-white">
+                <div className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-green-500 to-emerald-400 px-4 py-2 text-sm font-semibold text-white shadow-sm">
                   <CheckCircle className="h-4 w-4" />
                   Enrolled
                 </div>
@@ -143,51 +144,51 @@ export default function CourseDetailPage() {
                 <button
                   onClick={handleEnroll}
                   disabled={enrolling}
-                  className="rounded-xl bg-primary px-6 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-primary/90 disabled:opacity-50"
+                  className="rounded-xl bg-gradient-to-r from-primary to-accent px-6 py-2 text-sm font-semibold text-white shadow-md transition hover:opacity-90 disabled:opacity-50"
                 >
                   {enrolling ? "Enrolling..." : "Enroll Now"}
                 </button>
               )}
-              <div className="rounded-xl border bg-card px-4 py-2 text-sm font-semibold text-primary">
+              <div className="rounded-xl bg-card border px-4 py-2 text-sm font-semibold text-primary shadow-sm">
                 {formatPrice(course.price)}
               </div>
             </div>
           </div>
 
           {/* Meta Info */}
-          <div className="mt-6 flex flex-wrap gap-3 text-sm">
+          <div className="mt-6 flex flex-wrap gap-2 text-sm">
             {course.category && (
-              <span className="inline-flex items-center gap-2 rounded-full border bg-card px-3 py-1 text-primary">
+              <span className="inline-flex items-center gap-2 rounded-full bg-muted px-3 py-1 text-primary">
                 <Layers className="h-4 w-4" />
                 {course.category}
               </span>
             )}
             {course.difficultyLevel && (
-              <span className="inline-flex items-center gap-2 rounded-full border bg-card px-3 py-1 text-primary">
+              <span className="inline-flex items-center gap-2 rounded-full bg-muted px-3 py-1 text-primary">
                 <Tag className="h-4 w-4" />
                 {difficultyLabel}
               </span>
             )}
             {course.durationWeeks && (
-              <span className="inline-flex items-center gap-2 rounded-full border bg-card px-3 py-1 text-primary">
+              <span className="inline-flex items-center gap-2 rounded-full bg-muted px-3 py-1 text-primary">
                 <Clock className="h-4 w-4" />
                 {course.durationWeeks} week{course.durationWeeks !== 1 ? "s" : ""}
               </span>
             )}
             {course.maxStudents && (
-              <span className="inline-flex items-center gap-2 rounded-full border bg-card px-3 py-1 text-primary">
+              <span className="inline-flex items-center gap-2 rounded-full bg-muted px-3 py-1 text-primary">
                 <Users className="h-4 w-4" />
                 Max: {course.maxStudents} students
               </span>
             )}
             {course.startDate && (
-              <span className="inline-flex items-center gap-2 rounded-full border bg-card px-3 py-1 text-primary">
+              <span className="inline-flex items-center gap-2 rounded-full bg-muted px-3 py-1 text-primary">
                 <Calendar className="h-4 w-4" />
                 Starts: {formatDate(course.startDate)}
               </span>
             )}
             {course.endDate && (
-              <span className="inline-flex items-center gap-2 rounded-full border bg-card px-3 py-1 text-primary">
+              <span className="inline-flex items-center gap-2 rounded-full bg-muted px-3 py-1 text-primary">
                 <Calendar className="h-4 w-4" />
                 Ends: {formatDate(course.endDate)}
               </span>
@@ -196,12 +197,12 @@ export default function CourseDetailPage() {
         </div>
       </section>
 
-      {/* Body Content */}
+      {/* Body */}
       <section className="container mx-auto max-w-5xl px-4 pb-16">
         <div className="grid gap-8 md:grid-cols-[2fr,3fr]">
           {/* Image + Instructor */}
           <div className="space-y-6">
-            <div className="relative aspect-video w-full overflow-hidden rounded-2xl border bg-muted">
+            <div className="relative aspect-video w-full overflow-hidden rounded-2xl border bg-muted shadow-sm">
               {course.thumbnailUrl ? (
                 <Image
                   src={course.thumbnailUrl}
@@ -218,7 +219,7 @@ export default function CourseDetailPage() {
             </div>
 
             {course.instructor && (
-              <div className="rounded-2xl border bg-card p-4">
+              <div className="rounded-2xl border bg-card p-4 shadow-sm">
                 <div className="flex items-center gap-3 text-primary">
                   <User className="h-5 w-5" />
                   <div className="text-sm">
@@ -233,43 +234,43 @@ export default function CourseDetailPage() {
           {/* Course Info */}
           <div className="space-y-8">
             {course.description && (
-              <div className="prose prose-slate max-w-none">
+              <div>
                 <h2 className="flex items-center gap-2 text-xl font-bold text-primary">
                   <BookOpen className="h-5 w-5" />
                   About this course
                 </h2>
-                <div className="mt-4 rounded-xl border bg-card p-4">
+                <div className="mt-4 rounded-xl border bg-card p-5 shadow-sm">
                   <p className="text-foreground leading-relaxed">{course.description}</p>
                 </div>
               </div>
             )}
 
             {course.requirements && (
-              <div className="prose prose-slate max-w-none">
+              <div>
                 <h3 className="flex items-center gap-2 text-lg font-bold text-primary">
                   <CheckCircle className="h-5 w-5" />
                   Requirements
                 </h3>
-                <div className="mt-4 rounded-xl border bg-card p-4">
+                <div className="mt-4 rounded-xl border bg-card p-5 shadow-sm">
                   <p className="text-foreground leading-relaxed">{course.requirements}</p>
                 </div>
               </div>
             )}
 
             {course.learningOutcomes && (
-              <div className="prose prose-slate max-w-none">
+              <div>
                 <h3 className="flex items-center gap-2 text-lg font-bold text-primary">
                   <Target className="h-5 w-5" />
                   What you'll learn
                 </h3>
-                <div className="mt-4 rounded-xl border bg-card p-4">
+                <div className="mt-4 rounded-xl border bg-card p-5 shadow-sm">
                   <p className="text-foreground leading-relaxed">{course.learningOutcomes}</p>
                 </div>
               </div>
             )}
 
             {/* Course Stats */}
-            <div className="rounded-2xl border bg-card p-6">
+            <div className="rounded-2xl border bg-card p-6 shadow-sm">
               <h3 className="text-lg font-bold text-primary mb-4">Course Details</h3>
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div className="space-y-1">
@@ -288,9 +289,7 @@ export default function CourseDetailPage() {
                 </div>
                 <div className="space-y-1">
                   <div className="text-muted-foreground">Max Students</div>
-                  <div className="font-medium">
-                    {course.maxStudents || "Unlimited"}
-                  </div>
+                  <div className="font-medium">{course.maxStudents || "Unlimited"}</div>
                 </div>
               </div>
             </div>
@@ -299,4 +298,5 @@ export default function CourseDetailPage() {
       </section>
     </main>
   );
+
 }

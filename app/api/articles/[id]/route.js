@@ -5,11 +5,11 @@ import Article from '../../../../lib/models/articleSchema';
 import User from '../../../../lib/models/userSchema';
 
 // GET - Fetch single article
-export async function GET(request, { params }) {
+export async function GET(request, context) {
   try {
     await connectDB();
     
-    const { id } = params;
+    const { id } = await context.params;
     
     if (!id) {
       return NextResponse.json(

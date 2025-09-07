@@ -84,34 +84,34 @@ export default function ArticlesManagement() {
     return content.length > maxLength ? content.substring(0, maxLength) + '...' : content;
   };
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-background">
-        <div className="flex items-center justify-center py-20">
-          <div className="text-gray-600">Loading articles...</div>
-        </div>
+if (isLoading) {
+  return (
+    <div className="min-h-screen bg-background">
+      <div className="flex items-center justify-center py-20">
+        <div className="text-muted-foreground">Loading articles...</div>
       </div>
-    );
-  }
+    </div>
+  );
+}
 
   return (
     <div className="min-h-screen bg-background">      
       <div className="pt-[200px] min-h-screen max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Page Header */}
         <div className="flex items-center justify-between mb-8 flex-col md:flex-row space-y-4 md:space-y-0">
-          <div className="flex items-center">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900 flex items-center max-md:hidden">
-                <FileText className="w-8 h-8 mr-3 text-primary" />
-                Articles Management
-              </h1>
-              <p className="text-gray-600">Manage your article collection</p>
-            </div>
+          <div>
+            <h1 className="text-3xl font-bold text-foreground flex items-center max-md:hidden">
+              <FileText className="w-8 h-8 mr-3 text-primary" />
+              Articles Management
+            </h1>
+            <p className="text-muted-foreground">Manage your article collection</p>
           </div>
           
           <button
             onClick={() => router.push('/admin/articles/add')}
-            className="bg-accent text-white px-6 py-3 rounded-md hover:bg-secondary hover:text-primary border-primary border-2 transition duration-200 font-medium flex items-center"
+            className="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary/90 
+                      border border-primary shadow-sm transition duration-200 
+                      font-medium flex items-center"
           >
             <Plus className="w-5 h-5 mr-2" />
             Add New Article
@@ -119,26 +119,29 @@ export default function ArticlesManagement() {
         </div>
 
         {/* Search and Filter Bar */}
-        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+        <div className="bg-card rounded-lg shadow-sm border border-border p-6 mb-8">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0 md:space-x-4">
             <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground w-5 h-5" />
               <input
                 type="text"
                 placeholder="Search articles by title, author, or content..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-accent rounded-md focus:ring-2 focus:ring-primary focus:border-primary"
+                className="w-full pl-10 pr-4 py-2 border border-border rounded-md 
+                          focus:ring-2 focus:ring-primary focus:border-primary
+                          bg-background text-foreground placeholder:text-muted-foreground"
               />
             </div>
             
             <div className="flex items-center space-x-4">
               <div className="flex items-center">
-                <Filter className="w-5 h-5 text-gray-400 mr-2" />
+                <Filter className="w-5 h-5 text-muted-foreground mr-2" />
                 <select
                   value={filterTags}
                   onChange={(e) => setFilterTags(e.target.value)}
-                  className="border border-accent rounded-md px-3 py-2 focus:ring-2 focus:ring-primary focus:border-primary"
+                  className="border border-border rounded-md px-3 py-2 
+                            bg-background text-foreground focus:ring-2 focus:ring-primary"
                 >
                   <option value="all">All Tags</option>
                   {availableTags.map((tag) => (
@@ -153,7 +156,11 @@ export default function ArticlesManagement() {
         {/* Articles Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredArticles.map((article) => (
-            <div key={article._id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition duration-200">
+            <div 
+              key={article._id} 
+              className="bg-card rounded-lg shadow-sm border border-border 
+                        overflow-hidden hover:shadow-md transition duration-200"
+            >
               {/* Article Image */}
               {article.imageUrl && (
                 <div className="h-48 overflow-hidden">
@@ -161,9 +168,7 @@ export default function ArticlesManagement() {
                     src={article.imageUrl}
                     alt={article.title}
                     className="w-full h-full object-cover"
-                    onError={(e) => {
-                      e.target.style.display = 'none';
-                    }}
+                    onError={(e) => { e.target.style.display = 'none'; }}
                   />
                 </div>
               )}
@@ -171,9 +176,11 @@ export default function ArticlesManagement() {
               <div className="p-6">
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex-1">
-                    <h3 className="text-lg font-bold text-gray-900 mb-2 line-clamp-2">{article.title}</h3>
-                    <p className="text-sm text-gray-600 mb-1">by {article.author}</p>
-                    <p className="text-xs text-gray-400">
+                    <h3 className="text-lg font-semibold text-foreground mb-2 line-clamp-2">
+                      {article.title}
+                    </h3>
+                    <p className="text-sm text-muted-foreground mb-1">by {article.author}</p>
+                    <p className="text-xs text-muted-foreground">
                       {new Date(article.date).toLocaleDateString()}
                     </p>
                   </div>
@@ -185,35 +192,35 @@ export default function ArticlesManagement() {
                     {article.tags.slice(0, 3).map((tag, index) => (
                       <span
                         key={index}
-                        className="inline-flex items-center px-2 py-1 text-xs font-medium bg-accent text-white rounded-full"
+                        className="inline-flex items-center px-2 py-1 text-xs font-medium 
+                                  bg-primary/10 text-primary rounded-full"
                       >
                         <Tag className="w-3 h-3 mr-1" />
                         {tag}
                       </span>
                     ))}
                     {article.tags.length > 3 && (
-                      <span className="text-xs text-gray-500">
+                      <span className="text-xs text-muted-foreground">
                         +{article.tags.length - 3} more
                       </span>
                     )}
                   </div>
                 )}
                 
-                <p className="text-sm text-gray-600 mb-4 line-clamp-3">
+                <p className="text-sm text-muted-foreground mb-4 line-clamp-3">
                   {truncateContent(article.content)}
                 </p>
                 
-                <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
-                  <span>
-                    {article.createdBy?.name || 'Unknown Author'}
-                  </span>
+                <div className="flex items-center justify-between text-xs text-muted-foreground mb-4">
+                  <span>{article.createdBy?.name || 'Unknown Author'}</span>
                   <span>Added: {new Date(article.createdAt).toLocaleDateString()}</span>
                 </div>
                 
                 <div className="flex space-x-2">
                   <button
                     onClick={() => handleDelete(article._id)}
-                    className="bg-red-600 text-white py-2 px-3 rounded-md hover:bg-red-700 transition duration-200 text-sm font-medium flex items-center justify-center"
+                    className="bg-red-500 text-white py-2 px-3 rounded-md 
+                              hover:bg-red-600 transition text-sm font-medium flex items-center"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
@@ -223,18 +230,20 @@ export default function ArticlesManagement() {
           ))}
         </div>
 
+        {/* Empty State */}
         {filteredArticles.length === 0 && (
-          <div className="bg-white rounded-lg shadow-md p-12 text-center">
-            <FileText className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No articles found</h3>
-            <p className="text-gray-600 mb-6">
+          <div className="bg-card border border-border rounded-lg shadow-sm p-12 text-center">
+            <FileText className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+            <h3 className="text-lg font-medium text-foreground mb-2">No articles found</h3>
+            <p className="text-muted-foreground mb-6">
               {searchTerm || filterTags !== 'all' 
                 ? 'Try adjusting your search or filter criteria.' 
                 : 'Get started by adding your first article.'}
             </p>
             <button
               onClick={() => router.push('/admin/articles/add')}
-              className="bg-primary text-white px-6 py-3 rounded-md hover:bg-primary-dark transition duration-200 font-medium"
+              className="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary/90 
+                        transition font-medium"
             >
               Add Your First Article
             </button>
@@ -243,4 +252,5 @@ export default function ArticlesManagement() {
       </div>
     </div>
   );
+
 }
