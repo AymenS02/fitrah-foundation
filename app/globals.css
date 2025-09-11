@@ -25,7 +25,7 @@
   --color-muted: hsl(230, 20%, 96%);             /* Very light blue-gray */
   --color-muted-foreground: hsl(230, 15%, 55%);  /* Medium blue-gray text */
   --color-border: hsl(230, 20%, 88%);            /* Subtle blue-gray borders */
-  --color-input: hsl(230, 25%, 94%);             /* Input field backgrounds */
+  --color-input: hsl(230, 25%, 24%);             /* Input field backgrounds */
   
   /* Interactive States */
   --color-primary-hover: hsl(230, 55%, 35%);     /* Lighter primary hover */
@@ -73,7 +73,7 @@
   --color-muted: hsl(230, 18%, 15%);             /* Dark surface variant */
   --color-muted-foreground: hsl(230, 15%, 65%);  /* Medium gray text */
   --color-border: hsl(230, 20%, 22%);            /* Dark borders */
-  --color-input: hsl(230, 20%, 18%);             /* Dark input backgrounds */
+  --color-input: hsl(230, 20%, 68%);             /* Dark input backgrounds */
   
   /* Interactive States - Dark mode adjustments */
   --color-primary-hover: hsl(230, 55%, 70%);     /* Brighter primary hover */
