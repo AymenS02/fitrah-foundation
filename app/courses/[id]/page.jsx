@@ -136,10 +136,13 @@ export default function CourseDetailPage() {
 
             <div className="flex gap-3">
               {isEnrolled ? (
-                <div className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-green-500 to-emerald-400 px-4 py-2 text-sm font-semibold text-white shadow-sm">
+                <Link
+                  href={`/courses/${id}/dashboard`}
+                  className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-green-600 to-emerald-500 px-6 py-2 text-sm font-semibold text-white shadow-md hover:opacity-90 transition"
+                >
                   <CheckCircle className="h-4 w-4" />
-                  Enrolled
-                </div>
+                  Go to Dashboard
+                </Link>
               ) : (
                 <button
                   onClick={handleEnroll}
