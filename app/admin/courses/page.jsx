@@ -109,13 +109,13 @@ export default function CoursesPage() {
 
   return (
     <div className="max-w-5xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-6 text-center">Available Courses</h1>
+      <h1 className="text-3xl text-primary font-bold mb-6 text-center">Available Courses</h1>
 
       {/* Create Course Button */}
       <div className="flex justify-center mb-6">
         <button
           onClick={() => setShowForm(!showForm)}
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+          className="bg-accent text-white px-4 py-2 rounded-lg hover:bg-accent-hover transition"
         >
           {showForm ? 'Cancel' : 'Create Course'}
         </button>
@@ -165,21 +165,21 @@ export default function CoursesPage() {
               )}
               <h2 className="text-xl font-semibold">{course.title}</h2>
               <p className="text-gray-600 text-sm mt-1 line-clamp-2">{course.description}</p>
-              <p className="text-sm text-blue-600 mt-2">Category: {course.category || 'Uncategorized'}</p>
-              <p className="text-sm text-green-600">Level: {course.difficultyLevel}</p>
+              <p className="text-sm text-accent mt-2">Category: {course.category || 'Uncategorized'}</p>
+              <p className="text-sm text-primary">Level: {course.difficultyLevel}</p>
               <p className="text-sm mt-1">Price: ${course.price}</p>
               
               {/* Action Buttons */}
               <div className="flex flex-col gap-2 mt-4">
                 <button
                   onClick={() => handleViewDashboard(course._id)}
-                  className="bg-blue-600 text-white px-3 py-1.5 rounded text-sm hover:bg-blue-700 transition"
+                  className="bg-accent text-white px-3 py-1.5 rounded text-sm hover:bg-accent-hover transition"
                 >
                   View Dashboard
                 </button>
                 <button
                   onClick={() => handleManageModules(course._id)}
-                  className="bg-green-600 text-white px-3 py-1.5 rounded text-sm hover:bg-green-700 transition"
+                  className="bg-primary text-white px-3 py-1.5 rounded text-sm hover:bg-primary-hover transition"
                 >
                   Manage Modules
                 </button>

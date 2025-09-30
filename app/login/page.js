@@ -33,7 +33,7 @@ export default function LoginPage() {
 
         // ✅ Update context so Header re-renders automatically
         setUser(data.user);
-
+        
         router.push('/courses');
       } else {
         setError(data.message || 'Login failed');

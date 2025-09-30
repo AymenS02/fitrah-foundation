@@ -75,7 +75,7 @@ export default function CourseStudents() {
         <div>
           <button
             onClick={() => router.push(`/admin/courses/${courseId}`)}
-            className="text-blue-600 hover:text-blue-800 mb-2 p-2 rounded-lg"
+            className="text-primary hover:text-primary-hover mb-2 p-2 rounded-lg"
           >
             ← Back to Course
           </button>
@@ -85,7 +85,7 @@ export default function CourseStudents() {
       </div>
 
       {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+        <div className="bg-error border border-border text-red-700 px-4 py-3 rounded mb-4">
           {error}
         </div>
       )}
@@ -102,7 +102,7 @@ export default function CourseStudents() {
             </h3>
             <div className="space-y-2">
               {students.map((enrollment) => (
-                <div key={enrollment._id} className="bg-white shadow-md rounded-xl p-6 border">
+                <div key={enrollment._id} className="bg-card shadow-md rounded-xl p-6 border">
                   <div className="flex justify-between items-start">
                     <div className="flex-1">
                       <h4 className="text-lg font-medium text-gray-900">

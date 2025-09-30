@@ -66,7 +66,7 @@ export default function CourseDashboard() {
     <div className="max-w-4xl mx-auto p-6">
       <button
         onClick={() => router.push(`/admin/courses`)}
-        className="mb-4 text-blue-600 hover:text-blue-800 p-2 rounded-lg"
+        className="mb-4 text-primary hover:text-primary-hover p-2 rounded-lg"
       >
         ← Back to Courses
       </button>
@@ -108,19 +108,19 @@ export default function CourseDashboard() {
         <div className="flex gap-4">
           <button
             onClick={() => router.push(`/admin/courses/${courseId}/modules`)}
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+            className="bg-foreground text-secondary px-4 py-2 rounded hover:bg-primary-hover transition duration-300"
           >
             Manage Modules
           </button>
           <button
             onClick={() => router.push(`/admin/courses/${courseId}/enrollments`)}
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+            className="bg-foreground text-secondary px-4 py-2 rounded hover:bg-primary-hover transition duration-300"
           >
             Manage Students
           </button>
           <button
             onClick={() => handleDeleteCourse(course._id)}
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+            className="bg-foreground text-secondary px-4 py-2 rounded hover:bg-primary-hover transition duration-300"
           >
             Delete Course
           </button>
