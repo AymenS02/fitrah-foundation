@@ -1,25 +1,26 @@
-// ./app/api/enrollments/grades/route.js
 import { NextResponse } from "next/server";
 import { connectDB } from "../../../../lib/config/db";
 import Enrollment from "../../../../lib/models/enrollmentSchema";
+import Course from "../../../../lib/models/courseSchema"; // Make sure this path is correct!
+import Module from "../../../../lib/models/moduleSchema";
 
+// POST /api/enrollments/grades
 export async function POST(req) {
   try {
     await connectDB();
+    const { enrollmentId, itemType, itemId, title, answers } = await req.json();
 
-    // Read body
-    const { studentId, courseId, moduleId, answers } = await req.json();
+    console.log("Received:", { enrollmentId, itemType, itemId, title, hasAnswers: !!answers });
 
-    if (!studentId || !courseId || !moduleId || !answers) {
+    if (!enrollmentId || !itemType || !itemId) {
       return NextResponse.json(
-        { success: false, error: "Missing studentId, courseId, moduleId or answers" },
+        { success: false, error: "Missing required fields" },
         { status: 400 }
       );
     }
 
-    // Find enrollment by studentId + courseId
-    const enrollment = await Enrollment.findOne({ student: studentId, course: courseId }).populate("course");
-
+    // Find enrollment
+    const enrollment = await Enrollment.findById(enrollmentId).populate("course");
     if (!enrollment) {
       return NextResponse.json(
         { success: false, error: "Enrollment not found" },
@@ -27,61 +28,98 @@ export async function POST(req) {
       );
     }
 
-    const course = enrollment.course;
+    // For quizzes, we need to calculate the score from answers
+    let score, maxScore;
 
-    if (!course || !course.modules) {
-      return NextResponse.json(
-        { success: false, error: "Course or modules not found" },
-        { status: 404 }
-      );
-    }
-
-    // Find the module in the course
-    const courseModule = course.modules.find(
-      (m) => m._id.toString() === moduleId
-    );
-
-    if (!courseModule || !courseModule.quiz) {
-      return NextResponse.json(
-        { success: false, error: "Quiz not found in this module" },
-        { status: 404 }
-      );
-    }
-
-    // Calculate score
-    const quizQuestions = courseModule.quiz.questions;
-    let correctCount = 0;
-
-    quizQuestions.forEach((q, idx) => {
-      if (answers[idx] && answers[idx] === q.answer) {
-        correctCount += 1;
+    if (itemType === "QUIZ" && answers) {
+      // Find the course and quiz to get correct answers
+      const course = await Course.findById(enrollment.course._id);
+      if (!course) {
+        return NextResponse.json(
+          { success: false, error: "Course not found" },
+          { status: 404 }
+        );
       }
-    });
 
-    const percentage = (correctCount / quizQuestions.length) * 100;
+      const quizModule = await Module.findById(itemId);
+      if (!quizModule || !quizModule.quiz) {
+        return NextResponse.json(
+          { success: false, error: "Quiz not found" },
+          { status: 404 }
+        );
+      }
 
-    // Save grades in enrollment
-    if (!enrollment.grades) enrollment.grades = [];
+      // Calculate score
+      const questions = quizModule.quiz.questions;
+      let correctCount = 0;
+
+      questions.forEach((question, idx) => {
+        const userAnswer = answers[idx];
+        const correctAnswer = question.correctAnswer; // <-- use correctAnswer
+        if (userAnswer === correctAnswer) {
+          correctCount++;
+        }
+      });
+
+
+      score = correctCount;
+      maxScore = questions.length;
+      
+    } else {
+      // For non-quiz items or if score is pre-calculated
+      return NextResponse.json(
+        { success: false, error: "Invalid submission data" },
+        { status: 400 }
+      );
+    }
+
+    // Calculate percentage
+    const percentage = (score / maxScore) * 100;
+
+    // Check if grade for this item already exists
     const existingGradeIndex = enrollment.grades.findIndex(
-      (g) => g.module.toString() === moduleId
+      (g) => g.itemId.toString() === itemId && g.itemType === itemType
     );
 
     if (existingGradeIndex >= 0) {
-      enrollment.grades[existingGradeIndex].score = percentage;
+      // Update existing grade
+      enrollment.grades[existingGradeIndex] = {
+        itemType,
+        itemId,
+        title,
+        score,
+        maxScore,
+        percentage,
+        gradedAt: new Date(),
+      };
     } else {
+      // Push new grade
       enrollment.grades.push({
-        module: moduleId,
-        score: percentage,
+        itemType,
+        itemId,
+        title,
+        score,
+        maxScore,
+        percentage,
       });
     }
 
     await enrollment.save();
 
-    return NextResponse.json({ success: true, data: { percentage } }, { status: 200 });
-  } catch (err) {
-    console.error("Error submitting quiz:", err);
     return NextResponse.json(
-      { success: false, error: "Failed to submit quiz" },
+      { success: true, data: enrollment.grades },
+      { status: 200 }
+    );
+  } catch (err) {
+    console.error("Error updating grade:", err);
+    console.error("Error message:", err.message);
+    console.error("Error stack:", err.stack);
+    return NextResponse.json(
+      { 
+        success: false, 
+        error: "Failed to update grade",
+        details: process.env.NODE_ENV === "development" ? err.message : undefined
+      },
       { status: 500 }
     );
   }

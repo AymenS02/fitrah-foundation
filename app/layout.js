@@ -3,7 +3,7 @@ import { Palanquin_Dark, Orienta } from "next/font/google";
 import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
 import Footer from "@/components/Footer";
-import { AuthProvider } from "../components/authContext"; // ✅ make sure path is correct
+import { AuthProvider } from "../components/authContext";
 
 // Fonts
 const palanquinDark = Palanquin_Dark({

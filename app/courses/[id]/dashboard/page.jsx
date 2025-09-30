@@ -3,6 +3,7 @@
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { CheckCircle, Clock, BookOpen, FileText, ClipboardList, Play } from "lucide-react";
+import { useAuth } from "@/components/authContext";
 
 export default function CourseDashboardPage() {
   const { id } = useParams(); 
@@ -12,6 +13,7 @@ export default function CourseDashboardPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [completingModule, setCompletingModule] = useState(null);
+  const { user } = useAuth();
 
   // Fetch course data with modules and user's enrollment
   const fetchCourseData = async () => {
@@ -83,6 +85,13 @@ export default function CourseDashboardPage() {
     }
   };
 
+  if (!user) {
+  return (
+    <div className="min-h-screen flex items-center justify-center">
+      <p>You are not logged in</p>
+    </div>
+  );
+}
   // Calculate progress
   const calculateProgress = () => {
     if (!course?.modules || !enrollment) return 0;
@@ -135,7 +144,7 @@ export default function CourseDashboardPage() {
           <p className="text-gray-600">{error}</p>
           <button 
             onClick={() => router.back()}
-            className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            className="mt-4 px-4 py-2 bg-primary text-white rounded hover:bg-primary-hover"
           >
             Go Back
           </button>
@@ -227,7 +236,7 @@ export default function CourseDashboardPage() {
                         <div className={`p-2 rounded-lg ${
                           isCompleted 
                             ? 'bg-green-100 text-green-600'
-                            : 'bg-blue-100 text-blue-600'
+                            : 'bg-secondary text-accent'
                         }`}>
                           {getModuleIcon(module.type)}
                         </div>
@@ -282,7 +291,7 @@ export default function CourseDashboardPage() {
                             completeModule(module._id);
                           }}
                           disabled={isCurrentlyCompleting}
-                          className="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                          className="px-4 py-2 bg-primary text-white text-sm rounded-lg hover:bg-primary-hover disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                           {isCurrentlyCompleting ? 'Completing...' : 'Mark as Complete'}
                         </button>
