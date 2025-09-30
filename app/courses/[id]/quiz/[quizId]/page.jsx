@@ -192,35 +192,35 @@ export default function QuizPage() {
       {/* Quiz results */}
       {!loading && submitted && score !== null && quizData && (
         <div className="container mx-auto max-w-4xl px-4">
-          <div className="bg-white rounded-lg shadow-lg p-8 text-center">
+          <div className="bg-card rounded-lg shadow-lg p-8 text-center">
             {score >= passingScore ? (
-              <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
+              <CheckCircle className="h-16 w-16 text-success mx-auto mb-4" />
             ) : (
-              <XCircle className="h-16 w-16 text-red-500 mx-auto mb-4" />
+              <XCircle className="h-16 w-16 text-error mx-auto mb-4" />
             )}
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            <h1 className="text-3xl font-bold text-foreground mb-2">
               {score >= passingScore ? "Congratulations!" : "Quiz Not Passed"}
             </h1>
-            <p className="text-gray-600 mb-4">
+            <p className="text-muted-foreground mb-4">
               {score >= passingScore
                 ? "You have successfully completed this quiz."
                 : `You need to score at least ${passingScore}% to pass.`}
             </p>
-            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-6 mb-6">
-              <div className="text-5xl font-bold text-blue-600 mb-2">{score.toFixed(0)}%</div>
-              <div className="text-gray-600 text-lg">Your Score</div>
+            <div className="bg-gradient-to-br from-muted to-background rounded-lg p-6 mb-6 border border-border">
+              <div className="text-5xl font-bold text-accent mb-2">{score.toFixed(0)}%</div>
+              <div className="text-muted-foreground text-lg">Your Score</div>
             </div>
             <div className="flex justify-center space-x-4">
               <button
-                onClick={() => router.push(`/courses/${courseId}`)}
-                className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                onClick={() => router.push(`/courses/${courseId}/dashboard`)}
+                className="px-6 py-3 bg-accent text-white rounded-lg hover:bg-accent-hover transition-all active:scale-95 shadow-md"
               >
-                Return to Course
+                Return to Dashboard
               </button>
               {score < passingScore && (
                 <button
                   onClick={() => window.location.reload()}
-                  className="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700"
+                  className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary-hover transition-all active:scale-95 shadow-md"
                 >
                   Retake Quiz
                 </button>
@@ -235,24 +235,23 @@ export default function QuizPage() {
         <div className="container mx-auto max-w-4xl px-4">
           {/* Header */}
           <div className="bg-card rounded-lg shadow-sm p-6 mb-6">
-            <button
-              onClick={() => router.push(`/courses/${courseId}`)}
-              className="flex items-center text-blue-600 hover:text-blue-700 mb-4"
-            >
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Course
-            </button>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">{quizData.title}</h1>
-            {quizData.description && <p className="text-gray-600 mb-4">{quizData.description}</p>}
-            <div className="flex items-center space-x-6 text-sm text-gray-600 bg-foreground rounded-lg p-4">
+          <button
+            onClick={() => router.push(`/courses/${id}/dashboard`)}
+            className="text-primary hover:text-primary-hover mb-2 text-sm"
+          >
+            ← Back to Dashboard
+          </button>
+            <h1 className="text-3xl font-bold text-primary mb-2">{quizData.title}</h1>
+            {quizData.description && <p className="text-secondary mb-4">{quizData.description}</p>}
+            <div className="flex items-center space-x-6 text-sm text-secondary bg-background rounded-lg p-4">
               <div className="flex items-center">
-                <Clock className="h-4 w-4 mr-2 text-blue-600" />
+                <Clock className="h-4 w-4 mr-2 text-primary" />
                 <span>
-                  <span className="font-semibold">{questions.length}</span> questions
+                  <span className="font-semibold ">{questions.length}</span> questions
                 </span>
               </div>
               <div>
-                Passing score: <span className="font-semibold text-blue-600">{passingScore}%</span>
+                Passing score: <span className="font-semibold">{passingScore}%</span>
               </div>
             </div>
           </div>
@@ -269,36 +268,36 @@ export default function QuizPage() {
           <div className="space-y-6 mb-6">
             {questions.map((q, idx) => (
               <div key={idx} className="bg-card rounded-lg shadow-sm p-6 border border-border hover:border-blue-300">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                  <span className="inline-block w-8 h-8 bg-blue-100 text-blue-600 rounded-full text-center leading-8 mr-3 text-sm font-bold">
+                <h3 className="text-lg font-semibold text-primary mb-4">
+                  <span className="inline-block w-8 h-8 bg-background text-accent rounded-full text-center leading-8 mr-3 text-sm font-bold">
                     {idx + 1}
                   </span>
                   {q.question}
                 </h3>
                 <div className="space-y-3 ml-11">
                   {q.options.map((opt, optIdx) => (
-                    <label
-                      key={optIdx}
-                      className={`flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                        answers[idx] === opt
-                          ? "border-blue-500 bg-blue-50"
-                          : "border-border hover:border-blue-300 hover:bg-gray-50"
-                      }`}
+                  <label
+                    key={optIdx}
+                    className={`flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all active:scale-95 ${
+                      answers[idx] === opt
+                        ? "bg-accent text-white border-accent"
+                        : "border-border hover:border-accent hover:bg-muted"
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name={`question-${idx}`}
+                      value={opt}
+                      checked={answers[idx] === opt}
+                      onChange={() => handleSelect(idx, opt)}
+                      className="hidden"
+                    />
+                    <span
+                      className={`${answers[idx] === opt ? "font-medium" : "text-foreground"}`}
                     >
-                      <input
-                        type="radio"
-                        name={`question-${idx}`}
-                        value={opt}
-                        checked={answers[idx] === opt}
-                        onChange={() => handleSelect(idx, opt)}
-                        className="h-4 w-4 text-blue-600 focus:ring-blue-500"
-                      />
-                      <span
-                        className={`ml-3 ${answers[idx] === opt ? "text-gray-900 font-medium" : "text-gray-700"}`}
-                      >
-                        {opt}
-                      </span>
-                    </label>
+                      {opt}
+                    </span>
+                  </label>
                   ))}
                 </div>
               </div>
@@ -309,21 +308,21 @@ export default function QuizPage() {
           <div className="bg-card rounded-lg shadow-sm p-6 sticky bottom-4">
             <div className="flex items-center justify-between">
               <div className="text-sm">
-                <span className="text-gray-600">Progress: </span>
-                <span className={`font-semibold ${allQuestionsAnswered() ? "text-green-600" : "text-secondary"}`}>
+                <span className="text-muted-foreground">Progress: </span>
+                <span className={`font-semibold ${allQuestionsAnswered() ? "text-success" : "text-accent"}`}>
                   {Object.values(answers).filter((a) => a).length} / {questions.length} answered
                 </span>
               </div>
               <button
                 onClick={handleSubmit}
                 disabled={submitting || !allQuestionsAnswered()}
-                className="px-8 py-3 bg-accent text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 font-semibold shadow-md"
+                className="px-8 py-3 bg-accent text-white rounded-lg hover:bg-accent-hover disabled:opacity-50 disabled:cursor-not-allowed font-semibold shadow-md transition-all active:scale-95"
               >
                 {submitting ? "Submitting..." : "Submit Quiz"}
               </button>
             </div>
             {!allQuestionsAnswered() && (
-              <p className="text-sm text-amber-600 mt-3 text-right flex items-center justify-end">
+              <p className="text-sm text-warning mt-3 text-right flex items-center justify-end">
                 <AlertCircle className="h-4 w-4 mr-1" />
                 Please answer all questions before submitting
               </p>

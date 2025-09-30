@@ -6,7 +6,7 @@
   
   /* Core Brand Colors */
   --color-primary: hsl(230, 55%, 26%);           /* Main brand blue */
-  --color-secondary: hsl(230, 35%, 92%);         /* Light blue-gray complement */
+  --color-secondary: hsl(175, 50%, 45%);         /* Balanced teal */
   --color-accent: hsl(200, 65%, 45%);            /* Harmonious blue accent */
   
   /* Backgrounds & Surfaces */
@@ -54,9 +54,9 @@
 .dark {
   /* Core Brand Colors - Brightened for dark backgrounds */
   --color-primary: hsl(230, 55%, 65%);           /* Brighter primary */
-  --color-secondary: hsl(230, 25%, 20%);         /* Dark blue-gray */
+  --color-secondary: hsl(175, 55%, 65%);         /* Lighter teal for dark mode */
   --color-accent: hsl(200, 65%, 60%);            /* Brighter accent */
-  
+
   /* Backgrounds & Surfaces - Dark blue theme */
   --color-background: hsl(230, 20%, 9%);         /* Deep blue-black */
   --color-foreground: hsl(230, 15%, 92%);        /* Light blue-white text */
@@ -108,13 +108,11 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-palanquin-dark);
-  color: var(--color-foreground);
 }
 
 /* Selection Styling */
 ::selection {
   background-color: var(--color-selection);
-  color: var(--color-foreground);
 }
 
 /* Scrollbar Theming (Webkit) */
