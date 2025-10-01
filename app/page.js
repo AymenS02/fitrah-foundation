@@ -61,35 +61,25 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: 'var(--color-background)' }}>
+    <div className="min-h-screen bg-background">
 
       {/* Hero Section */}
       <div className="w-[80%] xl:w-[1400px] mx-auto h-[800px] flex flex-col md:flex-row items-center justify-center md:justify-between">
         {/* Content Container */}
         <div className="flex flex-col items-center md:items-start text-center md:text-left gap-8 md:gap-12 order-2 md:order-1 md:w-1/2">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-palanquin-dark mt-4 md:mt-0" style={{ color: 'var(--color-foreground)' }}>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-palanquin-dark mt-4 md:mt-0 text-foreground">
             Step onto the noble path in search of sacred knowledge.
           </h1>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
             <button 
-              className="px-6 py-3 shadow-md hover:shadow-lg rounded-full font-medium border-2 hover:scale-105 transition-transform cursor-pointer btn-primary"
-              style={{ 
-                backgroundColor: 'var(--color-primary)',
-                color: 'white',
-                borderColor: 'var(--color-primary)'
-              }}
+              className="px-6 py-3 shadow-md hover:shadow-lg rounded-full font-medium border-2 hover:scale-105 transition-transform cursor-pointer bg-primary text-white border-primary"
             >
               Get Started
             </button>
 
             <button 
-              className="px-6 py-3 rounded-full font-medium shadow-md hover:shadow-lg border-2 hover:scale-105 transition-transform cursor-pointer"
-              style={{ 
-                backgroundColor: 'var(--color-card)',
-                borderColor: 'var(--color-primary)',
-                color: 'var(--color-foreground)'
-              }}
+              className="px-6 py-3 rounded-full font-medium shadow-md hover:shadow-lg border-2 hover:scale-105 transition-transform cursor-pointer bg-card border-primary text-foreground"
             >
               Learn More
             </button>
@@ -113,14 +103,7 @@ export default function Home() {
       </div>
 
       {/* Subjects Banner */}
-      <div 
-        className="w-[80%] xl:w-[1400px] mx-auto mt-[100px] p-10 py-8 text-center border-2 flex items-center justify-around gap-4 flex-wrap"
-        style={{ 
-          backgroundColor: 'var(--color-primary)',
-          color: 'var(--color-white)',
-          borderColor: 'var(--color-border)'
-        }}
-      >
+      <div className="w-[80%] xl:w-[1400px] mx-auto mt-[100px] p-10 py-8 text-center border-2 flex items-center justify-around gap-4 flex-wrap bg-primary text-white border-border">
         <p className="text-lg font-bold sm:text-base">Aqeedah</p>
         <p className="text-lg font-bold sm:text-base">Fiqh</p>
         <p className="text-lg font-bold sm:text-base">Hadith</p>
@@ -130,38 +113,38 @@ export default function Home() {
 
       {/* What is Fitrah Foundation Section */}
       <div className="w-[80%] xl:w-[1400px] mx-auto my-[100px] text-start flex items-center justify-start gap-4 flex-wrap">
-        <h1 className="text-2xl font-bold" style={{ color: 'var(--color-foreground)' }}>
+        <h1 className="text-2xl font-bold text-foreground">
           What is Fitrah Foundation?
         </h1>
-        <p className="text-sm sm:text-base" style={{ color: 'var(--color-muted-foreground)' }}>
+        <p className="text-sm sm:text-base text-muted-foreground">
           The Fitrah Foundation strives to reconnect individuals with their innate recognition of Allah and guide them back to their natural disposition. In a world influenced by external factors, the foundation provides education and guidance to dispel confusion and align beliefs and actions with the inherent understanding of right and wrong, fostering a return to moral clarity and truth.
         </p>
       </div>
 
       {/* The Teachers Section */}
-      <div className="min-h-screen py-20 relative overflow-hidden" style={{ backgroundColor: 'var(--color-background)' }}>
+      <div className="min-h-screen py-20 relative overflow-hidden bg-background">
         {/* Decorative Background Elements */}
         <div className="absolute top-0 left-0 w-full h-full opacity-5">
-          <div className="absolute top-20 left-10 w-32 h-32 border-2 rounded-full" style={{ borderColor: 'var(--color-accent)' }}></div>
-          <div className="absolute top-60 right-20 w-24 h-24 border-2 rotate-45" style={{ borderColor: 'var(--color-accent)' }}></div>
-          <div className="absolute bottom-40 left-1/4 w-16 h-16 border-2 rounded-full" style={{ borderColor: 'var(--color-accent)' }}></div>
-          <div className="absolute bottom-20 right-1/3 w-20 h-20 border-2 rotate-12" style={{ borderColor: 'var(--color-accent)' }}></div>
+          <div className="absolute top-20 left-10 w-32 h-32 border-2 rounded-full border-accent"></div>
+          <div className="absolute top-60 right-20 w-24 h-24 border-2 rotate-45 border-accent"></div>
+          <div className="absolute bottom-40 left-1/4 w-16 h-16 border-2 rounded-full border-accent"></div>
+          <div className="absolute bottom-20 right-1/3 w-20 h-20 border-2 rotate-12 border-accent"></div>
         </div>
 
         <div className="w-[80%] xl:w-[1400px] mx-auto relative z-10">
           {/* Header Section */}
           <div className="text-center mb-16">
             <div className="inline-block mb-4">
-              <div className="w-16 h-1 mx-auto mb-4" style={{ backgroundColor: 'var(--color-accent)' }}></div>
+              <div className="w-16 h-1 mx-auto mb-4 bg-accent"></div>
             </div>
-            <h1 className="text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-              <span style={{ color: 'var(--color-primary)' }}>
+            <h1 className="text-4xl lg:text-6xl font-bold mb-6 leading-tight">
+              <span className="text-primary">
                 LEARN FROM OUR
               </span>
               <br />
-              <span style={{ color: 'var(--color-accent)' }}>EXPERIENCED INSTRUCTORS</span>
+              <span className="text-accent">EXPERIENCED INSTRUCTORS</span>
             </h1>
-            <p className="text-xl max-w-2xl mx-auto leading-relaxed" style={{ color: 'var(--color-muted-foreground)' }}>
+            <p className="text-xl max-w-2xl mx-auto leading-relaxed text-muted-foreground">
               Study with distinguished scholars who combine traditional Islamic education with modern pedagogical excellence
             </p>
           </div>
@@ -177,20 +160,11 @@ export default function Home() {
                 onMouseEnter={() => setHoveredCard(teacher.id)}
                 onMouseLeave={() => setHoveredCard(null)}
               >
-                <div 
-                  className="rounded-2xl shadow-2xl overflow-hidden transform group-hover:scale-105 transition-all duration-500 border-2 group-hover:border-opacity-60"
-                  style={{ 
-                    backgroundColor: 'var(--color-card)',
-                    borderColor: 'var(--color-border)'
-                  }}
-                >
+                <div className="rounded-2xl shadow-2xl overflow-hidden transform group-hover:scale-105 transition-all duration-500 border-2 group-hover:border-opacity-60 bg-card border-border">
                   <div className="flex flex-col lg:flex-row">
                     {/* Image Section */}
                     <div className={`lg:w-1/3 relative overflow-hidden ${index % 2 === 0 ? 'lg:order-1' : 'lg:order-2'}`}>
-                      <div 
-                        className="h-64 lg:h-full flex items-center justify-center relative"
-                        style={{ backgroundColor: 'var(--color-muted)' }}
-                      >
+                      <div className="h-64 lg:h-full flex items-center justify-center relative bg-muted">
                         <div className="w-32 h-32 lg:w-64 lg:h-64 relative rounded-full overflow-hidden shadow-lg">
                           <Image
                             src={teacher.image}
@@ -201,16 +175,16 @@ export default function Home() {
                         </div>
                         
                         {/* Decorative Elements */}
-                        <div className="absolute top-4 left-4 w-8 h-8 border-2 rounded-full opacity-30" style={{ borderColor: 'var(--color-accent)' }}></div>
-                        <div className="absolute bottom-6 right-6 w-6 h-6 border-2 rotate-45 opacity-30" style={{ borderColor: 'var(--color-accent)' }}></div>
+                        <div className="absolute top-4 left-4 w-8 h-8 border-2 rounded-full opacity-30 border-accent"></div>
+                        <div className="absolute bottom-6 right-6 w-6 h-6 border-2 rotate-45 opacity-30 border-accent"></div>
 
                         {/* Hover Overlay */}
-                        <div className={`absolute inset-0 bg-gradient-to-t transition-opacity duration-300 ${
+                        <div className={`absolute inset-0 bg-gradient-to-t from-primary to-transparent transition-opacity duration-300 ${
                           hoveredCard === teacher.id ? 'opacity-100' : 'opacity-0'
-                        }`} style={{ background: 'linear-gradient(to top, var(--color-primary), transparent)' }}>
+                        }`}>
                           <div className="absolute bottom-4 left-4 right-4">
-                            <div className="text-sm font-medium mb-1" style={{ color: 'white' }}>Education</div>
-                            <div className="text-xs" style={{ color: 'white' }}>{teacher.education}</div>
+                            <div className="text-sm font-medium mb-1 text-white">Education</div>
+                            <div className="text-xs text-white">{teacher.education}</div>
                           </div>
                         </div>
                       </div>
@@ -221,10 +195,10 @@ export default function Home() {
                       <div className="space-y-6">
                         {/* Name and Title */}
                         <div>
-                          <h2 className="text-3xl lg:text-4xl font-bold mb-2 group-hover:opacity-80 transition-opacity duration-300" style={{ color: 'var(--color-foreground)' }}>
+                          <h2 className="text-3xl lg:text-4xl font-bold mb-2 group-hover:opacity-80 transition-opacity duration-300 text-foreground">
                             {teacher.name}
                           </h2>
-                          <div className="w-20 h-1 rounded-full" style={{ background: 'linear-gradient(to right, var(--color-primary), var(--color-accent))' }}></div>
+                          <div className="w-20 h-1 rounded-full bg-gradient-to-r from-primary to-accent"></div>
                         </div>
 
                         {/* Specializations */}
@@ -232,12 +206,7 @@ export default function Home() {
                           {teacher.specializations.map((spec, specIndex) => (
                             <span
                               key={specIndex}
-                              className="px-3 py-1 text-sm font-medium rounded-full border"
-                              style={{ 
-                                backgroundColor: 'var(--color-secondary)',
-                                color: 'white',
-                                borderColor: 'var(--color-border)'
-                              }}
+                              className="px-3 py-1 text-sm font-medium rounded-full border bg-secondary text-white border-border"
                             >
                               {spec}
                             </span>
@@ -246,7 +215,7 @@ export default function Home() {
 
                         {/* Bio */}
                         <div className="space-y-4">
-                          <p className="leading-relaxed text-sm lg:text-base" style={{ color: 'var(--color-muted-foreground)' }}>
+                          <p className="leading-relaxed text-sm lg:text-base text-muted-foreground">
                             {teacher.bio}
                           </p>
                         </div>
@@ -262,7 +231,7 @@ export default function Home() {
 
       {/* Testimonials Section */}
       <div className="h-[50%] w-[80%] xl:w-[1400px] mx-auto my-[100px] text-start">
-        <h1 className="text-2xl text-center font-bold mb-20" style={{ color: 'var(--color-foreground)' }}>
+        <h1 className="text-2xl text-center font-bold mb-20 text-foreground">
           What Our Students Say
         </h1>
         
@@ -271,11 +240,7 @@ export default function Home() {
           {/* Left Arrow */}
           <button
             onClick={prevTestimonial}
-            className="p-2 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-110 flex-shrink-0"
-            style={{ 
-              backgroundColor: 'var(--color-primary)',
-              color: 'white'
-            }}
+            className="p-2 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-110 flex-shrink-0 bg-primary text-white"
             aria-label="Previous testimonial"
           >
             <ChevronLeft className="w-5 h-5" />
@@ -283,10 +248,10 @@ export default function Home() {
 
           {/* Testimonial Content */}
           <div className="flex-1 px-4">
-            <h3 className="text-lg font-semibold mb-3" style={{ color: 'var(--color-foreground)' }}>
+            <h3 className="text-lg font-semibold mb-3 text-foreground">
               {testimonials[currentTestimonial].name}
             </h3>
-            <p className="text-sm sm:text-base leading-relaxed" style={{ color: 'var(--color-muted-foreground)' }}>
+            <p className="text-sm sm:text-base leading-relaxed text-muted-foreground">
               &quot;{testimonials[currentTestimonial].text}&quot;
             </p>
           </div>
@@ -294,11 +259,7 @@ export default function Home() {
           {/* Right Arrow */}
           <button
             onClick={nextTestimonial}
-            className="p-2 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-110 flex-shrink-0"
-            style={{ 
-              backgroundColor: 'var(--color-primary)',
-              color: 'white'
-            }}
+            className="p-2 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-110 flex-shrink-0 bg-primary text-white"
             aria-label="Next testimonial"
           >
             <ChevronRight className="w-5 h-5" />
@@ -311,12 +272,9 @@ export default function Home() {
             <button
               key={index}
               onClick={() => setCurrentTestimonial(index)}
-              className="w-3 h-3 rounded-full transition-all duration-300"
-              style={{ 
-                backgroundColor: index === currentTestimonial 
-                  ? 'var(--color-primary)' 
-                  : 'var(--color-muted-foreground)'
-              }}
+              className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                index === currentTestimonial ? 'bg-primary' : 'bg-muted-foreground'
+              }`}
               aria-label={`Go to testimonial ${index + 1}`}
             />
           ))}
@@ -324,21 +282,16 @@ export default function Home() {
       </div>
 
       {/* Call to Action */}
-      <div className="w-[80%] xl:w-[1400px] mx-auto text-center mt-20 pt-16 border-t" style={{ borderColor: 'var(--color-border)' }}>
-        <h3 className="text-2xl lg:text-3xl font-bold mb-4" style={{ color: 'var(--color-foreground)' }}>
+      <div className="w-[80%] xl:w-[1400px] mx-auto text-center mt-20 pt-16 border-t border-border">
+        <h3 className="text-2xl lg:text-3xl font-bold mb-4 text-foreground">
           Ready to Begin Your Islamic Learning Journey?
         </h3>
-        <p className="mb-8 max-w-2xl mx-auto" style={{ color: 'var(--color-muted-foreground)' }}>
+        <p className="mb-8 max-w-2xl mx-auto text-muted-foreground">
           Join thousands of students worldwide who have transformed their understanding of Islam through our comprehensive programs
         </p>
         <Link 
           href="/courses" 
-          className="inline-block px-8 py-4 font-bold text-lg rounded-full transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105 border-2"
-          style={{ 
-            backgroundColor: 'var(--color-primary)',
-            color: 'white',
-            borderColor: 'var(--color-primary)'
-          }}
+          className="inline-block px-8 py-4 font-bold text-lg rounded-full transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105 border-2 bg-primary text-white border-primary"
         >
           Enroll Today
         </Link>

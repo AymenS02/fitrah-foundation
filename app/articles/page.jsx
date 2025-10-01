@@ -104,7 +104,7 @@ return (
       {/* Header Section */}
       <div ref={headerRef} className="text-center mb-12">
         <div className="flex items-center justify-center gap-3 mb-6">
-          <div className="hidden md:block bg-secondary p-3 rounded-full">
+          <div className="hidden md:block bg-muted p-3 rounded-full">
             <FileText className="w-8 h-8 text-primary" />
           </div>
           <h1 className="text-4xl lg:text-5xl font-bold text-foreground">
