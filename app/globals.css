@@ -6,7 +6,7 @@
   
   /* Core Brand Colors */
   --color-primary: hsl(230, 55%, 26%);           /* Main brand blue */
-  --color-secondary: hsl(175, 50%, 45%);         /* Balanced teal */
+  --color-secondary: hsl(178, 100%, 21%);        /* Balanced teal */
   --color-accent: hsl(200, 65%, 45%);            /* Harmonious blue accent */
   
   /* Backgrounds & Surfaces */
@@ -54,7 +54,7 @@
 .dark {
   /* Core Brand Colors - Brightened for dark backgrounds */
   --color-primary: hsl(230, 55%, 65%);           /* Brighter primary */
-  --color-secondary: hsl(175, 55%, 65%);         /* Lighter teal for dark mode */
+  --color-secondary: hsl(178, 100%, 31%);         /* Lighter teal for dark mode */
   --color-accent: hsl(200, 65%, 60%);            /* Brighter accent */
 
   /* Backgrounds & Surfaces - Dark blue theme */

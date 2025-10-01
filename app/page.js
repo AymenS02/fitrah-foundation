@@ -86,7 +86,7 @@ export default function Home() {
             <button 
               className="px-6 py-3 rounded-full font-medium shadow-md hover:shadow-lg border-2 hover:scale-105 transition-transform cursor-pointer"
               style={{ 
-                backgroundColor: 'var(--color-secondary)',
+                backgroundColor: 'var(--color-card)',
                 borderColor: 'var(--color-primary)',
                 color: 'var(--color-foreground)'
               }}
@@ -116,8 +116,8 @@ export default function Home() {
       <div 
         className="w-[80%] xl:w-[1400px] mx-auto mt-[100px] p-10 py-8 text-center border-2 flex items-center justify-around gap-4 flex-wrap"
         style={{ 
-          backgroundColor: 'var(--color-secondary)',
-          color: 'var(--color-foreground)',
+          backgroundColor: 'var(--color-primary)',
+          color: 'var(--color-white)',
           borderColor: 'var(--color-border)'
         }}
       >
@@ -235,7 +235,7 @@ export default function Home() {
                               className="px-3 py-1 text-sm font-medium rounded-full border"
                               style={{ 
                                 backgroundColor: 'var(--color-secondary)',
-                                color: 'var(--color-foreground)',
+                                color: 'white',
                                 borderColor: 'var(--color-border)'
                               }}
                             >

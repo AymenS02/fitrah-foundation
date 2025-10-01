@@ -123,7 +123,7 @@ const Header = () => {
                   className="px-4 py-2 rounded-full font-medium border-2 hover:scale-105 transition-all duration-300 cursor-pointer"
                   style={{ 
                     backgroundColor: 'var(--color-secondary)',
-                    color: 'var(--color-foreground)',
+                    color: 'white',
                     borderColor: 'var(--color-border)'
                   }}
                   onMouseEnter={(e) => {
