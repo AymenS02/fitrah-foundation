@@ -1,17 +1,54 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { useState } from 'react';
-import { ChevronsLeft, ChevronsRight, LayoutDashboard, NotebookPen, CircleUser, FileText } from 'lucide-react';
+import { usePathname, useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { ChevronsLeft, LayoutDashboard, NotebookPen, CircleUser, FileText } from 'lucide-react';
 
 export default function AdminLayout({ children }) {
   const pathname = usePathname();
+  const router = useRouter();
   const [collapsed, setCollapsed] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  // Admin token check
+  useEffect(() => {
+    const checkAdmin = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        router.push('/login');
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/auth/isAdmin', {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+
+        if (res.status === 403) {
+          router.push('/login');
+          return;
+        }
+
+        setLoading(false); // allow rendering content
+      } catch (err) {
+        console.error(err);
+        router.push('/login');
+      }
+    };
+
+    checkAdmin();
+  }, [router]);
+
+  if (loading) {
+    return <div className="p-8 bg-background min-h-screen text-primary">Loading...</div>;
+  }
 
   const navLinks = [
     { icon: <LayoutDashboard />, name: 'Dashboard', href: '/admin' },
-    { icon: <NotebookPen  />, name: 'Courses', href: '/admin/courses' },
+    { icon: <NotebookPen />, name: 'Courses', href: '/admin/courses' },
     { icon: <CircleUser />, name: 'Students', href: '/admin/students' },
     { icon: <FileText />, name: 'Articles', href: '/admin/articles' },
   ];
@@ -24,7 +61,6 @@ export default function AdminLayout({ children }) {
           collapsed ? 'w-20' : 'w-64'
         } bg-background shadow p-6 flex flex-col space-y-4 transition-all duration-300 ease-in-out overflow-hidden`}
       >
-
         {/* Toggle button */}
         <div
           onClick={() => setCollapsed(!collapsed)}
@@ -32,15 +68,15 @@ export default function AdminLayout({ children }) {
         >
           <div
             className={`transition-transform duration-300 ease-in-out ${
-              collapsed ? "rotate-180" : "rotate-0"
+              collapsed ? 'rotate-180' : 'rotate-0'
             }`}
           >
             <ChevronsLeft size={20} />
           </div>
         </div>
-        
+
         {/* Nav Links */}
-        {navLinks.map((link, index) => (
+        {navLinks.map((link) => (
           <div key={link.href}>
             <Link
               href={link.href}
@@ -51,22 +87,20 @@ export default function AdminLayout({ children }) {
               <div className="flex-shrink-0 transition-transform duration-200 hover:scale-110">
                 {link.icon}
               </div>
-              <span 
+              <span
                 className={`whitespace-nowrap transition-all duration-300 ease-in-out ${
-                  collapsed 
-                    ? 'opacity-0 translate-x-4 w-0 overflow-hidden' 
+                  collapsed
+                    ? 'opacity-0 translate-x-4 w-0 overflow-hidden'
                     : 'opacity-100 translate-x-0 w-auto'
                 }`}
               >
                 {link.name}
               </span>
             </Link>
-            <hr 
+            <hr
               className={`text-gray-300 transition-all duration-300 ease-in-out ${
-                collapsed 
-                  ? 'opacity-0 scale-x-0' 
-                  : 'opacity-100 scale-x-100'
-              }`} 
+                collapsed ? 'opacity-0 scale-x-0' : 'opacity-100 scale-x-100'
+              }`}
             />
           </div>
         ))}
