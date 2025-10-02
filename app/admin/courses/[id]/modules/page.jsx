@@ -19,8 +19,7 @@ export default function CourseModules() {
     order: '',
     quiz: { questions: [{ question: '', options: [''], correctAnswer: '' }] },
     assignment: { instructions: '', dueDate: '', maxScore: 100 },
-    pdf: { fileUrl: '' },
-    text: { body: '' }
+    text: { body: '', fileUrl: '' },
   };
 
   const [formData, setFormData] = useState(initialFormData);
@@ -35,7 +34,7 @@ export default function CourseModules() {
 
       const data = await res.json();
       
-      setCourse(data); // API returns course object directly
+      setCourse(data);
     } catch (error) {
       console.error("Error fetching course:", error);
     } finally {
@@ -105,7 +104,6 @@ export default function CourseModules() {
     handleContentChange('quiz', { ...formData.quiz, questions: updatedQuestions });
   };
   
-  
   // Submit module (create or update)
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -120,10 +118,7 @@ export default function CourseModules() {
 
     switch (formData.type) {
       case 'text':
-        basePayload.text = { body: formData.text.body };
-        break;
-      case 'pdf':
-        basePayload.pdf = { fileUrl: formData.pdf.fileUrl };
+        basePayload.text = { body: formData.text.body, fileUrl: formData.text.fileUrl };
         break;
       case 'assignment':
         basePayload.assignment = {
@@ -141,8 +136,6 @@ export default function CourseModules() {
       ? { ...basePayload, _id: editingModule._id }
       : basePayload;
 
-
-
     const url = `/api/courses/${courseId}/modules`;
       const method = editingModule ? 'PUT' : 'POST';
 
@@ -154,7 +147,7 @@ export default function CourseModules() {
 
     if (response.ok) {
       resetForm();
-      fetchCourse(); // reload course + modules
+      fetchCourse();
     } else {
       const error = await response.json();
       console.error("Error saving module:", error);
@@ -174,8 +167,7 @@ export default function CourseModules() {
       order: module.order,
       quiz: module.quiz || { questions: [{ question: '', options: [''], correctAnswer: '' }] },
       assignment: module.assignment || { instructions: '', dueDate: '', maxScore: 100 },
-      pdf: module.pdf || { fileUrl: '' },
-      text: module.text || { body: '' }
+      text: module.text || { body: '', fileUrl: '' }
     });
     setShowForm(true);
   };
@@ -196,263 +188,278 @@ export default function CourseModules() {
       const data = await res.json();
       console.log("Deleted:", data);
 
-      // Refresh course like fetchCourse
       fetchCourse();
     } catch (error) {
       console.error("Error deleting module:", error);
     }
   };
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center text-muted-foreground">Loading modules...</div>
+      </div>
+    );
+  }
 
-  if (loading) return <div className="text-center mt-10">Loading modules...</div>;
-  if (!course) return <div className="text-center mt-10">Course not found</div>;
+  if (!course) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center text-muted-foreground">Course not found</div>
+      </div>
+    );
+  }
 
   const modules = course.modules || [];
 
   return (
-    <div className="max-w-6xl mx-auto p-6">
-      {/* Header */}
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <button
-            onClick={() => router.push(`/admin/courses/${courseId}`)}
-            className="text-blue-600 hover:text-blue-800 mb-2 p-2 rounded-lg"
-          >
-            ← Back to Course
-          </button>
-          <h1 className="text-3xl font-bold">{course.title} - Modules</h1>
-          <p className="text-gray-600">Manage course modules and content</p>
-        </div>
-        <button
-          onClick={() => setShowForm(!showForm)}
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
-        >
-          {showForm ? "Cancel" : "Add Module"}
-        </button>
-      </div>
-
-      {/* Module Form */}
-      {showForm && (
-        <form onSubmit={handleSubmit} className="bg-white shadow-md rounded-xl p-6 mb-6 border">
-          <h2 className="text-xl font-semibold mb-4">
-            {editingModule ? "Edit Module" : "Create New Module"}
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            <input
-              name="title"
-              value={formData.title}
-              onChange={handleChange}
-              placeholder="Module Title"
-              required
-              className="border p-2 rounded"
-            />
-            <input
-              name="order"
-              type="number"
-              value={formData.order}
-              onChange={handleChange}
-              placeholder="Order"
-              className="border p-2 rounded"
-            />
-            <select
-              name="type"
-              value={formData.type}
-              onChange={handleChange}
-              className="border p-2 rounded"
+    <div className="min-h-screen bg-background">
+      <div className="max-w-6xl mx-auto p-6">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <button
+              onClick={() => router.push(`/admin/courses/${courseId}`)}
+              className="text-primary hover:text-primary-hover mb-2 transition-colors"
             >
-              <option value="text">Text</option>
-              <option value="pdf">PDF</option>
-              <option value="quiz">Quiz</option>
-              <option value="assignment">Assignment</option>
-            </select>
+              ← Back to Course
+            </button>
+            <h1 className="text-3xl font-bold text-foreground font-palanquin-dark">
+              {course.title} - Modules
+            </h1>
+            <p className="text-muted-foreground">Manage course modules and content</p>
           </div>
+          <button
+            onClick={() => setShowForm(!showForm)}
+            className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-hover transition-colors"
+          >
+            {showForm ? "Cancel" : "Add Module"}
+          </button>
+        </div>
 
-          <textarea
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            placeholder="Module Description"
-            className="border p-2 rounded w-full mb-4"
-          />
+        {/* Module Form */}
+        {showForm && (
+          <form onSubmit={handleSubmit} className="bg-card shadow-md rounded-xl p-6 mb-6 border border-border">
+            <h2 className="text-xl font-semibold mb-4 text-foreground">
+              {editingModule ? "Edit Module" : "Create New Module"}
+            </h2>
 
-          {/* Content fields */}
-          {formData.type === 'text' && (
-            <textarea
-              value={formData.text.body}
-              onChange={(e) => handleContentChange('text', { body: e.target.value })}
-              placeholder="Enter text content..."
-              className="border p-2 rounded w-full h-32"
-              required
-            />
-          )}
-
-          {formData.type === 'pdf' && (
-            <input
-              value={formData.pdf.fileUrl}
-              onChange={(e) => handleContentChange('pdf', { fileUrl: e.target.value })}
-              placeholder="PDF File URL"
-              className="border p-2 rounded w-full"
-              required
-            />
-          )}
-
-          {formData.type === 'assignment' && (
-            <div>
-              <textarea
-                value={formData.assignment.instructions}
-                onChange={(e) => handleContentChange('assignment', {
-                  ...formData.assignment,
-                  instructions: e.target.value
-                })}
-                placeholder="Assignment instructions..."
-                className="border p-2 rounded w-full h-24 mb-2"
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <input
+                name="title"
+                value={formData.title}
+                onChange={handleChange}
+                placeholder="Module Title"
                 required
+                className="border border-border bg-background text-foreground p-2 rounded focus:border-primary focus:outline-none"
               />
-              <div className="grid grid-cols-2 gap-4">
-                <input
-                  type="date"
-                  value={formData.assignment.dueDate}
+              <input
+                name="order"
+                type="number"
+                value={formData.order}
+                onChange={handleChange}
+                placeholder="Order"
+                className="border border-border bg-background text-foreground p-2 rounded focus:border-primary focus:outline-none"
+              />
+              <select
+                name="type"
+                value={formData.type}
+                onChange={handleChange}
+                className="border border-border bg-background text-foreground p-2 rounded focus:border-primary focus:outline-none"
+              >
+                <option value="text">Text</option>
+                <option value="quiz">Quiz</option>
+                <option value="assignment">Assignment</option>
+              </select>
+            </div>
+
+            <textarea
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              placeholder="Module Description"
+              className="border border-border bg-background text-foreground p-2 rounded w-full mb-4 focus:border-primary focus:outline-none"
+            />
+
+            {/* Content fields */}
+            {formData.type === 'text' && (
+              <div>
+                <textarea
+                  value={formData.text.body}
+                  onChange={(e) => handleContentChange('text', { body: e.target.value})}
+                  placeholder="Enter text content..."
+                  className="border border-border bg-background text-foreground p-2 rounded w-full h-32 focus:border-primary focus:outline-none"
+                  required
+                />
+                <textarea
+                  value={formData.text.fileUrl}
+                  onChange={(e) => handleContentChange('text', { fileUrl: e.target.value })}
+                  placeholder="Text File URL (optional)"
+                  className="border border-border bg-background text-foreground p-2 rounded w-full mb-4 focus:border-primary focus:outline-none"
+                />
+              </div>
+            )}
+
+            {formData.type === 'assignment' && (
+              <div>
+                <textarea
+                  value={formData.assignment.instructions}
                   onChange={(e) => handleContentChange('assignment', {
                     ...formData.assignment,
-                    dueDate: e.target.value
+                    instructions: e.target.value
                   })}
-                  className="border p-2 rounded"
+                  placeholder="Assignment instructions..."
+                  className="border border-border bg-background text-foreground p-2 rounded w-full h-24 mb-2 focus:border-primary focus:outline-none"
+                  required
                 />
-                <input
-                  type="number"
-                  value={formData.assignment.maxScore}
-                  onChange={(e) => handleContentChange('assignment', {
-                    ...formData.assignment,
-                    maxScore: parseInt(e.target.value)
-                  })}
-                  placeholder="Max Score"
-                  className="border p-2 rounded"
-                />
+                <div className="grid grid-cols-2 gap-4">
+                  <input
+                    type="date"
+                    value={formData.assignment.dueDate}
+                    onChange={(e) => handleContentChange('assignment', {
+                      ...formData.assignment,
+                      dueDate: e.target.value
+                    })}
+                    className="border border-border bg-background text-foreground p-2 rounded focus:border-primary focus:outline-none"
+                  />
+                  <input
+                    type="number"
+                    value={formData.assignment.maxScore}
+                    onChange={(e) => handleContentChange('assignment', {
+                      ...formData.assignment,
+                      maxScore: parseInt(e.target.value)
+                    })}
+                    placeholder="Max Score"
+                    className="border border-border bg-background text-foreground p-2 rounded focus:border-primary focus:outline-none"
+                  />
+                </div>
+              </div>
+            )}
+
+            {formData.type === 'quiz' && (
+              <div>
+                {formData.quiz.questions.map((question, qIndex) => (
+                  <div key={qIndex} className="border border-border bg-muted/20 p-4 rounded mb-4">
+                    <input
+                      value={question.question}
+                      onChange={(e) => handleQuizQuestionChange(qIndex, 'question', e.target.value)}
+                      placeholder="Question text"
+                      className="border border-border bg-background text-foreground p-2 rounded w-full mb-2 focus:border-primary focus:outline-none"
+                      required
+                    />
+                    {question.options.map((option, oIndex) => (
+                      <div key={oIndex} className="flex items-center mb-1">
+                        <input
+                          value={option}
+                          onChange={(e) => handleQuizOptionChange(qIndex, oIndex, e.target.value)}
+                          placeholder={`Option ${oIndex + 1}`}
+                          className="border border-border bg-background text-foreground p-2 rounded flex-1 mr-2 focus:border-primary focus:outline-none"
+                          required
+                        />
+                        <button
+                          type="button"
+                          onClick={() => removeQuizOption(qIndex, oIndex)}
+                          className="text-error hover:opacity-80"
+                        >
+                          ×
+                        </button>
+                      </div>
+                    ))}
+                    <button
+                      type="button"
+                      onClick={() => addQuizOption(qIndex)}
+                      className="text-primary hover:text-primary-hover text-sm"
+                    >
+                      + Add Option
+                    </button>
+
+                    <select
+                      value={question.correctAnswer}
+                      onChange={(e) => handleQuizQuestionChange(qIndex, 'correctAnswer', e.target.value)}
+                      className="border border-border bg-background text-foreground p-2 rounded w-full mt-2 focus:border-primary focus:outline-none"
+                      required
+                    >
+                      <option value="">Select correct answer</option>
+                      {question.options.map((option, oIndex) => (
+                        <option key={oIndex} value={option}>{option || `Option ${oIndex + 1}`}</option>
+                      ))}
+                    </select>
+                    <button
+                      type="button"
+                      onClick={() => removeQuizQuestion(qIndex)}
+                      className="text-error hover:opacity-80 mt-2"
+                    >
+                      Remove Question
+                    </button>
+                  </div>
+                ))}
+                <button
+                  type="button"
+                  onClick={addQuizQuestion}
+                  className="bg-success text-white px-3 py-1 rounded text-sm hover:opacity-90"
+                >
+                  + Add Question
+                </button>
+              </div>
+            )}
+
+            <div className="flex gap-2 mt-4">
+              <button
+                type="submit"
+                className="bg-success text-white px-4 py-2 rounded hover:opacity-90 transition-opacity"
+              >
+                {editingModule ? "Update Module" : "Create Module"}
+              </button>
+              <button
+                type="button"
+                onClick={resetForm}
+                className="bg-muted text-foreground px-4 py-2 rounded hover:bg-muted/80 transition-colors"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        )}
+
+        {/* Modules List */}
+        <div className="space-y-4">
+          {modules.length === 0 ? (
+            <div className="text-center py-8 text-muted-foreground bg-card border border-border rounded-lg">
+              No modules created yet. Click "Add Module" to get started.
+            </div>
+          ) : (
+            <div className="mb-6">
+              <h3 className="font-semibold mb-2 text-foreground">Modules ({modules.length})</h3>
+              <div className="space-y-2">
+                {modules.map((module) => (
+                  <div 
+                    key={module._id} 
+                    className="border border-border bg-card p-3 rounded flex justify-between items-center hover:bg-muted/20 transition-colors"
+                  >
+                    <div>
+                      <h4 className="font-medium text-foreground">{module.title}</h4>
+                      <p className="text-sm text-muted-foreground capitalize">{module.type}</p>
+                    </div>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => handleEdit(module)}
+                        className="text-primary hover:text-primary-hover transition-colors"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDelete(module._id)}
+                        className="text-error hover:opacity-80 transition-opacity"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           )}
-
-          {formData.type === 'quiz' && (
-            <div>
-              {formData.quiz.questions.map((question, qIndex) => (
-                <div key={qIndex} className="border p-4 rounded mb-4">
-                  <input
-                    value={question.question}
-                    onChange={(e) => handleQuizQuestionChange(qIndex, 'question', e.target.value)}
-                    placeholder="Question text"
-                    className="border p-2 rounded w-full mb-2"
-                    required
-                  />
-                  {question.options.map((option, oIndex) => (
-                    <div key={oIndex} className="flex items-center mb-1">
-                      <input
-                        value={option}
-                        onChange={(e) => handleQuizOptionChange(qIndex, oIndex, e.target.value)}
-                        placeholder={`Option ${oIndex + 1}`}
-                        className="border p-2 rounded flex-1 mr-2"
-                        required
-                      />
-                      <button
-                        type="button"
-                        onClick={() => removeQuizOption(qIndex, oIndex)}
-                        className="text-red-600 hover:text-red-800"
-                      >
-                        ×
-                      </button>
-                    </div>
-                  ))}
-                  <button
-                    type="button"
-                    onClick={() => addQuizOption(qIndex)}
-                    className="text-blue-600 hover:text-blue-800 text-sm"
-                  >
-                    + Add Option
-                  </button>
-
-                  <select
-                    value={question.correctAnswer}
-                    onChange={(e) => handleQuizQuestionChange(qIndex, 'correctAnswer', e.target.value)}
-                    className="border p-2 rounded w-full mt-2"
-                    required
-                  >
-                    <option value="">Select correct answer</option>
-                    {question.options.map((option, oIndex) => (
-                      <option key={oIndex} value={option}>{option || `Option ${oIndex + 1}`}</option>
-                    ))}
-                  </select>
-                  <button
-                    type="button"
-                    onClick={() => removeQuizQuestion(qIndex)}
-                    className="text-red-600 hover:text-red-800 mt-2"
-                  >
-                    Remove Question
-                  </button>
-                </div>
-              ))}
-              <button
-                type="button"
-                onClick={addQuizQuestion}
-                className="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700"
-              >
-                + Add Question
-              </button>
-            </div>
-          )}
-
-          <div className="flex gap-2 mt-4">
-            <button
-              type="submit"
-              className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-            >
-              {editingModule ? "Update Module" : "Create Module"}
-            </button>
-            <button
-              type="button"
-              onClick={resetForm}
-              className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700"
-            >
-              Cancel
-            </button>
-          </div>
-        </form>
-      )}
-
-      {/* Modules List */}
-      <div className="space-y-4">
-        {modules.length === 0 ? (
-          <div className="text-center py-8 text-gray-500">
-            No modules created yet. Click "Add Module" to get started.
-          </div>
-        ) : (
-          <div className="mb-6">
-            <h3 className="font-semibold mb-2">Modules ({modules.length})</h3>
-            <div className="space-y-2">
-              {modules.map((module) => (
-                <div key={module._id} className="border p-3 rounded flex justify-between">
-                  <div>
-                    <h4 className="font-medium">{module.title}</h4>
-                    <p className="text-sm text-gray-600">{module.type}</p>
-                  </div>
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => handleEdit(module)}
-                      className="text-blue-600 hover:text-blue-800"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => handleDelete(module._id)}
-                      className="text-red-600 hover:text-red-800"
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+        </div>
       </div>
     </div>
   );

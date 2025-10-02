@@ -26,7 +26,7 @@ const DIFFICULTY_LABEL = {
 };
 
 export default function CourseDetailPage() {
-  const { id } = useParams(); // Route: /courses/[id]
+  const { id } = useParams();
   const { user } = useAuth();
   const [course, setCourse] = useState(null);
   const [isEnrolled, setIsEnrolled] = useState(false);
@@ -37,13 +37,11 @@ export default function CourseDetailPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch course details
         const courseRes = await fetch(`/api/courses/${id}`);
         if (!courseRes.ok) throw new Error("Failed to fetch course");
         const courseData = await courseRes.json();
         setCourse(courseData);
 
-        // Check if user is enrolled (if logged in)
         if (user?.id) {
           const enrollmentRes = await fetch(`/api/enrollments?studentId=${user.id}&courseId=${id}`);
           if (enrollmentRes.ok) {
@@ -101,9 +99,29 @@ export default function CourseDetailPage() {
     return `$${price}`;
   };
 
-  if (loading) return <div className="p-8 text-center">Loading course...</div>;
-  if (error) return <div className="p-8 text-center text-red-500">{error}</div>;
-  if (!course) return <div className="p-8 text-center">Course not found</div>;
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center text-muted-foreground">Loading course...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center text-error">{error}</div>
+      </div>
+    );
+  }
+
+  if (!course) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center text-muted-foreground">Course not found</div>
+      </div>
+    );
+  }
 
   const difficultyLabel = DIFFICULTY_LABEL[course.difficultyLevel] || course.difficultyLevel;
 
@@ -115,7 +133,7 @@ export default function CourseDetailPage() {
           {/* Back */}
           <Link
             href="/courses"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline transition-colors"
           >
             <ChevronLeft className="h-4 w-4" />
             Back to Courses
@@ -124,7 +142,7 @@ export default function CourseDetailPage() {
           {/* Title + Actions */}
           <div className="mt-6 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
             <div className="space-y-2">
-              <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-primary">
+              <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-primary font-palanquin-dark">
                 {course.title}
               </h1>
               {course.code && (
@@ -138,7 +156,7 @@ export default function CourseDetailPage() {
               {isEnrolled ? (
                 <Link
                   href={`/courses/${id}/dashboard`}
-                  className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-green-600 to-emerald-500 px-6 py-2 text-sm font-semibold text-white shadow-md hover:opacity-90 transition"
+                  className="inline-flex items-center gap-2 rounded-xl bg-success px-6 py-2 text-sm font-semibold text-white shadow-md hover:opacity-90 transition-opacity"
                 >
                   <CheckCircle className="h-4 w-4" />
                   Go to Dashboard
@@ -152,7 +170,7 @@ export default function CourseDetailPage() {
                   {enrolling ? "Enrolling..." : "Enroll Now"}
                 </button>
               )}
-              <div className="rounded-xl bg-card border px-4 py-2 text-sm font-semibold text-primary shadow-sm">
+              <div className="rounded-xl bg-card border border-border px-4 py-2 text-sm font-semibold text-primary shadow-sm">
                 {formatPrice(course.price)}
               </div>
             </div>
@@ -161,37 +179,37 @@ export default function CourseDetailPage() {
           {/* Meta Info */}
           <div className="mt-6 flex flex-wrap gap-2 text-sm">
             {course.category && (
-              <span className="inline-flex items-center gap-2 rounded-full bg-muted px-3 py-1 text-primary">
+              <span className="inline-flex items-center gap-2 rounded-full bg-muted px-3 py-1 text-foreground">
                 <Layers className="h-4 w-4" />
                 {course.category}
               </span>
             )}
             {course.difficultyLevel && (
-              <span className="inline-flex items-center gap-2 rounded-full bg-muted px-3 py-1 text-primary">
+              <span className="inline-flex items-center gap-2 rounded-full bg-muted px-3 py-1 text-foreground">
                 <Tag className="h-4 w-4" />
                 {difficultyLabel}
               </span>
             )}
             {course.durationWeeks && (
-              <span className="inline-flex items-center gap-2 rounded-full bg-muted px-3 py-1 text-primary">
+              <span className="inline-flex items-center gap-2 rounded-full bg-muted px-3 py-1 text-foreground">
                 <Clock className="h-4 w-4" />
                 {course.durationWeeks} week{course.durationWeeks !== 1 ? "s" : ""}
               </span>
             )}
             {course.maxStudents && (
-              <span className="inline-flex items-center gap-2 rounded-full bg-muted px-3 py-1 text-primary">
+              <span className="inline-flex items-center gap-2 rounded-full bg-muted px-3 py-1 text-foreground">
                 <Users className="h-4 w-4" />
                 Max: {course.maxStudents} students
               </span>
             )}
             {course.startDate && (
-              <span className="inline-flex items-center gap-2 rounded-full bg-muted px-3 py-1 text-primary">
+              <span className="inline-flex items-center gap-2 rounded-full bg-muted px-3 py-1 text-foreground">
                 <Calendar className="h-4 w-4" />
                 Starts: {formatDate(course.startDate)}
               </span>
             )}
             {course.endDate && (
-              <span className="inline-flex items-center gap-2 rounded-full bg-muted px-3 py-1 text-primary">
+              <span className="inline-flex items-center gap-2 rounded-full bg-muted px-3 py-1 text-foreground">
                 <Calendar className="h-4 w-4" />
                 Ends: {formatDate(course.endDate)}
               </span>
@@ -205,7 +223,7 @@ export default function CourseDetailPage() {
         <div className="grid gap-8 md:grid-cols-[2fr,3fr]">
           {/* Image + Instructor */}
           <div className="space-y-6">
-            <div className="relative aspect-video w-full overflow-hidden rounded-2xl border bg-muted shadow-sm">
+            <div className="relative aspect-video w-full overflow-hidden rounded-2xl border border-border bg-muted shadow-sm">
               {course.thumbnailUrl ? (
                 <Image
                   src={course.thumbnailUrl}
@@ -222,11 +240,13 @@ export default function CourseDetailPage() {
             </div>
 
             {course.instructor && (
-              <div className="rounded-2xl border bg-card p-4 shadow-sm">
-                <div className="flex items-center gap-3 text-primary">
-                  <User className="h-5 w-5" />
+              <div className="rounded-2xl border border-border bg-card p-4 shadow-sm">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-primary/10 rounded-lg">
+                    <User className="h-5 w-5 text-primary" />
+                  </div>
                   <div className="text-sm">
-                    <div className="font-semibold">Instructor</div>
+                    <div className="font-semibold text-foreground">Instructor</div>
                     <div className="text-muted-foreground">{course.instructor}</div>
                   </div>
                 </div>
@@ -238,11 +258,11 @@ export default function CourseDetailPage() {
           <div className="space-y-8">
             {course.description && (
               <div>
-                <h2 className="flex items-center gap-2 text-xl font-bold text-primary">
+                <h2 className="flex items-center gap-2 text-xl font-bold text-primary font-palanquin-dark">
                   <BookOpen className="h-5 w-5" />
                   About this course
                 </h2>
-                <div className="mt-4 rounded-xl border bg-card p-5 shadow-sm">
+                <div className="mt-4 rounded-xl border border-border bg-card p-5 shadow-sm">
                   <p className="text-foreground leading-relaxed">{course.description}</p>
                 </div>
               </div>
@@ -250,11 +270,11 @@ export default function CourseDetailPage() {
 
             {course.requirements && (
               <div>
-                <h3 className="flex items-center gap-2 text-lg font-bold text-primary">
+                <h3 className="flex items-center gap-2 text-lg font-bold text-primary font-palanquin-dark">
                   <CheckCircle className="h-5 w-5" />
                   Requirements
                 </h3>
-                <div className="mt-4 rounded-xl border bg-card p-5 shadow-sm">
+                <div className="mt-4 rounded-xl border border-border bg-card p-5 shadow-sm">
                   <p className="text-foreground leading-relaxed">{course.requirements}</p>
                 </div>
               </div>
@@ -262,37 +282,37 @@ export default function CourseDetailPage() {
 
             {course.learningOutcomes && (
               <div>
-                <h3 className="flex items-center gap-2 text-lg font-bold text-primary">
+                <h3 className="flex items-center gap-2 text-lg font-bold text-primary font-palanquin-dark">
                   <Target className="h-5 w-5" />
                   What you'll learn
                 </h3>
-                <div className="mt-4 rounded-xl border bg-card p-5 shadow-sm">
+                <div className="mt-4 rounded-xl border border-border bg-card p-5 shadow-sm">
                   <p className="text-foreground leading-relaxed">{course.learningOutcomes}</p>
                 </div>
               </div>
             )}
 
             {/* Course Stats */}
-            <div className="rounded-2xl border bg-card p-6 shadow-sm">
-              <h3 className="text-lg font-bold text-primary mb-4">Course Details</h3>
+            <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
+              <h3 className="text-lg font-bold text-primary mb-4 font-palanquin-dark">Course Details</h3>
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div className="space-y-1">
                   <div className="text-muted-foreground">Duration</div>
-                  <div className="font-medium">
+                  <div className="font-medium text-foreground">
                     {course.durationWeeks ? `${course.durationWeeks} weeks` : "Not specified"}
                   </div>
                 </div>
                 <div className="space-y-1">
                   <div className="text-muted-foreground">Level</div>
-                  <div className="font-medium">{difficultyLabel}</div>
+                  <div className="font-medium text-foreground">{difficultyLabel}</div>
                 </div>
                 <div className="space-y-1">
                   <div className="text-muted-foreground">Price</div>
-                  <div className="font-medium">{formatPrice(course.price)}</div>
+                  <div className="font-medium text-foreground">{formatPrice(course.price)}</div>
                 </div>
                 <div className="space-y-1">
                   <div className="text-muted-foreground">Max Students</div>
-                  <div className="font-medium">{course.maxStudents || "Unlimited"}</div>
+                  <div className="font-medium text-foreground">{course.maxStudents || "Unlimited"}</div>
                 </div>
               </div>
             </div>
@@ -301,5 +321,4 @@ export default function CourseDetailPage() {
       </section>
     </main>
   );
-
 }

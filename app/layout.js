@@ -40,3 +40,6 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
+
+
+// Things Due: Mobile version, making sure student submissions work, payment integration, student standings page.

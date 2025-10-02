@@ -55,7 +55,7 @@ export default function CourseDashboardPage() {
   const handleModuleClick = (module) => {
     // Navigate to module view based on type
     if (module.type === 'text' || module.type === 'pdf') {
-      router.push(`/courses/${id}/modules/${module._id}`);
+      router.push(`/courses/${id}/text/${module._id}`);
     } else if (module.type === 'quiz') {
       router.push(`/courses/${id}/quiz/${module._id}`);
     } else if (module.type === 'assignment') {
@@ -65,15 +65,15 @@ export default function CourseDashboardPage() {
 
   if (!user) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p>You are not logged in</p>
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <p className="text-foreground">You are not logged in</p>
       </div>
     );
   }
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
       </div>
     );
@@ -81,13 +81,13 @@ export default function CourseDashboardPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-red-600 mb-2">Error</h2>
-          <p className="text-gray-600">{error}</p>
+          <h2 className="text-2xl font-bold text-error mb-2">Error</h2>
+          <p className="text-muted-foreground">{error}</p>
           <button 
             onClick={() => router.back()}
-            className="mt-4 px-4 py-2 bg-primary text-white rounded hover:bg-primary-hover"
+            className="mt-4 px-4 py-2 bg-primary text-white rounded hover:bg-primary-hover transition-colors"
           >
             Go Back
           </button>
@@ -98,10 +98,10 @@ export default function CourseDashboardPage() {
 
   if (!course) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">Course Not Found</h2>
-          <p className="text-gray-600">The course you're looking for doesn't exist.</p>
+          <h2 className="text-2xl font-bold text-foreground mb-2">Course Not Found</h2>
+          <p className="text-muted-foreground">The course you're looking for doesn't exist.</p>
         </div>
       </div>
     );
@@ -113,59 +113,59 @@ export default function CourseDashboardPage() {
     <main className="min-h-screen bg-background">
       <div className="container mx-auto max-w-6xl px-4 py-8">
         {/* Header */}
-        <div className="bg-card rounded-lg shadow-sm p-6 mb-6">
+        <div className="bg-card rounded-lg shadow-sm border border-border p-6 mb-6">
           <button
             onClick={() => router.push(`/courses/${id}`)}
-            className="text-primary hover:text-primary-hover mb-2 text-sm"
+            className="text-primary hover:text-primary-hover mb-2 text-sm transition-colors"
           >
             ← Back to Course Overview
           </button>
-          <h1 className="text-3xl font-bold text-primary">{course.title}</h1>
-          <p className="text-primary mt-1">{course.description}</p>
-          <p className="text-sm text-primary mt-2">
-            Instructor: {course.instructor}
+          <h1 className="text-3xl font-bold text-foreground font-palanquin-dark">{course.title}</h1>
+          <p className="text-muted-foreground mt-1">{course.description}</p>
+          <p className="text-sm text-muted-foreground mt-2">
+            Instructor: <span className="text-foreground font-medium">{course.instructor}</span>
           </p>
         </div>
 
         {/* Course Content */}
         <div className="space-y-4">
           {modules.length === 0 ? (
-            <div className="bg-card rounded-lg shadow-sm p-8 text-center">
+            <div className="bg-card rounded-lg shadow-sm border border-border p-8 text-center">
               <BookOpen className="h-12 w-12 text-primary mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-primary mb-2">No modules available</h3>
-              <p className="text-primary">Course content is being prepared. Check back soon!</p>
+              <h3 className="text-lg font-semibold text-foreground mb-2">No modules available</h3>
+              <p className="text-muted-foreground">Course content is being prepared. Check back soon!</p>
             </div>
           ) : (
             modules.map((module, index) => {
               return (
                 <div
                   key={module._id}
-                  className="bg-card rounded-lg shadow-sm border-l-4 border-accent transition-all duration-200 cursor-pointer transform transition-transform duration-300 hover:scale-105"
+                  className="bg-card rounded-lg shadow-sm border border-border border-l-4 border-l-accent hover:shadow-lg transition-all duration-200 cursor-pointer hover:scale-[1.02]"
                   onClick={() => handleModuleClick(module)}
                 >
                   <div className="p-6">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-4">
-                        <div className="p-2 rounded-lg bg-background text-primary">
+                        <div className="p-2 rounded-lg bg-muted text-primary">
                           {getModuleIcon(module.type)}
                         </div>
                         <div>
-                          <h3 className="text-lg font-semibold text-primary">
+                          <h3 className="text-lg font-semibold text-foreground">
                             {module.title}
                           </h3>
-                          <p className="text-sm text-secondary">
+                          <p className="text-sm text-muted-foreground">
                             {module.description || `${module.type.charAt(0).toUpperCase() + module.type.slice(1)} Module`}
                           </p>
                           <div className="flex items-center space-x-4 mt-2">
-                            <span className={`text-xs px-2 py-1 rounded-full ${
-                              module.type === 'quiz' ? 'bg-purple-100 text-purple-700' :
-                              module.type === 'assignment' ? 'bg-orange-100 text-orange-700' :
-                              module.type === 'pdf' ? 'bg-red-100 text-red-700' :
-                              'bg-gray-100 text-gray-700'
+                            <span className={`text-xs px-2 py-1 rounded-full font-medium ${
+                              module.type === 'quiz' ? 'bg-info/10 text-info' :
+                              module.type === 'assignment' ? 'bg-warning/10 text-warning' :
+                              module.type === 'pdf' ? 'bg-error/10 text-error' :
+                              'bg-muted text-muted-foreground'
                             }`}>
                               {module.type.toUpperCase()}
                             </span>
-                            <span className="text-xs text-gray-500">
+                            <span className="text-xs text-muted-foreground">
                               Module {index + 1}
                             </span>
                           </div>
