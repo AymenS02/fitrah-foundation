@@ -83,7 +83,7 @@ export default function AssignmentModulePage() {
       formData.append("text", submission.text);
       submission.files.forEach((file) => formData.append("files", file));
 
-      const res = await fetch(`/api/courses/${courseId}/modules/${assignmentId}`, {
+      const res = await fetch(`/api/enrollments/${enrollmentId}/submissions`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: formData,
