@@ -23,6 +23,8 @@ export default function CourseDashboardPage() {
       if (!courseRes.ok) throw new Error("Failed to fetch course");
       const courseData = await courseRes.json();
       setCourse(courseData);
+      console.log("Course data :", courseData);
+      console.log("User data :", user);
     } catch (error) {
       console.error("Error fetching course data:", error);
       setError(error.message);
@@ -54,8 +56,24 @@ export default function CourseDashboardPage() {
 
   // Handle module click
   const handleModuleClick = (module) => {
-    console.log("Module clicked:", module);
-    console.log("Course ID:", course.id);
+    if (!course || !user) return;
+
+    // Find the current student's enrollment
+    const enrollment = course.enrollments.find(e => e.user._id === user.id);
+    if (!enrollment) return; // user not enrolled
+
+    // Check if there's already a grade for this module
+    const hasGrade = enrollment.grades.some(g => g.itemId === module._id);
+
+    // Check if there's already a submission for this module
+    const hasSubmission = enrollment.submissions.some(s => s.module === module._id);
+
+    if (hasGrade || hasSubmission) {
+      // Optionally show a message to the user
+      alert("You have already submitted or received a grade for this module.");
+      return; // Prevent navigation
+    }
+
     // Navigate to module view based on type
     if (module.type === 'text' || module.type === 'pdf') {
       router.push(`/courses/${id}/text/${module._id}`);
@@ -65,6 +83,7 @@ export default function CourseDashboardPage() {
       router.push(`/courses/${id}/assignment/${module._id}`);
     }
   };
+
 
   if (!user) {
     return (
@@ -151,11 +170,21 @@ export default function CourseDashboardPage() {
             </div>
           ) : (
             modules.map((module, index) => {
+              // Find current user's enrollment
+              const enrollment = course.enrollments.find(e => e.user._id === user.id);
+              const hasGrade = enrollment?.grades.some(g => g.itemId === module._id);
+              const hasSubmission = enrollment?.submissions.some(s => s.module === module._id);
+              const isCompleted = hasGrade || hasSubmission;
+
               return (
                 <div
                   key={module._id}
-                  className="bg-card rounded-lg shadow-sm border border-border border-l-4 border-l-accent hover:shadow-lg transition-all duration-200 cursor-pointer hover:scale-[1.02]"
-                  onClick={() => handleModuleClick(module)}
+                  className={`
+                    bg-card rounded-lg shadow-sm border border-border border-l-4 border-l-accent
+                    transition-all duration-200
+                    ${isCompleted ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:shadow-lg hover:scale-[1.02]'}
+                  `}
+                  onClick={() => !isCompleted && handleModuleClick(module)}
                 >
                   <div className="p-6">
                     <div className="flex items-center justify-between">
@@ -190,6 +219,7 @@ export default function CourseDashboardPage() {
                 </div>
               );
             })
+
           )}
         </div>
       </div>
