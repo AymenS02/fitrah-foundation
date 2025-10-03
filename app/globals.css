@@ -30,8 +30,8 @@
   /* Interactive States */
   --color-primary-hover: hsl(230, 55%, 35%);     /* Lighter primary hover */
   --color-primary-active: hsl(230, 55%, 22%);    /* Darker primary active */
-  --color-secondary-hover: hsl(230, 35%, 84%);   /* Secondary hover */
-  --color-secondary-active: hsl(230, 35%, 84%);  /* Secondary active */
+  --color-secondary-hover: hsl(178, 100%, 30%);   /* Secondary hover */
+  --color-secondary-active: hsl(178, 100%, 16%);  /* Secondary active */
   --color-accent-hover: hsl(200, 65%, 53%);      /* Accent hover */
   --color-accent-active: hsl(200, 65%, 40%);     /* Accent active */
   
@@ -54,7 +54,7 @@
 .dark {
   /* Core Brand Colors - Brightened for dark backgrounds */
   --color-primary: hsl(230, 55%, 65%);           /* Brighter primary */
-  --color-secondary: hsl(178, 100%, 31%);         /* Lighter teal for dark mode */
+  --color-secondary: hsl(178, 100%, 30%);         /* Lighter teal for dark mode */
   --color-accent: hsl(200, 65%, 60%);            /* Brighter accent */
 
   /* Backgrounds & Surfaces - Dark blue theme */
@@ -78,8 +78,8 @@
   /* Interactive States - Dark mode adjustments */
   --color-primary-hover: hsl(230, 55%, 70%);     /* Brighter primary hover */
   --color-primary-active: hsl(230, 55%, 60%);    /* Darker primary active */
-  --color-secondary-hover: hsl(230, 25%, 25%);   /* Secondary hover */
-  --color-secondary-active: hsl(230, 25%, 30%);  /* Secondary active */
+  --color-secondary-hover: hsl(178, 100%, 35%);   /* Secondary hover */
+  --color-secondary-active: hsl(178, 100%, 25%);  /* Secondary active */
   --color-accent-hover: hsl(200, 65%, 65%);      /* Accent hover */
   --color-accent-active: hsl(200, 65%, 55%);     /* Accent active */
   

@@ -165,6 +165,12 @@ export default function CourseDashboard() {
               Manage Modules
             </button>
             <button
+              onClick={() => router.push(`/admin/courses/${courseId}/grades`)}
+              className="bg-secondary text-white px-4 py-2 rounded hover:bg-secondary-hover transition-colors"
+            >
+              Manage Grades
+            </button>
+            <button
               onClick={() => router.push(`/admin/courses/${courseId}/enrollments`)}
               className="bg-accent text-white px-4 py-2 rounded hover:bg-accent-hover transition-colors"
             >

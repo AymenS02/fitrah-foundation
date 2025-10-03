@@ -1,6 +1,5 @@
 // app/api/courses/[id]/modules/[moduleId]/route.js
 
-
 import { NextResponse } from "next/server";
 import { connectDB } from "../../../../../../lib/config/db";
 import Module from "../../../../../../lib/models/moduleSchema";
