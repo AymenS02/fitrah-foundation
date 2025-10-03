@@ -72,6 +72,11 @@ const AdminGradingPage = () => {
     setSubmitLoading(true);
     try {
       const token = localStorage.getItem('token');
+      console.log('Submitting grade:', {
+        submissionId: selectedSubmission._id,
+        grade: parseFloat(gradeInput),
+        feedback: feedbackInput
+      });
       const response = await fetch(`/api/admin/enrollments/${selectedSubmission.enrollmentId}/grade`, {
         method: 'PATCH',
         headers: {

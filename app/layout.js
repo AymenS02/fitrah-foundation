@@ -41,5 +41,11 @@ export default function RootLayout({ children }) {
   );
 }
 
-
-// Things Due: Mobile version, making sure student submissions work, payment integration, student standings page.
+{/*
+Things Due:
+- Making sure student submissions work
+- Student grades page
+- Mobile version
+- Payment integration
+- Testing
+*/}

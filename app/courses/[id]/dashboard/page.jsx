@@ -29,6 +29,7 @@ export default function CourseDashboardPage() {
     } finally {
       setLoading(false);
     }
+
   };
 
   useEffect(() => {
@@ -53,6 +54,8 @@ export default function CourseDashboardPage() {
 
   // Handle module click
   const handleModuleClick = (module) => {
+    console.log("Module clicked:", module);
+    console.log("Course ID:", course.id);
     // Navigate to module view based on type
     if (module.type === 'text' || module.type === 'pdf') {
       router.push(`/courses/${id}/text/${module._id}`);
@@ -121,10 +124,21 @@ export default function CourseDashboardPage() {
             ← Back to Course Overview
           </button>
           <h1 className="text-3xl font-bold text-foreground font-palanquin-dark">{course.title}</h1>
-          <p className="text-muted-foreground mt-1">{course.description}</p>
-          <p className="text-sm text-muted-foreground mt-2">
-            Instructor: <span className="text-foreground font-medium">{course.instructor}</span>
-          </p>
+          <div className="flex justify-between">
+            <div>
+              <p className="text-muted-foreground mt-1">{course.description}</p>
+              <p className="text-sm text-muted-foreground mt-2">
+                Instructor: <span className="text-foreground font-medium">{course.instructor}</span>
+              </p>
+            </div>
+            <button
+              onClick={() => router.push(`/courses/${id}/grades`)}
+              className="mt-4 px-4 py-2 bg-primary text-white rounded hover:bg-primary-hover transition-colors"
+            >
+              See Grades
+            </button>
+          </div>
+
         </div>
 
         {/* Course Content */}
