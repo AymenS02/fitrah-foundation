@@ -41,7 +41,7 @@ export default function AboutPage() {
                   The <span className="text-foreground font-semibold">Fitrah</span> is the natural position and innate nature of human beings. We were all created with one natural disposition to recognize Allah, our Creator, and His sole right to be worshiped.
                 </p>
                 <p>
-                  It's the ability to distinguish between truth and falsehood, right and wrong, in all aspects of life.
+                  It&apos;s the ability to distinguish between truth and falsehood, right and wrong, in all aspects of life.
                 </p>
               </div>
             </div>
@@ -63,7 +63,7 @@ export default function AboutPage() {
           <div className="bg-gradient-to-br from-primary to-accent rounded-3xl p-10 md:p-16 shadow-2xl">
             <div className="text-center text-white">
               <div className="inline-block px-4 py-2 bg-white/20 rounded-full text-sm font-semibold mb-8">
-                Qur'an 30:30
+                Qur&apos;an 30:30
               </div>
               
               <p dir="rtl" className="text-3xl md:text-4xl leading-loose font-[600] mb-8">
@@ -71,7 +71,7 @@ export default function AboutPage() {
               </p>
 
               <p className="text-lg md:text-xl leading-relaxed opacity-95 max-w-3xl mx-auto">
-                "So direct your face toward the religion, inclining to truth. [Adhere to] the Fitrah of Allah upon which He has created all people."
+                &quot;So direct your face toward the religion, inclining to truth. [Adhere to] the Fitrah of Allah upon which He has created all people.&quot;
               </p>
             </div>
           </div>
@@ -89,11 +89,11 @@ export default function AboutPage() {
                 <Target className="w-6 h-6 text-error" />
               </div>
               <h3 className="text-2xl font-palanquin-dark text-foreground mb-4">
-                Today's Reality
+                Today&apos;s Reality
               </h3>
               <div className="space-y-4 text-muted-foreground">
                 <p>
-                  <span className="font-semibold text-foreground">The Prophet ﷺ said:</span> "Every child is born in a state of Fitrah. His parents then make him a Jew, a Christian or a Magian." <span className="text-primary text-sm">[Muslim]</span>
+                  <span className="font-semibold text-foreground">The Prophet ﷺ said:</span> &quot;Every child is born in a state of Fitrah. His parents then make him a Jew, a Christian or a Magian.&quot; <span className="text-primary text-sm">[Muslim]</span>
                 </p>
                 <p>
                   The Fitrah of many people has become derailed. A layer of fog obscures the truth, shaping beliefs and actions. Never has mankind been so distant from the Fitrah — in beliefs, morals, and ethics.
@@ -144,7 +144,7 @@ export default function AboutPage() {
                 Traditional Scholarship
               </h3>
               <p className="text-muted-foreground leading-relaxed">
-                Learning rooted in Qur'an and Sunnah, guided by scholars linked to authentic chains.
+                Learning rooted in Qur&apos;an and Sunnah, guided by scholars linked to authentic chains.
               </p>
             </div>
 
@@ -188,7 +188,7 @@ export default function AboutPage() {
               </div>
               <div>
                 <h3 className="text-sm font-bold text-primary uppercase tracking-wider mb-2">
-                  Who it's for
+                  Who it&apos;s for
                 </h3>
                 <p className="text-2xl font-palanquin-dark text-foreground">
                   Muslims seeking authentic, structured learning.
@@ -204,7 +204,7 @@ export default function AboutPage() {
               </div>
               <div>
                 <h3 className="text-sm font-bold text-accent uppercase tracking-wider mb-2">
-                  What you'll gain
+                  What you&apos;ll gain
                 </h3>
                 <p className="text-2xl font-palanquin-dark text-foreground">
                   Clarity, practice, and character rooted in the Sunnah.
@@ -223,7 +223,7 @@ export default function AboutPage() {
                   How we teach
                 </h3>
                 <p className="text-2xl font-palanquin-dark text-foreground">
-                  Traditional scholarship explained with today's language.
+                  Traditional scholarship explained with today&apos;s language.
                 </p>
               </div>
             </div>
