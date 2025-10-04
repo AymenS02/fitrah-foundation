@@ -155,7 +155,7 @@ return (
         {filteredArticles.map((article) => (
           <div
             key={article._id}
-            className="bg-card rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 overflow-hidden group"
+            className="bg-card rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 overflow-hidden group flex flex-col"
           >
             {/* Article Image or Gradient Header */}
             <div className="relative h-48 overflow-hidden">
@@ -192,8 +192,8 @@ return (
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </div>
 
-            <div className="p-6">
-              <h3 className="text-xl font-bold text-primary mb-2 line-clamp-2 group-hover:text-primary-hover transition-colors">
+            <div className="p-6 flex flex-col flex-grow">
+              <h3 className="text-xl font-bold text-primary mb-2 line-clamp-2 group-hover:text-primary-hover transition-colors h-14">
                 {article.title}
               </h3>
               
@@ -207,33 +207,35 @@ return (
                 <span className="text-sm">{formatDate(article.date)}</span>
               </div>
               
-              <p className="text-muted-foreground text-sm mb-4 line-clamp-3">
+              <p className="text-muted-foreground text-sm mb-4 line-clamp-3 flex-grow">
                 {truncateContent(article.content)}
               </p>
               
               {/* Tags */}
-              {article.tags && article.tags.length > 1 && (
-                <div className="flex flex-wrap gap-1 mb-4">
-                  {article.tags.slice(0, 3).map((tag, index) => (
-                    <span
-                      key={index}
-                      className="inline-flex items-center px-2 py-1 text-xs font-medium bg-muted text-primary rounded-full"
-                    >
-                      <Tag className="w-3 h-3 mr-1" />
-                      {tag}
-                    </span>
-                  ))}
-                  {article.tags.length > 3 && (
-                    <span className="text-xs text-muted-foreground">
-                      +{article.tags.length - 3} more
-                    </span>
-                  )}
-                </div>
-              )}
+              <div className="min-h-[36px] mb-4">
+                {article.tags && article.tags.length > 1 && (
+                  <div className="flex flex-wrap gap-1">
+                    {article.tags.slice(0, 3).map((tag, index) => (
+                      <span
+                        key={index}
+                        className="inline-flex items-center px-2 py-1 text-xs font-medium bg-muted text-primary rounded-full"
+                      >
+                        <Tag className="w-3 h-3 mr-1" />
+                        {tag}
+                      </span>
+                    ))}
+                    {article.tags.length > 3 && (
+                      <span className="text-xs text-muted-foreground">
+                        +{article.tags.length - 3} more
+                      </span>
+                    )}
+                  </div>
+                )}
+              </div>
               
               <button
                 onClick={() => handleViewArticle(article)}
-                className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary/80 hover:to-accent/80 text-white font-semibold py-3 px-4 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 group-hover:shadow-lg"
+                className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary/80 hover:to-accent/80 text-white font-semibold py-3 px-4 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 group-hover:shadow-lg mt-auto"
               >
                 <Eye className="w-5 h-5" />
                 <span>Read Article</span>
