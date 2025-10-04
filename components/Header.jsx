@@ -29,9 +29,10 @@ const Header = () => {
         
         {/* Logo */}
         <div className="flex items-center">
-          <div className="w-20 h-20 mr-3">
+          <div className="w-20 h-20 mr-3 cursor-pointer"
+               onClick={() => window.location.href='/'} >
             <Image
-              src="/images/logo.png"
+              src="/images/icon.png"
               alt="Fitrah Foundation Logo"
               className="w-full h-full object-contain"
               width={80}

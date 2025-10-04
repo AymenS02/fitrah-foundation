@@ -58,12 +58,12 @@ export default function Home() {
 
   const testimonials = [
     {
-      name: "Ahmad M.",
-      text: "The Fitrah Foundation has transformed my understanding of Islam. The courses are comprehensive and the instructors are truly knowledgeable."
+      name: "Sarah Hasan",
+      text: "The course has really enlightened me about the lofty status of a student of knowledge. It has allowed me to seek more interest in seeking further knowledge to grow myself as a muslim woman. Moreover it has inculcated a deep respect, gratitude and a need to protect the blessing of Allah. It is not often we have access to teachers like Sheikh Kamil who truly embodies the deep understanding of Islamic Aqeedah, its sciences and it's wider application of it in the socio political world that we currently live in. It leaves one feeling thirsty for more beneficial knowledge and wanting to be an avid student in all his classes. Especially for those of us in the west who are unable to have access to the right knowledge and trustworthy teachers to teach us the right understanding of Quran and Sunnah. May Allah bless him and his work and accept it from us and him ameen."
     },
     {
-      name: "Fatima S.",
-      text: "I appreciate the balance between traditional teachings and modern application. It has helped me connect with my faith on a deeper level."
+      name: "Anonymous",
+      text: "This is an excellent course taught by Sh. Kamil Ahmad. What I found most beneficial from this course is that he focuses a lot on proper behavior when seeking knowledge, while adding in impactful statements from our righteous scholars of the past and how they viewed seeking knowledge. Alhamdulillah, I felt more confident after I finished the course, having understood the fundamental guidelines to succeed as well as the common pitfalls when seeking knowledge."
     },
     {
       name: "Omar K.",
