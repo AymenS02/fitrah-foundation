@@ -108,7 +108,7 @@ export default function Home() {
         {/* Image Container */}
         <div className="flex justify-center items-center order-1 md:order-2 md:w-1/2 mt-10 md:mt-0">
           <Image
-            src="/images/logo.png"
+            src="/images/logo-alt.png"
             alt="Sacred Knowledge"
             width={350}
             height={350}

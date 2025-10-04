@@ -32,7 +32,7 @@ const Header = () => {
           <div className="w-20 h-20 mr-3 cursor-pointer"
                onClick={() => window.location.href='/'} >
             <Image
-              src="/images/icon.png"
+              src="/images/icon-alt.png"
               alt="Fitrah Foundation Logo"
               className="w-full h-full object-contain"
               width={80}
