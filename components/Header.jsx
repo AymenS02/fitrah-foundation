@@ -1,23 +1,32 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import { useAuth } from "../components/authContext";
-import DarkModeToggle from '@/darkMode';
+
+// Dynamically import to avoid SSR mismatches
+const DarkModeToggle = dynamic(() => import('@/darkMode'), { ssr: false });
 
 const Header = () => {
   const { user } = useAuth();
+  const [hydrated, setHydrated] = useState(false);
+
+  // Ensure component only renders after hydration
+  useEffect(() => {
+    setHydrated(true);
+  }, []);
+
+  if (!hydrated) return null; // Prevent SSR/client mismatch rendering
 
   return (
     <header 
       className="max-md:hidden px-6 py-4 shadow-2xl bg-background"
-      style={{ 
-        boxShadow: '0 4px 25px var(--color-shadow)'
-      }}
+      style={{ boxShadow: '0 4px 25px var(--color-shadow)' }}
     >
       <div className="max-w-[90%] mx-auto flex items-center justify-between">
-
+        
         {/* Logo */}
         <div className="flex items-center">
           <div className="w-20 h-20 mr-3">
@@ -27,6 +36,7 @@ const Header = () => {
               className="w-full h-full object-contain"
               width={80}
               height={80}
+              priority
             />
           </div>
         </div>
@@ -40,6 +50,7 @@ const Header = () => {
           >
             Home
           </Link>
+
           <Link 
             href="/about" 
             className="hover:scale-105 transition-transform font-medium"
@@ -47,6 +58,7 @@ const Header = () => {
           >
             About Us
           </Link>
+
           <Link 
             href="/articles" 
             className="hover:scale-105 transition-transform font-medium"
@@ -54,7 +66,9 @@ const Header = () => {
           >
             Articles
           </Link>
-          {!user ? (
+
+          {/* Show 'Courses' in the main nav only if user not logged in */}
+          {!user && (
             <Link 
               href="/courses" 
               className="hover:scale-105 transition-transform font-medium"
@@ -62,7 +76,7 @@ const Header = () => {
             >
               Courses
             </Link>
-          ) : null}
+          )}
 
           <Link 
             href="/contact" 
@@ -158,6 +172,7 @@ const Header = () => {
               Sign Up
             </Link>
           )}
+
           <DarkModeToggle />
         </nav>
       </div>

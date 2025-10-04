@@ -3,17 +3,10 @@ import User from '../../../../lib/models/userSchema';
 import Course from '@/lib/models/courseSchema';
 import Enrollment from '@/lib/models/enrollmentSchema';
 import { connectDB } from '../../../../lib/config/db';
-import { verifyToken } from '../../../../lib/middleware/auth';
 
 export async function GET(req) {
   try {
     await connectDB();
-
-    const user = await verifyToken(req);
-
-    if (user.role !== 'ADMIN') {
-      return NextResponse.json({ message: 'Access denied' }, { status: 403 });
-    }
 
     const students = await User.find({ role: 'STUDENT' }).select('-password');
 

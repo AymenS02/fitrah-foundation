@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from "next/image";
 import { ChevronLeft, ChevronRight, Quote } from 'lucide-react';
 import Link from 'next/link';
@@ -7,6 +7,25 @@ import Link from 'next/link';
 export default function Home() {
 
   const [hoveredCard, setHoveredCard] = useState(null);
+  const [isDark, setIsDark] = useState(false);
+
+  useEffect(() => {
+    // Check saved or current theme
+    const saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      setIsDark(true);
+    } else {
+      setIsDark(false);
+    }
+
+    // Observe <html> class changes to detect toggles in real-time
+    const observer = new MutationObserver(() => {
+      setIsDark(document.documentElement.classList.contains('dark'));
+    });
+
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    return () => observer.disconnect();
+  }, []);
 
   const teachers = [
     {
@@ -99,7 +118,7 @@ export default function Home() {
       </div>
       
       <div className="flex justify-center items-start">
-        <Image src="/images/cali.png" alt="Cali" width={1440} height={100} className="max-md:hidden md:w-[500px]" />
+        <Image src={isDark ? '/images/cali-alt.png' : '/images/cali.png'} alt="Cali" width={1440} height={100} className="max-md:hidden md:w-[500px]" />
       </div>
 
       {/* Subjects Banner */}

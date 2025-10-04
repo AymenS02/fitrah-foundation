@@ -44,7 +44,7 @@ export default function RootLayout({ children }) {
 {/*
 Things Due:
 - Making sure student submissions work
-- Student grades page
+- Opening Text modules (downloading pdfs)
 - Mobile version
 - Payment integration
 - Testing

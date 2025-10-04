@@ -1,16 +1,27 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import { useAuth } from '../components/authContext';
 import { X, Menu } from 'lucide-react';
-import DarkModeToggle from '@/darkMode';
+
+// Dynamically import to avoid SSR mismatch
+const DarkModeToggle = dynamic(() => import('@/darkMode'), { ssr: false });
 
 const Sidebar = () => {
   const { user } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
+  const [hydrated, setHydrated] = useState(false);
 
   const toggleSidebar = () => setIsOpen(!isOpen);
+
+  // Wait for client hydration
+  useEffect(() => {
+    setHydrated(true);
+  }, []);
+
+  if (!hydrated) return null; // Prevent hydration mismatch
 
   return (
     <>
@@ -44,7 +55,10 @@ const Sidebar = () => {
           boxShadow: '0 4px 25px var(--color-shadow)'
         }}
       >
-        <div className="flex items-center justify-between px-6 py-4 border-b" style={{ borderColor: 'var(--color-border)' }}>
+        <div 
+          className="flex items-center justify-between px-6 py-4 border-b" 
+          style={{ borderColor: 'var(--color-border)' }}
+        >
           <h2 className="text-2xl font-bold" style={{ color: 'var(--color-primary)' }}>Menu</h2>
           <button onClick={toggleSidebar} style={{ color: 'var(--color-foreground)' }}>
             <X size={24} />
@@ -61,6 +75,7 @@ const Sidebar = () => {
           >
             Home
           </Link>
+
           <Link
             href="/about"
             onClick={() => setIsOpen(false)}
@@ -69,6 +84,7 @@ const Sidebar = () => {
           >
             About Us
           </Link>
+
           <Link
             href="/articles"
             onClick={() => setIsOpen(false)}
@@ -99,7 +115,7 @@ const Sidebar = () => {
             Contact Us
           </Link>
 
-          {/* Authentication-dependent buttons */}
+          {/* Auth-dependent buttons */}
           {user ? (
             <>
               {/* Courses button */}
@@ -123,7 +139,7 @@ const Sidebar = () => {
               >
                 Courses
               </Link>
-              
+
               {/* Account button */}
               <Link
                 href="/account"
@@ -146,7 +162,7 @@ const Sidebar = () => {
                 Account
               </Link>
 
-              {/* Admin button if role is ADMIN */}
+              {/* Admin button */}
               {user.role === 'ADMIN' && (
                 <Link
                   href="/admin"

@@ -129,7 +129,7 @@ return (
           <ul className="divide-y divide-border">
             {students.map((student) => (
               <li key={student._id} className="p-6 hover:bg-muted transition">
-                <div className="flex justify-between items-start">
+                <div className="flex justify-between items-start max-md:flex-col max-md:gap-4">
                   {/* Student Info */}
                   <div className="flex-1">
                     <h3 className="text-lg font-semibold text-foreground">
@@ -181,7 +181,7 @@ return (
                   </div>
 
                   {/* Actions */}
-                  <div className="flex space-x-2 ml-4">
+                  <div className="flex space-x-2 md:ml-4">
                     <Link
                       href={`/admin/students/${student._id}`}
                       className="px-3 py-1 rounded-md text-sm bg-info text-white hover:bg-info/90 transition"

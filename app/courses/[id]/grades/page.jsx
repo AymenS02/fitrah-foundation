@@ -2,11 +2,11 @@
 
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { FileText, Award, Clock, CheckCircle, TrendingUp, BookOpen } from "lucide-react";
+import { FileText, Award, Clock, CheckCircle, TrendingUp } from "lucide-react";
 import { useAuth } from "@/components/authContext";
 
 export default function StudentGradesPage() {
-  const { id } = useParams(); // courseId only
+  const { id } = useParams(); 
   const router = useRouter();
   const [enrollment, setEnrollment] = useState(null);
   const [course, setCourse] = useState(null);
@@ -17,8 +17,7 @@ export default function StudentGradesPage() {
   // Fetch student's enrollment and grades
   useEffect(() => {
     const fetchGradesData = async () => {
-      if (!user?._id || !id) {
-        console.log('hello' + user?._id + ' ' + id  );
+      if (!user?.id || !id) {
         setLoading(false);
         return;
       }
@@ -27,19 +26,21 @@ export default function StudentGradesPage() {
         setLoading(true);
         setError('');
 
-        console.log('Fetching grades for user:', user._id, 'course:', id);
-
         // Fetch enrollment data with grades
-        const enrollmentRes = await fetch(`/api/courses/${id}/enrollments?userId=${user._id}`);
+        const enrollmentRes = await fetch(`/api/courses/${id}/enrollments?userId=${user?.id}`);
         const enrollmentJson = await enrollmentRes.json();
-
-        console.log('Enrollment response:', enrollmentJson);
 
         if (!enrollmentRes.ok) {
           throw new Error(enrollmentJson.error || "Failed to fetch enrollment data");
         }
 
-        setEnrollment(enrollmentJson.data || enrollmentJson);
+        // ✅ If array, pick the first enrollment (for this user + course)
+        const data = Array.isArray(enrollmentJson.data || enrollmentJson)
+          ? (enrollmentJson.data || enrollmentJson)[0]
+          : (enrollmentJson.data || enrollmentJson);
+
+        setEnrollment(data);
+        console.log("Enrollment data:", data);
         // Fetch course info
         const courseRes = await fetch(`/api/courses/${id}`);
         if (!courseRes.ok) throw new Error("Failed to fetch course");
@@ -55,7 +56,7 @@ export default function StudentGradesPage() {
     };
 
     fetchGradesData();
-  }, [id, user?._id]);
+  }, [id, user?.id]);
 
   const formatDate = (dateString) => {
     if (!dateString) return 'N/A';
@@ -152,7 +153,7 @@ export default function StudentGradesPage() {
         </div>
 
         {/* Grade Summary Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
           {/* Final Grade */}
           <div className="bg-card rounded-lg shadow-sm border border-border p-6">
             <div className="flex items-center justify-between mb-2">
@@ -184,23 +185,6 @@ export default function StudentGradesPage() {
               <p className="text-2xl text-muted-foreground">No grades yet</p>
             )}
           </div>
-
-          {/* Progress */}
-          <div className="bg-card rounded-lg shadow-sm border border-border p-6">
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="text-sm font-medium text-muted-foreground">Course Progress</h3>
-              <BookOpen className="h-5 w-5 text-primary" />
-            </div>
-            <div className="flex items-baseline">
-              <span className="text-3xl font-bold text-foreground">{enrollment.progress || 0}%</span>
-            </div>
-            <div className="mt-2 w-full bg-gray-200 rounded-full h-2">
-              <div
-                className="bg-primary h-2 rounded-full transition-all duration-300"
-                style={{ width: `${enrollment.progress || 0}%` }}
-              ></div>
-            </div>
-          </div>
         </div>
 
         {/* Assignments & Submissions */}
@@ -218,7 +202,7 @@ export default function StudentGradesPage() {
           ) : (
             <div className="space-y-3">
               {submissions.map((submission) => (
-                <div key={submission._id} className="border border-border rounded-lg p-4 hover:shadow-md transition-shadow">
+                <div key={submission.id} className="border border-border rounded-lg p-4 hover:shadow-md transition-shadow">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
@@ -230,7 +214,7 @@ export default function StudentGradesPage() {
                             {submission.grade}%
                           </span>
                         ) : (
-                          <span className="px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-600 border border-gray-300">
+                          <span className="px-3 py-1 rounded-full text-sm font-medium bg-card text-gray-600 border border-gray-300">
                             Pending
                           </span>
                         )}
@@ -239,7 +223,7 @@ export default function StudentGradesPage() {
                         Submitted on {formatDate(submission.submittedAt)}
                       </p>
                       {submission.feedback && (
-                        <div className="mt-2 p-3 bg-blue-50 border border-blue-200 rounded-md">
+                        <div className="mt-2 p-3 bg-card border border-border rounded-md">
                           <p className="text-sm text-foreground">
                             <span className="font-medium">Feedback: </span>
                             {submission.feedback}

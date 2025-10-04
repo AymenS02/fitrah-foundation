@@ -3,7 +3,13 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { ChevronsLeft, LayoutDashboard, NotebookPen, CircleUser, FileText } from 'lucide-react';
+import {
+  ChevronsLeft,
+  LayoutDashboard,
+  NotebookPen,
+  CircleUser,
+  FileText,
+} from 'lucide-react';
 
 export default function AdminLayout({ children }) {
   const pathname = usePathname();
@@ -23,7 +29,7 @@ export default function AdminLayout({ children }) {
       try {
         const res = await fetch('/api/auth/isAdmin', {
           headers: {
-            'Authorization': `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
           },
         });
 
@@ -32,7 +38,7 @@ export default function AdminLayout({ children }) {
           return;
         }
 
-        setLoading(false); // allow rendering content
+        setLoading(false);
       } catch (err) {
         console.error(err);
         router.push('/login');
@@ -54,12 +60,12 @@ export default function AdminLayout({ children }) {
   ];
 
   return (
-    <div className="flex min-h-screen bg-background text-primary">
-      {/* Sidebar */}
+    <div className="flex flex-col md:flex-row min-h-screen bg-background text-primary mt-10">
+      {/* Sidebar (Desktop only) */}
       <aside
-        className={`${
+        className={`hidden md:flex flex-col space-y-4 shadow p-6 bg-background transition-all duration-300 ease-in-out ${
           collapsed ? 'w-20' : 'w-64'
-        } bg-background shadow p-6 flex flex-col space-y-4 transition-all duration-300 ease-in-out overflow-hidden`}
+        }`}
       >
         {/* Toggle button */}
         <div
@@ -106,8 +112,28 @@ export default function AdminLayout({ children }) {
         ))}
       </aside>
 
-      {/* Main content */}
-      <main className="flex-1 p-8 transition-all duration-300 ease-in-out">{children}</main>
+      {/* Main Content */}
+      <main className="flex-1 p-8 md:pb-8 pb-20 transition-all duration-300 ease-in-out">
+        {children}
+      </main>
+
+      {/* Bottom Nav (Mobile only) */}
+      <nav className="fixed bottom-0 left-0 right-0 bg-background border-t border-gray-200 shadow-inner flex justify-around items-center py-4 md:hidden z-50">
+        {navLinks.map((link) => (
+          <Link
+            key={link.href}
+            href={link.href}
+            className={`flex flex-col items-center justify-center text-sm ${
+              pathname === link.href
+                ? 'text-accent font-semibold'
+                : 'text-gray-600 hover:text-accent'
+            }`}
+          >
+            <div>{link.icon}</div>
+            <span className="text-xs mt-1">{link.name}</span>
+          </Link>
+        ))}
+      </nav>
     </div>
   );
 }
