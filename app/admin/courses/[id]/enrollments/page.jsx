@@ -12,7 +12,6 @@ export default function CourseStudents() {
   const router = useRouter();
   const courseId = params.id;
 
-  // Fetch course (includes students)
   const fetchCourse = async () => {
     try {
       setLoading(true);
@@ -55,7 +54,6 @@ export default function CourseStudents() {
         throw new Error('Failed to remove student from course');
       }
 
-      // Refresh course info (students list updates automatically)
       fetchCourse();
     } catch (error) {
       setError(error.message);
@@ -64,99 +62,116 @@ export default function CourseStudents() {
     }
   };
 
-  if (loading) return <div className="text-center mt-10">Loading course students...</div>;
-  if (!course) return <div className="text-center mt-10">Course not found</div>;
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center text-muted-foreground">Loading course students...</div>
+      </div>
+    );
+  }
+
+  if (!course) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center text-muted-foreground">Course not found</div>
+      </div>
+    );
+  }
 
   const students = course.enrollments || [];
 
   return (
-    <div className="max-w-6xl mx-auto p-6">
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <button
-            onClick={() => router.push(`/admin/courses/${courseId}`)}
-            className="text-primary hover:text-primary-hover mb-2 p-2 rounded-lg"
-          >
-            ← Back to Course
-          </button>
-          <h1 className="text-3xl font-bold">{course.title} - Students</h1>
-          <p className="text-gray-600">Manage course enrollments and student progress</p>
-        </div>
-      </div>
-
-      {error && (
-        <div className="bg-error border border-border text-red-700 px-4 py-3 rounded mb-4">
-          {error}
-        </div>
-      )}
-
-      <div className="space-y-4">
-        {students.length === 0 ? (
-          <div className="text-center py-8 text-gray-500">
-            No students enrolled in this course yet.
+    <div className="min-h-screen bg-background">
+      <div className="max-w-6xl mx-auto p-6">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <button
+              onClick={() => router.push(`/admin/courses/${courseId}`)}
+              className="text-primary hover:text-primary-hover mb-2 transition-colors"
+            >
+              ← Back to Course
+            </button>
+            <h1 className="text-3xl font-bold text-foreground font-palanquin-dark">
+              {course.title} - Students
+            </h1>
+            <p className="text-muted-foreground">Manage course enrollments and student progress</p>
           </div>
-        ) : (
-          <div className="mb-6">
-            <h3 className="font-semibold mb-2">
-              Enrolled Students ({students.length})
-            </h3>
-            <div className="space-y-2">
-              {students.map((enrollment) => (
-                <div key={enrollment._id} className="bg-card shadow-md rounded-xl p-6 border">
-                  <div className="flex justify-between items-start">
-                    <div className="flex-1">
-                      <h4 className="text-lg font-medium text-gray-900">
-                        {enrollment.user.firstName} {enrollment.user.lastName}
-                      </h4>
-                      <p className="text-sm text-gray-600">{enrollment.user.email}</p>
-                      <p className="text-sm text-gray-500">
-                        Enrolled: {new Date(enrollment.createdAt).toLocaleDateString()}
-                      </p>
+        </div>
 
-                      <div className="mt-3 space-y-2">
-                        <span className="text-sm text-gray-600">
-                          Progress: <span className="font-medium">{enrollment.progress || 0}%</span>
-                        </span>
-                        {enrollment.finalGrade !== null && (
-                          <span className="ml-4 text-sm text-gray-600">
-                            Final Grade: <span className="font-medium">{enrollment.finalGrade}%</span>
-                          </span>
-                        )}
-                      </div>
-                    </div>
-
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => router.push(`/admin/courses/${courseId}/students/${enrollment.user._id}/standings`)}
-                        className="text-blue-600 hover:text-blue-800 px-3 py-1 rounded text-sm"
-                      >
-                        View Standings
-                      </button>
-                      <button
-                        onClick={() => router.push(`/admin/students/${enrollment.user._id}`)}
-                        className="text-green-600 hover:text-green-800 px-3 py-1 rounded text-sm"
-                      >
-                        Edit Student
-                      </button>
-                      <button
-                        onClick={() =>
-                          handleRemoveFromCourse(
-                            enrollment._id, // enrollmentId
-                            `${enrollment.user.firstName} ${enrollment.user.lastName}`
-                          )
-                        }
-                        disabled={removeLoading === enrollment._id}
-                        className="text-red-600 hover:text-red-800 px-3 py-1 rounded text-sm disabled:opacity-50"
-                      >
-                        {removeLoading === enrollment._id ? 'Removing...' : 'Remove'}
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+        {error && (
+          <div className="bg-error/10 border border-error text-error px-4 py-3 rounded mb-4">
+            {error}
           </div>
         )}
+
+        <div className="space-y-4">
+          {students.length === 0 ? (
+            <div className="text-center py-8 bg-card border border-border rounded-lg">
+              <p className="text-muted-foreground">No students enrolled in this course yet.</p>
+            </div>
+          ) : (
+            <div className="mb-6">
+              <h3 className="font-semibold mb-2 text-foreground">
+                Enrolled Students ({students.length})
+              </h3>
+              <div className="space-y-2">
+                {students.map((enrollment) => (
+                  <div key={enrollment._id} className="bg-card shadow-md rounded-xl p-6 border border-border hover:shadow-lg transition-shadow">
+                    <div className="flex justify-between items-start">
+                      <div className="flex-1">
+                        <h4 className="text-lg font-medium text-foreground">
+                          {enrollment.user.firstName} {enrollment.user.lastName}
+                        </h4>
+                        <p className="text-sm text-muted-foreground">{enrollment.user.email}</p>
+                        <p className="text-sm text-muted-foreground">
+                          Enrolled: {new Date(enrollment.createdAt).toLocaleDateString()}
+                        </p>
+
+                        <div className="mt-3 space-y-2">
+                          <span className="text-sm text-muted-foreground">
+                            Progress: <span className="font-medium text-foreground">{enrollment.progress || 0}%</span>
+                          </span>
+                          {enrollment.finalGrade !== null && (
+                            <span className="ml-4 text-sm text-muted-foreground">
+                              Final Grade: <span className="font-medium text-foreground">{enrollment.finalGrade}%</span>
+                            </span>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="flex gap-2 flex-wrap">
+                        <button
+                          onClick={() => router.push(`/admin/courses/${courseId}/students/${enrollment.user._id}/standings`)}
+                          className="text-primary hover:text-primary-hover px-3 py-1 rounded text-sm transition-colors"
+                        >
+                          View Standings
+                        </button>
+                        <button
+                          onClick={() => router.push(`/admin/students/${enrollment.user._id}`)}
+                          className="text-success hover:opacity-80 px-3 py-1 rounded text-sm transition-opacity"
+                        >
+                          Edit Student
+                        </button>
+                        <button
+                          onClick={() =>
+                            handleRemoveFromCourse(
+                              enrollment._id,
+                              `${enrollment.user.firstName} ${enrollment.user.lastName}`
+                            )
+                          }
+                          disabled={removeLoading === enrollment._id}
+                          className="text-error hover:opacity-80 px-3 py-1 rounded text-sm disabled:opacity-50 transition-opacity"
+                        >
+                          {removeLoading === enrollment._id ? 'Removing...' : 'Remove'}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

@@ -160,25 +160,25 @@ export default function CourseDashboard() {
           <div className="flex flex-wrap gap-4">
             <button
               onClick={() => router.push(`/admin/courses/${courseId}/modules`)}
-              className="bg-primary text-white px-4 py-2 rounded hover:bg-primary-hover transition-colors"
+              className="max-md:w-48 bg-primary text-white px-4 py-2 rounded hover:bg-primary-hover transition-colors"
             >
               Manage Modules
             </button>
             <button
               onClick={() => router.push(`/admin/courses/${courseId}/grades`)}
-              className="bg-secondary text-white px-4 py-2 rounded hover:bg-secondary-hover transition-colors"
+              className="max-md:w-48 bg-secondary text-white px-4 py-2 rounded hover:bg-secondary-hover transition-colors"
             >
               Manage Grades
             </button>
             <button
               onClick={() => router.push(`/admin/courses/${courseId}/enrollments`)}
-              className="bg-accent text-white px-4 py-2 rounded hover:bg-accent-hover transition-colors"
+              className="max-md:w-48 bg-accent text-white px-4 py-2 rounded hover:bg-accent-hover transition-colors"
             >
               Manage Students
             </button>
             <button
               onClick={() => handleDeleteCourse(course._id)}
-              className="bg-destructive text-white px-4 py-2 rounded hover:opacity-90 transition-opacity"
+              className="max-md:w-48 bg-destructive text-white px-4 py-2 rounded hover:opacity-90 transition-opacity"
             >
               Delete Course
             </button>

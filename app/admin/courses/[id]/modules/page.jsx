@@ -214,24 +214,24 @@ export default function CourseModules() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="max-w-6xl mx-auto p-6">
+      <div className="max-w-6xl mx-auto p-4 sm:p-6">
         {/* Header */}
-        <div className="flex items-center justify-between mb-6">
-          <div>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4 sm:mb-6">
+          <div className="min-w-0 flex-1">
             <button
               onClick={() => router.push(`/admin/courses/${courseId}`)}
-              className="text-primary hover:text-primary-hover mb-2 transition-colors"
+              className="text-primary hover:text-primary-hover mb-2 transition-colors text-sm sm:text-base"
             >
               ← Back to Course
             </button>
-            <h1 className="text-3xl font-bold text-foreground font-palanquin-dark">
+            <h1 className="text-2xl sm:text-3xl font-bold text-foreground font-palanquin-dark break-words">
               {course.title} - Modules
             </h1>
-            <p className="text-muted-foreground">Manage course modules and content</p>
+            <p className="text-sm text-muted-foreground">Manage course modules and content</p>
           </div>
           <button
             onClick={() => setShowForm(!showForm)}
-            className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-hover transition-colors"
+            className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-hover transition-colors text-sm sm:text-base whitespace-nowrap self-start sm:self-auto"
           >
             {showForm ? "Cancel" : "Add Module"}
           </button>
@@ -239,19 +239,19 @@ export default function CourseModules() {
 
         {/* Module Form */}
         {showForm && (
-          <form onSubmit={handleSubmit} className="bg-card shadow-md rounded-xl p-6 mb-6 border border-border">
-            <h2 className="text-xl font-semibold mb-4 text-foreground">
+          <form onSubmit={handleSubmit} className="bg-card shadow-md rounded-xl p-4 sm:p-6 mb-4 sm:mb-6 border border-border">
+            <h2 className="text-lg sm:text-xl font-semibold mb-4 text-foreground">
               {editingModule ? "Edit Module" : "Create New Module"}
             </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-4">
               <input
                 name="title"
                 value={formData.title}
                 onChange={handleChange}
                 placeholder="Module Title"
                 required
-                className="border border-border bg-background text-foreground p-2 rounded focus:border-primary focus:outline-none"
+                className="border border-border bg-background text-foreground p-2 sm:p-3 rounded focus:border-primary focus:outline-none text-sm sm:text-base"
               />
               <input
                 name="order"
@@ -259,13 +259,13 @@ export default function CourseModules() {
                 value={formData.order}
                 onChange={handleChange}
                 placeholder="Order"
-                className="border border-border bg-background text-foreground p-2 rounded focus:border-primary focus:outline-none"
+                className="border border-border bg-background text-foreground p-2 sm:p-3 rounded focus:border-primary focus:outline-none text-sm sm:text-base"
               />
               <select
                 name="type"
                 value={formData.type}
                 onChange={handleChange}
-                className="border border-border bg-background text-foreground p-2 rounded focus:border-primary focus:outline-none"
+                className="border border-border bg-background text-foreground p-2 sm:p-3 rounded focus:border-primary focus:outline-none text-sm sm:text-base"
               >
                 <option value="text">Text</option>
                 <option value="quiz">Quiz</option>
@@ -278,30 +278,30 @@ export default function CourseModules() {
               value={formData.description}
               onChange={handleChange}
               placeholder="Module Description"
-              className="border border-border bg-background text-foreground p-2 rounded w-full mb-4 focus:border-primary focus:outline-none"
+              className="border border-border bg-background text-foreground p-2 sm:p-3 rounded w-full mb-4 focus:border-primary focus:outline-none text-sm sm:text-base min-h-[60px]"
             />
 
             {/* Content fields */}
             {formData.type === 'text' && (
-              <div>
+              <div className="space-y-3">
                 <textarea
                   value={formData.text.body}
-                  onChange={(e) => handleContentChange('text', { body: e.target.value})}
+                  onChange={(e) => handleContentChange('text', { body: e.target.value, fileUrl: formData.text.fileUrl })}
                   placeholder="Enter text content..."
-                  className="border border-border bg-background text-foreground p-2 rounded w-full h-32 focus:border-primary focus:outline-none"
+                  className="border border-border bg-background text-foreground p-2 sm:p-3 rounded w-full h-32 sm:h-40 focus:border-primary focus:outline-none text-sm sm:text-base"
                   required
                 />
-                <textarea
+                <input
                   value={formData.text.fileUrl}
-                  onChange={(e) => handleContentChange('text', { fileUrl: e.target.value })}
+                  onChange={(e) => handleContentChange('text', { body: formData.text.body, fileUrl: e.target.value })}
                   placeholder="Text File URL (optional)"
-                  className="border border-border bg-background text-foreground p-2 rounded w-full mb-4 focus:border-primary focus:outline-none"
+                  className="border border-border bg-background text-foreground p-2 sm:p-3 rounded w-full focus:border-primary focus:outline-none text-sm sm:text-base"
                 />
               </div>
             )}
 
             {formData.type === 'assignment' && (
-              <div>
+              <div className="space-y-3">
                 <textarea
                   value={formData.assignment.instructions}
                   onChange={(e) => handleContentChange('assignment', {
@@ -309,10 +309,10 @@ export default function CourseModules() {
                     instructions: e.target.value
                   })}
                   placeholder="Assignment instructions..."
-                  className="border border-border bg-background text-foreground p-2 rounded w-full h-24 mb-2 focus:border-primary focus:outline-none"
+                  className="border border-border bg-background text-foreground p-2 sm:p-3 rounded w-full h-24 sm:h-32 focus:border-primary focus:outline-none text-sm sm:text-base"
                   required
                 />
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   <input
                     type="date"
                     value={formData.assignment.dueDate}
@@ -320,7 +320,7 @@ export default function CourseModules() {
                       ...formData.assignment,
                       dueDate: e.target.value
                     })}
-                    className="border border-border bg-background text-foreground p-2 rounded focus:border-primary focus:outline-none"
+                    className="border border-border bg-background text-foreground p-2 sm:p-3 rounded focus:border-primary focus:outline-none text-sm sm:text-base"
                   />
                   <input
                     type="number"
@@ -330,45 +330,59 @@ export default function CourseModules() {
                       maxScore: parseInt(e.target.value)
                     })}
                     placeholder="Max Score"
-                    className="border border-border bg-background text-foreground p-2 rounded focus:border-primary focus:outline-none"
+                    className="border border-border bg-background text-foreground p-2 sm:p-3 rounded focus:border-primary focus:outline-none text-sm sm:text-base"
                   />
                 </div>
               </div>
             )}
 
             {formData.type === 'quiz' && (
-              <div>
+              <div className="space-y-4">
                 {formData.quiz.questions.map((question, qIndex) => (
-                  <div key={qIndex} className="border border-border bg-muted/20 p-4 rounded mb-4">
+                  <div key={qIndex} className="border border-border bg-muted/20 p-3 sm:p-4 rounded">
+                    <div className="flex items-start justify-between mb-2">
+                      <label className="text-sm font-medium text-foreground">Question {qIndex + 1}</label>
+                      <button
+                        type="button"
+                        onClick={() => removeQuizQuestion(qIndex)}
+                        className="text-error hover:opacity-80 text-sm sm:text-base"
+                      >
+                        Remove
+                      </button>
+                    </div>
                     <input
                       value={question.question}
                       onChange={(e) => handleQuizQuestionChange(qIndex, 'question', e.target.value)}
                       placeholder="Question text"
-                      className="border border-border bg-background text-foreground p-2 rounded w-full mb-2 focus:border-primary focus:outline-none"
+                      className="border border-border bg-background text-foreground p-2 rounded w-full mb-3 focus:border-primary focus:outline-none text-sm sm:text-base"
                       required
                     />
-                    {question.options.map((option, oIndex) => (
-                      <div key={oIndex} className="flex items-center mb-1">
-                        <input
-                          value={option}
-                          onChange={(e) => handleQuizOptionChange(qIndex, oIndex, e.target.value)}
-                          placeholder={`Option ${oIndex + 1}`}
-                          className="border border-border bg-background text-foreground p-2 rounded flex-1 mr-2 focus:border-primary focus:outline-none"
-                          required
-                        />
-                        <button
-                          type="button"
-                          onClick={() => removeQuizOption(qIndex, oIndex)}
-                          className="text-error hover:opacity-80"
-                        >
-                          ×
-                        </button>
-                      </div>
-                    ))}
+                    <div className="space-y-2 mb-3">
+                      {question.options.map((option, oIndex) => (
+                        <div key={oIndex} className="flex items-center gap-2">
+                          <input
+                            value={option}
+                            onChange={(e) => handleQuizOptionChange(qIndex, oIndex, e.target.value)}
+                            placeholder={`Option ${oIndex + 1}`}
+                            className="border border-border bg-background text-foreground p-2 rounded flex-1 focus:border-primary focus:outline-none text-sm sm:text-base"
+                            required
+                          />
+                          {question.options.length > 1 && (
+                            <button
+                              type="button"
+                              onClick={() => removeQuizOption(qIndex, oIndex)}
+                              className="text-error hover:opacity-80 text-lg sm:text-xl flex-shrink-0 w-8 h-8 flex items-center justify-center"
+                            >
+                              ×
+                            </button>
+                          )}
+                        </div>
+                      ))}
+                    </div>
                     <button
                       type="button"
                       onClick={() => addQuizOption(qIndex)}
-                      className="text-primary hover:text-primary-hover text-sm"
+                      className="text-primary hover:text-primary-hover text-xs sm:text-sm mb-3 block"
                     >
                       + Add Option
                     </button>
@@ -376,7 +390,7 @@ export default function CourseModules() {
                     <select
                       value={question.correctAnswer}
                       onChange={(e) => handleQuizQuestionChange(qIndex, 'correctAnswer', e.target.value)}
-                      className="border border-border bg-background text-foreground p-2 rounded w-full mt-2 focus:border-primary focus:outline-none"
+                      className="border border-border bg-background text-foreground p-2 rounded w-full focus:border-primary focus:outline-none text-sm sm:text-base"
                       required
                     >
                       <option value="">Select correct answer</option>
@@ -384,36 +398,29 @@ export default function CourseModules() {
                         <option key={oIndex} value={option}>{option || `Option ${oIndex + 1}`}</option>
                       ))}
                     </select>
-                    <button
-                      type="button"
-                      onClick={() => removeQuizQuestion(qIndex)}
-                      className="text-error hover:opacity-80 mt-2"
-                    >
-                      Remove Question
-                    </button>
                   </div>
                 ))}
                 <button
                   type="button"
                   onClick={addQuizQuestion}
-                  className="bg-success text-white px-3 py-1 rounded text-sm hover:opacity-90"
+                  className="bg-success text-white px-3 py-2 rounded text-xs sm:text-sm hover:opacity-90 w-full sm:w-auto"
                 >
                   + Add Question
                 </button>
               </div>
             )}
 
-            <div className="flex gap-2 mt-4">
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 mt-4">
               <button
                 type="submit"
-                className="bg-success text-white px-4 py-2 rounded hover:opacity-90 transition-opacity"
+                className="bg-success text-white px-4 py-2 rounded hover:opacity-90 transition-opacity text-sm sm:text-base order-1 sm:order-1"
               >
                 {editingModule ? "Update Module" : "Create Module"}
               </button>
               <button
                 type="button"
                 onClick={resetForm}
-                className="bg-muted text-foreground px-4 py-2 rounded hover:bg-muted/80 transition-colors"
+                className="bg-muted text-foreground px-4 py-2 rounded hover:bg-muted/80 transition-colors text-sm sm:text-base order-2 sm:order-2"
               >
                 Cancel
               </button>
@@ -422,34 +429,40 @@ export default function CourseModules() {
         )}
 
         {/* Modules List */}
-        <div className="space-y-4">
+        <div className="space-y-4 pb-6">
           {modules.length === 0 ? (
-            <div className="text-center py-8 text-muted-foreground bg-card border border-border rounded-lg">
+            <div className="text-center py-8 text-sm sm:text-base text-muted-foreground bg-card border border-border rounded-lg">
               No modules created yet. Click "Add Module" to get started.
             </div>
           ) : (
             <div className="mb-6">
-              <h3 className="font-semibold mb-2 text-foreground">Modules ({modules.length})</h3>
-              <div className="space-y-2">
+              <h3 className="font-semibold mb-3 text-foreground text-base sm:text-lg">
+                Modules ({modules.length})
+              </h3>
+              <div className="space-y-2 sm:space-y-3">
                 {modules.map((module) => (
                   <div 
                     key={module._id} 
-                    className="border border-border bg-card p-3 rounded flex justify-between items-center hover:bg-muted/20 transition-colors"
+                    className="border border-border bg-card p-3 sm:p-4 rounded flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 hover:bg-muted/20 transition-colors"
                   >
-                    <div>
-                      <h4 className="font-medium text-foreground">{module.title}</h4>
-                      <p className="text-sm text-muted-foreground capitalize">{module.type}</p>
+                    <div className="min-w-0 flex-1">
+                      <h4 className="font-medium text-foreground text-sm sm:text-base break-words">
+                        {module.title}
+                      </h4>
+                      <p className="text-xs sm:text-sm text-muted-foreground capitalize mt-0.5">
+                        {module.type} • Order: {module.order}
+                      </p>
                     </div>
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 sm:gap-3 flex-shrink-0">
                       <button
                         onClick={() => handleEdit(module)}
-                        className="text-primary hover:text-primary-hover transition-colors"
+                        className="text-primary hover:text-primary-hover transition-colors text-sm sm:text-base px-2 py-1"
                       >
                         Edit
                       </button>
                       <button
                         onClick={() => handleDelete(module._id)}
-                        className="text-error hover:opacity-80 transition-opacity"
+                        className="text-error hover:opacity-80 transition-opacity text-sm sm:text-base px-2 py-1"
                       >
                         Delete
                       </button>

@@ -2,7 +2,7 @@
 
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { CheckCircle, ArrowLeft, ArrowRight, BookOpen, AlertCircle } from "lucide-react";
+import { CheckCircle, ArrowLeft, ArrowRight, BookOpen, AlertCircle, Download } from "lucide-react";
 import { useAuth } from "@/components/authContext";
 
 export default function TextModulePage() {
@@ -10,7 +10,7 @@ export default function TextModulePage() {
   const { user } = useAuth();
   const params = useParams();
   const courseId = params?.id;
-  const moduleId = params?.moduleId;
+  const textId = params?.textId;
 
   const [loading, setLoading] = useState(true);
   const [module, setModule] = useState(null);
@@ -20,15 +20,17 @@ export default function TextModulePage() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    if (!user || !courseId || !moduleId) return;
+        console.log(user, courseId, textId);
 
+    if (!user || !courseId || !textId) return;
+    console.log("Fetching module data...");
     const fetchData = async () => {
       try {
         setLoading(true);
         setError('');
 
         // Fetch module details
-        const moduleRes = await fetch(`/api/courses/${courseId}/modules/${moduleId}`);
+        const moduleRes = await fetch(`/api/courses/${courseId}/modules/${textId}`);
         const moduleData = await moduleRes.json();
         if (!moduleRes.ok) throw new Error(moduleData.error || "Failed to fetch module");
         setModule(moduleData.data);
@@ -58,10 +60,10 @@ export default function TextModulePage() {
     };
 
     fetchData();
-  }, [user, courseId, moduleId]);
+  }, [user, courseId, textId]);
 
   const isCompleted = () => {
-    return enrollment?.completedModules?.includes(moduleId) || false;
+    return enrollment?.completedModules?.includes(textId) || false;
   };
 
   const completeModule = async () => {
@@ -84,7 +86,7 @@ export default function TextModulePage() {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ 
-          moduleId,
+          textId,
           courseId 
         })
       });
@@ -96,7 +98,7 @@ export default function TextModulePage() {
       // Update local enrollment state
       setEnrollment(prev => ({
         ...prev,
-        completedModules: [...(prev?.completedModules || []), moduleId]
+        completedModules: [...(prev?.completedModules || []), textId]
       }));
 
       // Navigate after short delay
@@ -217,11 +219,25 @@ export default function TextModulePage() {
             </div>
           </div>
 
-          <div className="flex items-center space-x-4 text-sm text-muted-foreground">
-            <span className="bg-primary/10 text-primary px-2 py-1 rounded-full font-medium">
-              TEXT MODULE
-            </span>
-            <span>Module {module.order || 1}</span>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4 text-sm text-muted-foreground">
+              <span className="bg-primary/10 text-primary px-2 py-1 rounded-full font-medium">
+                TEXT MODULE
+              </span>
+              <span>Module {module.order || 1}</span>
+            </div>
+            
+            {module.text?.fileUrl && (
+              <a
+                href={module.text.fileUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 transition-colors text-sm font-medium"
+              >
+                <Download className="h-4 w-4 mr-2" />
+                Download File
+              </a>
+            )}
           </div>
         </div>
 

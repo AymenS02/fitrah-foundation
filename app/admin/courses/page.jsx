@@ -113,7 +113,7 @@ export default function CoursesPage() {
         ) : (
           <>
             {/* Header */}
-            <div className="flex justify-between items-center mb-8">
+            <div className="flex justify-between items-center mb-8 max-md:flex-col max-md:gap-6 max-md:text-center">
               <h1 className="text-3xl text-foreground font-bold font-palanquin-dark">
                 Course Management
               </h1>
@@ -379,7 +379,7 @@ export default function CoursesPage() {
 
             {/* Courses List */}
             {courses.length === 0 ? (
-              <div className="text-center py-20">
+              <div className="text-center py-20 max-md:flex max-md:flex-col max-md:gap-6">
                 <div className="text-muted-foreground text-lg mb-4">No courses available yet.</div>
                 <button
                   onClick={() => setShowForm(true)}

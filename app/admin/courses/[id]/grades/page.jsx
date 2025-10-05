@@ -111,22 +111,22 @@ const AdminGradingPage = () => {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <div className="bg-card border-b border-border rounded-2xl">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
           <button
             onClick={() => router.push(`/admin/courses/${courseId}`)}
-            className="text-primary hover:text-primary-hover mb-2 flex items-center gap-1 transition-colors"
+            className="text-primary hover:text-primary-hover mb-2 flex items-center gap-1 transition-colors text-sm sm:text-base"
           >
             ← Back to Course
           </button>
-          <h1 className="text-3xl font-bold text-foreground font-palanquin-dark">Assignment Grading</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Review and grade student submissions</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground font-palanquin-dark">Assignment Grading</h1>
+          <p className="mt-1 text-xs sm:text-sm text-muted-foreground">Review and grade student submissions</p>
         </div>
       </div>
 
       {/* Error Alert */}
       {error && (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
-          <div className="bg-error/10 border border-error text-error px-4 py-3 rounded-lg">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4 sm:mt-6">
+          <div className="bg-error/10 border border-error text-error px-3 sm:px-4 py-2 sm:py-3 rounded-lg text-sm">
             {error}
           </div>
         </div>
@@ -136,25 +136,26 @@ const AdminGradingPage = () => {
       {loading ? (
         <div className="text-center mt-10">
           <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-          <p className="mt-2 text-muted-foreground">Loading submissions...</p>
+          <p className="mt-2 text-sm text-muted-foreground">Loading submissions...</p>
         </div>
       ) : (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4 sm:mt-6">
           {/* Tabs */}
-          <div className="border-b border-border">
-            <nav className="flex space-x-8">
+          <div className="border-b border-border overflow-x-auto">
+            <nav className="flex space-x-4 sm:space-x-8 min-w-max sm:min-w-0">
               <button
                 onClick={() => setActiveTab('ungraded')}
-                className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+                className={`py-3 sm:py-4 px-1 border-b-2 font-medium text-xs sm:text-sm transition-colors whitespace-nowrap ${
                   activeTab === 'ungraded'
                     ? 'border-primary text-primary'
                     : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border'
                 }`}
               >
-                <div className="flex items-center gap-2">
-                  <Clock className="w-4 h-4" />
-                  Needs Grading
-                  <span className={`ml-2 px-2 py-1 text-xs rounded-full ${
+                <div className="flex items-center gap-1 sm:gap-2">
+                  <Clock className="w-3 h-3 sm:w-4 sm:h-4" />
+                  <span className="hidden sm:inline">Needs Grading</span>
+                  <span className="sm:hidden">Ungraded</span>
+                  <span className={`ml-1 sm:ml-2 px-1.5 sm:px-2 py-0.5 sm:py-1 text-xs rounded-full ${
                     activeTab === 'ungraded' 
                       ? 'bg-primary/10 text-primary' 
                       : 'bg-muted text-muted-foreground'
@@ -165,16 +166,16 @@ const AdminGradingPage = () => {
               </button>
               <button
                 onClick={() => setActiveTab('graded')}
-                className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+                className={`py-3 sm:py-4 px-1 border-b-2 font-medium text-xs sm:text-sm transition-colors whitespace-nowrap ${
                   activeTab === 'graded'
                     ? 'border-primary text-primary'
                     : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border'
                 }`}
               >
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4" />
+                <div className="flex items-center gap-1 sm:gap-2">
+                  <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4" />
                   Graded
-                  <span className={`ml-2 px-2 py-1 text-xs rounded-full ${
+                  <span className={`ml-1 sm:ml-2 px-1.5 sm:px-2 py-0.5 sm:py-1 text-xs rounded-full ${
                     activeTab === 'graded' 
                       ? 'bg-primary/10 text-primary' 
                       : 'bg-muted text-muted-foreground'
@@ -187,34 +188,34 @@ const AdminGradingPage = () => {
           </div>
 
           {/* Submissions List */}
-          <div className="mt-6 space-y-4">
+          <div className="mt-4 sm:mt-6 space-y-3 sm:space-y-4 pb-6">
             {currentSubmissions.length === 0 ? (
-              <div className="bg-card rounded-lg shadow-sm border border-border p-12 text-center">
+              <div className="bg-card rounded-lg shadow-sm border border-border p-8 sm:p-12 text-center">
                 <div className="flex flex-col items-center">
                   {activeTab === 'ungraded' ? (
                     <>
-                      <CheckCircle className="w-12 h-12 text-muted-foreground mb-3" />
-                      <h3 className="text-lg font-medium text-foreground">All caught up!</h3>
-                      <p className="mt-1 text-sm text-muted-foreground">No submissions need grading at the moment.</p>
+                      <CheckCircle className="w-10 h-10 sm:w-12 sm:h-12 text-muted-foreground mb-3" />
+                      <h3 className="text-base sm:text-lg font-medium text-foreground">All caught up!</h3>
+                      <p className="mt-1 text-xs sm:text-sm text-muted-foreground">No submissions need grading at the moment.</p>
                     </>
                   ) : (
                     <>
-                      <FileText className="w-12 h-12 text-muted-foreground mb-3" />
-                      <h3 className="text-lg font-medium text-foreground">No graded submissions</h3>
-                      <p className="mt-1 text-sm text-muted-foreground">Graded submissions will appear here.</p>
+                      <FileText className="w-10 h-10 sm:w-12 sm:h-12 text-muted-foreground mb-3" />
+                      <h3 className="text-base sm:text-lg font-medium text-foreground">No graded submissions</h3>
+                      <p className="mt-1 text-xs sm:text-sm text-muted-foreground">Graded submissions will appear here.</p>
                     </>
                   )}
                 </div>
               </div>
             ) : (
               currentSubmissions.map((submission) => (
-                <div key={submission._id} className="bg-card rounded-lg shadow-sm border border-border p-6 hover:shadow-md transition-shadow">
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-2">
-                        <h3 className="text-lg font-semibold text-foreground">{submission.module?.title || 'Untitled Assignment'}</h3>
+                <div key={submission._id} className="bg-card rounded-lg shadow-sm border border-border p-4 sm:p-6 hover:shadow-md transition-shadow">
+                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-2">
+                        <h3 className="text-base sm:text-lg font-semibold text-foreground break-words">{submission.module?.title || 'Untitled Assignment'}</h3>
                         {submission.grade !== null && submission.grade !== undefined && (
-                          <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+                          <span className={`px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium self-start ${
                             submission.grade >= 90 ? 'bg-success/10 text-success' :
                             submission.grade >= 80 ? 'bg-info/10 text-info' :
                             submission.grade >= 70 ? 'bg-warning/10 text-warning' :
@@ -224,49 +225,41 @@ const AdminGradingPage = () => {
                           </span>
                         )}
                       </div>
-                      <p className="text-sm text-muted-foreground mb-3">{submission.course?.title || 'Course'}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-3">{submission.course?.title || 'Course'}</p>
                       
-                      <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
-                        <div className="flex items-center gap-1">
-                          <User className="w-4 h-4" />
-                          <span className="text-foreground">{submission.user?.firstName} {submission.user?.lastName}</span>
-                          <span className="text-muted-foreground">({submission.user?.email})</span>
+                      <div className="flex flex-col sm:flex-row sm:flex-wrap gap-2 sm:gap-4 text-xs sm:text-sm text-muted-foreground">
+                        <div className="flex items-center gap-1 min-w-0">
+                          <User className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
+                          <span className="text-foreground truncate">{submission.user?.firstName} {submission.user?.lastName}</span>
+                          <span className="text-muted-foreground truncate">({submission.user?.email})</span>
                         </div>
                         <div className="flex items-center gap-1">
-                          <Calendar className="w-4 h-4" />
-                          <span>Submitted {formatDate(submission.submittedAt)}</span>
+                          <Calendar className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
+                          <span className="truncate">Submitted {formatDate(submission.submittedAt)}</span>
                         </div>
                       </div>
 
                       {submission.feedback && (
-                        <div className="mt-3 p-3 bg-muted rounded-md">
-                          <p className="text-sm text-foreground"><span className="font-medium">Feedback:</span> {submission.feedback}</p>
+                        <div className="mt-3 p-2 sm:p-3 bg-muted rounded-md">
+                          <p className="text-xs sm:text-sm text-foreground break-words"><span className="font-medium">Feedback:</span> {submission.feedback}</p>
                         </div>
                       )}
                     </div>
 
-                    <div className="flex gap-2 ml-4">
-                      {/* <a
-                        href={submission.fileUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-4 py-2 bg-muted text-foreground rounded-lg hover:bg-muted/80 transition-colors"
-                      >
-                        <ExternalLink className="w-4 h-4" />
-                        View
-                      </a> */}
+                    <div className="flex sm:flex-col gap-2 sm:ml-4 flex-shrink-0">
                       <a
                         href={submission.fileUrl}
                         download
-                        className="inline-flex items-center gap-2 px-4 py-2 bg-muted text-foreground rounded-lg hover:bg-muted/80 transition-colors"
+                        className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 bg-muted text-foreground rounded-lg hover:bg-muted/80 transition-colors text-xs sm:text-sm"
                       >
-                        <Download className="w-4 h-4" />
-                        Download
+                        <Download className="w-3 h-3 sm:w-4 sm:h-4" />
+                        <span className="hidden sm:inline">Download</span>
+                        <span className="sm:hidden">DL</span>
                       </a>
                       {activeTab === 'ungraded' && (
                         <button
                           onClick={() => setSelectedSubmission(submission)}
-                          className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-hover transition-colors"
+                          className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-hover transition-colors text-xs sm:text-sm"
                         >
                           Grade
                         </button>
@@ -284,19 +277,19 @@ const AdminGradingPage = () => {
       {selectedSubmission && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-card rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-border">
-            <div className="p-6 border-b border-border">
-              <h2 className="text-2xl font-bold text-foreground font-palanquin-dark">Grade Submission</h2>
-              <p className="mt-1 text-sm text-muted-foreground">{selectedSubmission.module?.title || 'Assignment'}</p>
+            <div className="p-4 sm:p-6 border-b border-border">
+              <h2 className="text-xl sm:text-2xl font-bold text-foreground font-palanquin-dark">Grade Submission</h2>
+              <p className="mt-1 text-xs sm:text-sm text-muted-foreground break-words">{selectedSubmission.module?.title || 'Assignment'}</p>
             </div>
 
-            <div className="p-6 space-y-4">
-              <div>
-                <p className="text-sm text-muted-foreground">Student: <span className="font-medium text-foreground">{selectedSubmission.user?.firstName} {selectedSubmission.user?.lastName}</span></p>
-                <p className="text-sm text-muted-foreground">Submitted: <span className="font-medium text-foreground">{formatDate(selectedSubmission.submittedAt)}</span></p>
+            <div className="p-4 sm:p-6 space-y-4">
+              <div className="space-y-1">
+                <p className="text-xs sm:text-sm text-muted-foreground break-words">Student: <span className="font-medium text-foreground">{selectedSubmission.user?.firstName} {selectedSubmission.user?.lastName}</span></p>
+                <p className="text-xs sm:text-sm text-muted-foreground">Submitted: <span className="font-medium text-foreground">{formatDate(selectedSubmission.submittedAt)}</span></p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
+                <label className="block text-xs sm:text-sm font-medium text-foreground mb-2">
                   Grade (0-100)
                 </label>
                 <input
@@ -305,40 +298,40 @@ const AdminGradingPage = () => {
                   max="100"
                   value={gradeInput}
                   onChange={(e) => setGradeInput(e.target.value)}
-                  className="w-full px-4 py-2 border border-border bg-background text-foreground rounded-lg focus:ring-2 focus:ring-ring focus:border-ring"
+                  className="w-full px-3 sm:px-4 py-2 border border-border bg-background text-foreground rounded-lg focus:ring-2 focus:ring-ring focus:border-ring text-sm sm:text-base"
                   placeholder="Enter grade"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
+                <label className="block text-xs sm:text-sm font-medium text-foreground mb-2">
                   Feedback (Optional)
                 </label>
                 <textarea
                   value={feedbackInput}
                   onChange={(e) => setFeedbackInput(e.target.value)}
                   rows="4"
-                  className="w-full px-4 py-2 border border-border bg-background text-foreground rounded-lg focus:ring-2 focus:ring-ring focus:border-ring"
+                  className="w-full px-3 sm:px-4 py-2 border border-border bg-background text-foreground rounded-lg focus:ring-2 focus:ring-ring focus:border-ring text-sm sm:text-base"
                   placeholder="Provide feedback for the student..."
                 />
               </div>
             </div>
 
-            <div className="p-6 border-t border-border flex gap-3 justify-end">
+            <div className="p-4 sm:p-6 border-t border-border flex flex-col-reverse sm:flex-row gap-2 sm:gap-3 sm:justify-end">
               <button
                 onClick={() => {
                   setSelectedSubmission(null);
                   setGradeInput('');
                   setFeedbackInput('');
                 }}
-                className="px-4 py-2 border border-border text-foreground rounded-lg hover:bg-muted transition-colors"
+                className="w-full sm:w-auto px-4 py-2 border border-border text-foreground rounded-lg hover:bg-muted transition-colors text-sm sm:text-base"
               >
                 Cancel
               </button>
               <button
                 onClick={handleGradeSubmit}
                 disabled={!gradeInput || gradeInput < 0 || gradeInput > 100 || submitLoading}
-                className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-hover transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full sm:w-auto px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-hover transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
               >
                 {submitLoading ? 'Submitting...' : 'Submit Grade'}
               </button>
